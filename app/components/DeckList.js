@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Component } from 'react'
 import { removeCardFromDeck, updateCardInDeck } from '../reducers/Deck.js'
+import { computeCurve } from '../reducers/probabilities.js'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
@@ -18,7 +19,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
-import { ProbCell } from './ProbabilityCell'
+import ProbCell from './ProbabilityCell'
 import Drawer from 'material-ui/Drawer';
 
 class DeckList extends Component {
@@ -29,7 +30,6 @@ class DeckList extends Component {
             selectedCard:{},
             calculating: true,
         }
-        this.convertToList = this.convertToList.bind(this)
         this.blue = '#2693C7'
         this.red = '#FC6621'
         this.green = '#2BC749'
@@ -37,16 +37,19 @@ class DeckList extends Component {
         this.black = '#A8A39A'
     }
 
-    convertToList(deck) {
-        return deck.reduce((a, b) => {
-            for (var i = 0; i < b.quantity; i++) {
-                a.push(Object.assign({}, b))
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.deck) {
+            if (nextProps.deck.length) {
+                nextProps.deck.forEach(card => {
+                    if (!card.type.includes('Land')) {
+                        for(var turn = 1; turn < 9; turn++) {
+                            this.props.calcProb(turn + 6, card, nextProps.deck)
+                        }
+                    }
+                })
             }
-            return a
-        }, [])
+        }
     }
-
-    // now renders when it is first mounted, doesnt rerender when props are updated
 
     render(){
         if (this.props){
@@ -152,9 +155,7 @@ class DeckList extends Component {
                                                         <TableRowColumn style={{ width: '5%' }}>
                                                             <ProbCell
                                                                 draws={7 + v}
-                                                                card={card}
-                                                                deck={this.convertToList(this.props.deckList)}
-                                                                calculating={this.state.calculating}
+                                                                card={ card }
                                                             />
                                                         </TableRowColumn>
                                                     )
@@ -185,6 +186,9 @@ function mapDispatchToProps(dispatch) {
         },
         removeCard: (cardUniqName) => {
             dispatch(removeCardFromDeck(cardUniqName));
+        },
+        calcProb: (draws, card, deck) => {
+            dispatch(computeCurve(draws, card, deck))
         }
     }
 }

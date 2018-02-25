@@ -20,7 +20,7 @@ router.get('/filteredcards/:value', (req, res, next) => {
     console.log('querying: ',queryName)
 
     Card.findAll({
-            attributes: ['name', 'multiverseid', 'set', 'text', 'manaCost', 'uniqueName','fetchOptions','ProducibleManaColors','type','types'],
+            attributes: ['name', 'multiverseid', 'set', 'text', 'manaCost', 'uniqueName','fetchOptions','ProducibleManaColors','type','types', 'colors'],
             limit: 10,
 
             where: {

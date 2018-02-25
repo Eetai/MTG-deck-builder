@@ -29,13 +29,14 @@ function copy(data) {
 
 // computes probability
 
-const probabilityOfPlayingCard = function (
+const probabilityOfPlayingCard = function ({
   cardsDrawn,
   card,
   deck,
   startingHandSize = 7
-) {
-  if (card.type.includes('Land') || cardsDrawn > deck.length) return ''
+}, done) {
+
+  deck = convertToList(deck)
 
   // deck sterilized initially for splitmana cards
   let C = cardCost(card)
@@ -135,9 +136,9 @@ const probabilityOfPlayingCard = function (
 
       PP += parseFloat(multiplyString(P, muliplier))
     }
-    return PP / parseInt(denominator);
+    done(PP / parseInt(denominator));
   }
-  else return 0;
+  else done(0);
 }
 
 // abstracts every possible playable-hand given a card and a deck
@@ -302,6 +303,17 @@ function JSONmanaBase(deck) {
     }
     return a;
   }, {});
+}
+
+// turns deck into list of cards with duplicates
+
+function convertToList(deck) {
+  return deck.reduce((a, b) => {
+    for (var i = 0; i < b.quantity; i++) {
+      a.push(Object.assign({}, b))
+    }
+    return a
+  }, [])
 }
 
 // objectifies manaCost

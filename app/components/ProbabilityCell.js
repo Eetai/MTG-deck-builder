@@ -1,92 +1,65 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
-import axios from 'axios';
 
-export class ProbCell extends Component {
+class ProbabilityCell extends Component {
   constructor(props) {
     super(props)
     this.state={
       P: '',
       cardColor:'',
-      manapic: ''
+      manapic: '',
     }
-    this.blue = '#2693C7'
-    this.red = '#FC6621'
-    this.green = '#2BC749'
-    this.white = '#FDEA6D'
-    this.black = '#A8A39A'
+
+    this.colors = {
+      Blue: '#2693C7',
+      Red: '#FC6621',
+      Green: '#2BC749',
+      White: '#FDEA6D',
+      Black: '#A8A39A'
+    }
   }
 
   componentWillMount(){
-    let color
-    if (this.props.card.manaCost) {
-      color = ''
-      if (this.props.card.manaCost.includes('W')) color += 'W'
-      if (this.props.card.manaCost.includes('B')) color += 'B'
-      if (this.props.card.manaCost.includes('G')) color += 'G'
-      if (this.props.card.manaCost.includes('U')) color += 'U'
-      if (this.props.card.manaCost.includes('R')) color += 'R'
-      color = color[Math.floor(Math.random() * color.length)]
-      if (color === 'W') color = this.white
-      else if (color === 'B') color = this.black
-      else if (color === 'G') color = this.green
-      else if (color === 'U') color = this.blue
-      else if (color === 'R') color = this.red
-      this.setState({ cardColor: color })
-    }
-
+    // setting mana icon for land cards
     if (this.props.card.type.includes('Land')) {
       let manapic = (this.props.card.ProducibleManaColors.includes('C') || this.props.card.ProducibleManaColors.includes('F')) ? 'Cmana.png' : (this.props.card.ProducibleManaColors.split(',').join('').slice(0, Math.min(this.props.card.ProducibleManaColors.length, 2)) + 'mana.png')
       if (this.props.card.ProducibleManaColors.split(',').join('') === 'BGRUW') manapic = 'BGRUWmana.png'
       this.setState({ manapic })
     }
-
-    if (!this.props.card.type.includes('Land') && this.props.card.manaCost && this.props.calculating) {
-      this.setState({ P: 'loading' })
-      axios.post('api/alg', ({ draws: this.props.draws, card: this.props.card, deck: this.props.deck }))
-        .then(res => {
-          this.setState({ P: res.data })
-        });
+    // setting up loading color or getting P if not land
+    else if (this.props.probs) {
+      let cardColor = [this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]]
+      cardColor = cardColor.map(color => this.colors[color])[0]
+      this.setState({
+        P: this.props.probs[this.props.card.uniqueName][this.props.draws - 6],
+        cardColor
+      })
     }
   }
 
   componentWillReceiveProps(nextProps){
-    let color
-    if (this.props.card.manaCost) {
-      color = ''
-      if (nextProps.card.manaCost.includes('W')) color += 'W'
-      if (nextProps.card.manaCost.includes('B')) color += 'B'
-      if (nextProps.card.manaCost.includes('G')) color += 'G'
-      if (nextProps.card.manaCost.includes('U')) color += 'U'
-      if (nextProps.card.manaCost.includes('R')) color += 'R'
-      color = color[Math.floor(Math.random() * color.length)]
-      if (color === 'W') color = this.white
-      else if (color === 'B') color = this.black
-      else if (color === 'G') color = this.green
-      else if (color === 'U') color = this.blue
-      else if (color === 'R') color = this.red
-      this.setState({ cardColor: color })
-    }
-
+    // setting mana icon for land cards
     if (nextProps.card.type.includes('Land')) {
       let manapic = (nextProps.card.ProducibleManaColors.includes('C') || nextProps.card.ProducibleManaColors.includes('F')) ? 'Cmana.png' : (nextProps.card.ProducibleManaColors.split(',').join('').slice(0, Math.min(nextProps.card.ProducibleManaColors.length, 2)) + 'mana.png')
       if (nextProps.card.ProducibleManaColors.split(',').join('') === 'BGRUW') manapic = 'BGRUWmana.png'
       this.setState({ manapic })
     }
-
-    if (!nextProps.card.type.includes('Land') && nextProps.card.manaCost && nextProps.calculating){
-      this.setState({ P: 'loading' })
-      axios.post('api/alg', ({ draws: nextProps.draws, card: nextProps.card, deck: nextProps.deck }))
-      .then(res => {
-        this.setState({ P: res.data })
-      });
+    // setting up loading color or getting P if not land
+    else if (nextProps.probs) {
+      let cardColor = [nextProps.card.colors[Math.floor(Math.random() * nextProps.card.colors.length)]]
+      cardColor = cardColor.map(color => this.colors[color])[0]
+      this.setState({
+        P: nextProps.probs[nextProps.card.uniqueName][nextProps.draws - 6],
+        cardColor
+      })
     }
   }
 
   render() {
     if (this.state.P !== 'loading' && !this.props.card.type.includes('Land')) return (
       <div>
-        {`${(this.state.P *100).toFixed(1)}%`}
+        {`${(this.state.P * 100).toFixed(1)}%`}
       </div>
     )
     else if (this.props.card.type.includes('Land')) return (
@@ -101,3 +74,18 @@ export class ProbCell extends Component {
     )
   }
 }
+
+function mapStateToProps(storeState) {
+  return {
+    probs: storeState.probabilityReducer
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+const ProbCell = connect(mapStateToProps, mapDispatchToProps)(ProbabilityCell)
+
+export default ProbCell

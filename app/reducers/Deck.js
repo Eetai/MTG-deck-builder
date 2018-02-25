@@ -17,7 +17,7 @@ export const removeCardFromDeck = (uniqueName) => {
     }
 }
 
-export const updateCardInDeck = (uniqueName,changes) => {
+export const updateCardInDeck = (uniqueName, changes) => {
     return {
         type: UPDATE_CARD_IN_DECK,
         uniqueName,
@@ -31,9 +31,9 @@ const deckReducer = (state = [], action) => {
         case REMOVE_CARD_FROM_DECK:
             return state.filter(v => action.uniqueName !== v.uniqueName)
         case UPDATE_CARD_IN_DECK:
-            return state.map(v => (action.uniqueName === v.uniqueName) ? Object.assign({},v,action.changes) : v)
+            return state.map(v => (action.uniqueName === v.uniqueName) ? Object.assign({}, v, action.changes) : v)
         case ADD_CARD_TO_DECK:
-            return (state.map(v=>v.uniqueName).includes(action.newCard.uniqueName))?state:[...state, action.newCard]
+            return (state.map(v=>v.uniqueName).includes(action.newCard.uniqueName)) ? state:[...state, action.newCard]
         default:
             return state
     }

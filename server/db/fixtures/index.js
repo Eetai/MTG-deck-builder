@@ -69,7 +69,7 @@ const cardsWithMultiverseId = allCards.reduce((cards,card,i) => {
                 if (card.text.indexOf('{R}') > 0 && P.indexOf('R') < 0) P += 'R'
                 if (card.text.indexOf('{U}') > 0 && P.indexOf('U') < 0) P += 'U'
                 if (card.text.indexOf('{C}') > 0 && P.indexOf('C') < 0) P += 'C'
-                if (card.text.indexOf('any color') > 0 && P.indexOf('B') < 0) P += 'WRGBU'
+                if (card.text.indexOf('any color') > 0 || card.text.indexOf('any type') > 0) P += 'WRGBU'
                 if (card.text.indexOf(`Sacrifice ${card.name}: Search`) > -1) {
                     P += 'F'
                 }
@@ -100,7 +100,7 @@ const cardsWithMultiverseId = allCards.reduce((cards,card,i) => {
             card.manaCost = card.manaCost.split('/').join('')
         }
 
-        cards.push(Object.assign({}, card , {fetchOptions , ProducibleManaColors , uniqueName: (card.name + ' (' + card.set + ') #' + card.multiverseid)}))
+        cards.push(Object.assign({}, card , { colors, fetchOptions , ProducibleManaColors , uniqueName: (card.name + ' (' + card.set + ') #' + card.multiverseid)}))
     };
     return cards
 },[])
