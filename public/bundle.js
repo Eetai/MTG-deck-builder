@@ -46053,7 +46053,7 @@ var DeckList = function (_Component) {
         _this.state = {
             drawer: false,
             selectedCard: {},
-            calculating: true
+            calculating: false
         };
         _this.blue = '#2693C7';
         _this.red = '#FC6621';
@@ -50771,7 +50771,6 @@ var ProbabilityCell = function (_Component) {
       cardColor: '',
       manapic: ''
     };
-
     _this.colors = {
       Blue: '#2693C7',
       Red: '#FC6621',
@@ -50785,8 +50784,6 @@ var ProbabilityCell = function (_Component) {
   _createClass(ProbabilityCell, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      var _this2 = this;
-
       // setting mana icon for land cards
       if (this.props.card.type.includes('Land')) {
         var manapic = this.props.card.ProducibleManaColors.includes('C') || this.props.card.ProducibleManaColors.includes('F') ? 'Cmana.png' : this.props.card.ProducibleManaColors.split(',').join('').slice(0, Math.min(this.props.card.ProducibleManaColors.length, 2)) + 'mana.png';
@@ -50795,10 +50792,7 @@ var ProbabilityCell = function (_Component) {
       }
       // setting up loading color or getting P if not land
       else if (this.props.probs) {
-          var cardColor = [this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]];
-          cardColor = cardColor.map(function (color) {
-            return _this2.colors[color];
-          })[0];
+          var cardColor = this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]];
           this.setState({
             P: this.props.probs[this.props.card.uniqueName][this.props.draws - 6],
             cardColor: cardColor
@@ -50808,8 +50802,6 @@ var ProbabilityCell = function (_Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      var _this3 = this;
-
       // setting mana icon for land cards
       if (nextProps.card.type.includes('Land')) {
         var manapic = nextProps.card.ProducibleManaColors.includes('C') || nextProps.card.ProducibleManaColors.includes('F') ? 'Cmana.png' : nextProps.card.ProducibleManaColors.split(',').join('').slice(0, Math.min(nextProps.card.ProducibleManaColors.length, 2)) + 'mana.png';
@@ -50818,10 +50810,8 @@ var ProbabilityCell = function (_Component) {
       }
       // setting up loading color or getting P if not land
       else if (nextProps.probs) {
-          var cardColor = [nextProps.card.colors[Math.floor(Math.random() * nextProps.card.colors.length)]];
-          cardColor = cardColor.map(function (color) {
-            return _this3.colors[color];
-          })[0];
+          var cardColor = this.colors[nextProps.card.colors[Math.floor(Math.random() * nextProps.card.colors.length)]];
+          console.log(cardColor);
           this.setState({
             P: nextProps.probs[nextProps.card.uniqueName][nextProps.draws - 6],
             cardColor: cardColor
@@ -50856,11 +50846,7 @@ function mapStateToProps(storeState) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
-var ProbCell = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ProbabilityCell);
+var ProbCell = (0, _reactRedux.connect)(mapStateToProps, null)(ProbabilityCell);
 
 exports.default = ProbCell;
 

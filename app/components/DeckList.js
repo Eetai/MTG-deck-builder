@@ -28,7 +28,7 @@ class DeckList extends Component {
         this.state = {
             drawer: false,
             selectedCard:{},
-            calculating: true,
+            calculating: false,
         }
         this.blue = '#2693C7'
         this.red = '#FC6621'
@@ -51,7 +51,7 @@ class DeckList extends Component {
         }
     }
 
-    render(){
+    render() {
         if (this.props){
             return (
                 <div className="DeckListContainer">
@@ -63,21 +63,21 @@ class DeckList extends Component {
                         width={"47%"}
                     >
                         <div>
-                        <div>
-                            <img
-                                    style={{ transform: 'translate(100px, 10px)',width:300,height:'auto'}}
-                                src={`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${this.state.selectedCard.multiverseid}&type=card`}
-                            />
-                        </div>
-                        <FloatingActionButton
-                            style={{ transform: 'translate(230px, 10px)'}}
-                            disabled={!this.state.drawer}
-                            label={''}
-                            backgroundColor={this.white}
-                            mini={true}
-                            onClick={(e) => this.setState({calculating:!this.state.calculating,drawer: !this.state.drawer })}>
-                            <RemoveRedEye />
-                        </FloatingActionButton>
+                            <div>
+                                <img
+                                        style={{ transform: 'translate(100px, 10px)',width:300,height:'auto'}}
+                                    src={`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${this.state.selectedCard.multiverseid}&type=card`}
+                                />
+                            </div>
+                            <FloatingActionButton
+                                style={{ transform: 'translate(230px, 10px)'}}
+                                disabled={!this.state.drawer}
+                                label={''}
+                                backgroundColor={this.white}
+                                mini={true}
+                                onClick={(e) => this.setState({calculating:!this.state.calculating,drawer: !this.state.drawer })}>
+                                <RemoveRedEye />
+                            </FloatingActionButton>
                         </div>
                     </Drawer>
                     <Table>

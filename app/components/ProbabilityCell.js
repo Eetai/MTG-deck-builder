@@ -10,7 +10,6 @@ class ProbabilityCell extends Component {
       cardColor:'',
       manapic: '',
     }
-
     this.colors = {
       Blue: '#2693C7',
       Red: '#FC6621',
@@ -29,8 +28,7 @@ class ProbabilityCell extends Component {
     }
     // setting up loading color or getting P if not land
     else if (this.props.probs) {
-      let cardColor = [this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]]
-      cardColor = cardColor.map(color => this.colors[color])[0]
+      let cardColor = this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]]
       this.setState({
         P: this.props.probs[this.props.card.uniqueName][this.props.draws - 6],
         cardColor
@@ -47,8 +45,8 @@ class ProbabilityCell extends Component {
     }
     // setting up loading color or getting P if not land
     else if (nextProps.probs) {
-      let cardColor = [nextProps.card.colors[Math.floor(Math.random() * nextProps.card.colors.length)]]
-      cardColor = cardColor.map(color => this.colors[color])[0]
+      let cardColor = this.colors[nextProps.card.colors[Math.floor(Math.random() * nextProps.card.colors.length)]]
+      console.log(cardColor)
       this.setState({
         P: nextProps.probs[nextProps.card.uniqueName][nextProps.draws - 6],
         cardColor
@@ -81,11 +79,6 @@ function mapStateToProps(storeState) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  }
-}
-
-const ProbCell = connect(mapStateToProps, mapDispatchToProps)(ProbabilityCell)
+const ProbCell = connect(mapStateToProps, null)(ProbabilityCell)
 
 export default ProbCell
