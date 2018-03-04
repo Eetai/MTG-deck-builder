@@ -22,7 +22,6 @@ export const fetchFilteredCards = (value) => {
                 return cards
             })
             .then(cards => {
-                console.log(value)
                 return dispatch(getSelectedCard(value,cards))
             })
             .catch(console.error)

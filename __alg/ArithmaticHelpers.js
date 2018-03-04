@@ -33,8 +33,7 @@ const probabilityOfPlayingCard = function ({
   cardsDrawn,
   card,
   deck,
-  startingHandSize = 7
-}, done) {
+  startingHandSize = 7 },done) {
 
   deck = convertToList(deck)
 
@@ -138,7 +137,7 @@ const probabilityOfPlayingCard = function ({
     }
     done(PP / parseInt(denominator));
   }
-  else done(0);
+  done(0);
 }
 
 // abstracts every possible playable-hand given a card and a deck

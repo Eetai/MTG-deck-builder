@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Component } from 'react'
 import { removeCardFromDeck, updateCardInDeck } from '../reducers/Deck.js'
-import { computeCurve } from '../reducers/probabilities.js'
+import { computeCurve, setCurveToLoading } from '../reducers/probabilities.js'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
@@ -21,6 +21,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import ProbCell from './ProbabilityCell'
 import Drawer from 'material-ui/Drawer';
+import { spawn } from 'threads'
 
 class DeckList extends Component {
     constructor(props){
@@ -29,30 +30,73 @@ class DeckList extends Component {
             drawer: false,
             selectedCard:{},
             calculating: false,
+            lastDeckList: '',
+            history: {}
         }
-        this.blue = '#2693C7'
-        this.red = '#FC6621'
-        this.green = '#2BC749'
-        this.white = '#FDEA6D'
-        this.black = '#A8A39A'
+
+        this.colors = {
+            Blue: '#2693C7',
+            Red: '#FC6621',
+            Green: '#2BC749',
+            White: '#FDEA6D',
+            Black: '#A8A39A',
+            Grey: '#99968f'
+        }
+
+        this.reCalcProbs = this.reCalcProbs.bind(this)
+        this.getDeckNamesAndQuants = this.getDeckNamesAndQuants.bind(this)
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.deck) {
-            if (nextProps.deck.length) {
-                nextProps.deck.forEach(card => {
-                    if (!card.type.includes('Land')) {
-                        for(var turn = 1; turn < 9; turn++) {
-                            this.props.calcProb(turn + 6, card, nextProps.deck)
+    getDeckNamesAndQuants(deck) {
+        return JSON.stringify(deck.map(card => ({ name: card.uniqueName, quantity: card.quantity })))
+    }
+
+    // Debouncing currently sucks!
+    // state is bascially fucked
+
+    reCalcProbs(dispatchCalcProb, deck){
+        let deckNamesAndQuants = this.getDeckNamesAndQuants(deck)
+        this.setState({ calculating: true, lastDeckList: deckNamesAndQuants })
+
+        deck.forEach(card => {
+            if (!card.types.includes('Land') && ! card.types.includes('Plane')) {
+                for (var turn = 1; turn < 9; turn++) {
+                    dispatchCalcProb(turn + 6, card, deck)
+                }
+            }
+        })
+        setTimeout(() => {
+            let deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
+            if (deckNamesAndQuants !== this.state.lastDeckList) {
+                this.props.setToLoading()
+                this.props.deck.forEach(card => {
+                    if (!card.types.includes('Land') && ! card.types.includes('Plane')) {
+                        for (var turn = 1; turn < 9; turn++) {
+                            dispatchCalcProb(turn + 6, card, this.props.deck)
                         }
                     }
                 })
             }
+
+            const NOT_LOADING_AND_UNIQUE = !JSON.stringify(this.state.lastDeckList).includes('loading') && !this.state.history[deckNamesAndQuants]
+
+            const history = Object.assign({}, this.state.history)
+            if (NOT_LOADING_AND_UNIQUE) history[this.state.lastDeckList] = true
+
+            this.setState({ calculating: false, lastDeckList: deckNamesAndQuants, history })
+        }, 2000);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const deckNamesAndQuants = this.getDeckNamesAndQuants(nextProps.deck)
+        if (!this.state.calculating && !this.state.history[deckNamesAndQuants]) {
+            this.reCalcProbs(this.props.calcProb, nextProps.deck)
         }
     }
 
     render() {
         if (this.props){
+            const deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
             return (
                 <div className="DeckListContainer">
                     <Drawer
@@ -65,7 +109,7 @@ class DeckList extends Component {
                         <div>
                             <div>
                                 <img
-                                        style={{ transform: 'translate(100px, 10px)',width:300,height:'auto'}}
+                                    style={{ transform: 'translate(100px, 10px)', width: 300, height: 'auto'}}
                                     src={`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${this.state.selectedCard.multiverseid}&type=card`}
                                 />
                             </div>
@@ -73,9 +117,9 @@ class DeckList extends Component {
                                 style={{ transform: 'translate(230px, 10px)'}}
                                 disabled={!this.state.drawer}
                                 label={''}
-                                backgroundColor={this.white}
+                                backgroundColor={this.colors.White}
                                 mini={true}
-                                onClick={(e) => this.setState({calculating:!this.state.calculating,drawer: !this.state.drawer })}>
+                                onClick={(e) => this.setState({calculating:!this.state.calculating ,drawer: !this.state.drawer })}>
                                 <RemoveRedEye />
                             </FloatingActionButton>
                         </div>
@@ -113,17 +157,17 @@ class DeckList extends Component {
                                                 <FloatingActionButton
                                                     disabled={this.state.drawer}
                                                     label={''}
-                                                    backgroundColor={this.white}
+                                                    backgroundColor={this.colors.White}
                                                     mini={true}
-                                                    onClick={(e) => this.setState({calculating:!this.state.calculating ,drawer: !this.state.drawer, selectedCard: card })}>
+                                                    onClick={(e) => this.setState({ calculating:!this.state.calculating ,drawer: !this.state.drawer, selectedCard: card })}>
                                                     <RemoveRedEye />
                                                 </FloatingActionButton>
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '5%' }}>{card.quantity}</TableRowColumn>
                                             <TableRowColumn style={{ width: '8%' }}>
                                                 <FloatingActionButton
-                                                    disabled={card.quantity>3 && !card.type.includes('Basic Land')}
-                                                    backgroundColor={this.green}
+                                                    disabled={card.quantity > 3 && !card.type.includes('Basic Land')}
+                                                    backgroundColor={this.colors.Green}
                                                     mini={true}
                                                     onClick={() => this.props.updateCardQuant(card.uniqueName, card.quantity + 1)}>
                                                     <ContentAdd/>
@@ -132,7 +176,7 @@ class DeckList extends Component {
                                             <TableRowColumn style={{ width: '8%' }}>
                                                 <FloatingActionButton
                                                     disabled={card.quantity < 1}
-                                                    backgroundColor={this.blue}
+                                                    backgroundColor={this.colors.Blue}
                                                     mini={true}
                                                     onClick={() => {
                                                         this.props.updateCardQuant(card.uniqueName, card.quantity - 1)
@@ -143,7 +187,7 @@ class DeckList extends Component {
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '8%' }}>
                                                 <FloatingActionButton
-                                                    backgroundColor={this.red}
+                                                    backgroundColor={this.colors.Red}
                                                     mini={true}
                                                     onClick={() => this.props.removeCard(card.uniqueName)}>
                                                     <ContentClear />
@@ -154,8 +198,10 @@ class DeckList extends Component {
                                                     return (
                                                         <TableRowColumn style={{ width: '5%' }}>
                                                             <ProbCell
-                                                                draws={7 + v}
-                                                                card={ card }
+                                                                draws = {7 + v}
+                                                                card = { card }
+                                                                deckNamesAndQuants = { deckNamesAndQuants }
+                                                                calculating = { this.state.calculating }
                                                             />
                                                         </TableRowColumn>
                                                     )
@@ -187,8 +233,11 @@ function mapDispatchToProps(dispatch) {
         removeCard: (cardUniqName) => {
             dispatch(removeCardFromDeck(cardUniqName));
         },
-        calcProb: (draws, card, deck) => {
-            dispatch(computeCurve(draws, card, deck))
+        calcProb: (draws, card, deck, cachedData) => {
+            dispatch(computeCurve(draws, card, deck, cachedData))
+        },
+        setToLoading: () => {
+            dispatch(setCurveToLoading())
         }
     }
 }
@@ -196,6 +245,3 @@ function mapDispatchToProps(dispatch) {
 const DeckListView = connect(mapStateToProps, mapDispatchToProps)(DeckList)
 
 export default DeckListView;
-
-// // // IMAGE URLS ARE OF THE FOLLOWING FORM
-// <img src={`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${card.multiverseid}&type=card`} />

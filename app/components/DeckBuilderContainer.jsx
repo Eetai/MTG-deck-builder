@@ -22,7 +22,6 @@ class DeckBuilderContainer extends Component {
     }
 
     handleUpdateInput = (value) => {
-        console.log('update!')
         this.setState({ searchText: value })
         if (value.length){
             this.props.loadFilteredCards(value)
@@ -33,7 +32,6 @@ class DeckBuilderContainer extends Component {
     };
 
     handleReq = (value) => {
-        console.log('request!',value)
         if (Object.keys(this.props.selectedCard).length && this.state.searchText.length) {
 
             // set timeout is hacky. purpose is to make sure when you hit enter while selecting an element in the drop down that you actually add that card. the timer means the following happens: the selected card is set to the selected card, THEN add the card to the deck, as opposed to trying to add the selected card and update the selected card simaltaneously -> causing race contition -> adding wrong card
@@ -55,7 +53,7 @@ class DeckBuilderContainer extends Component {
                         this.handleReq()
                         }} >
                         <AutoComplete
-                            hintText="Type anything, just don't expect much"
+                            hintText="Seach for any MtG card by name"
                             searchText={this.state.searchText}
                             dataSource={this.props.filteredCards.map(v => v.uniqueName)}
                             onUpdateInput={this.handleUpdateInput}

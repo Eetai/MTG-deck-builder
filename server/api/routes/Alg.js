@@ -1,6 +1,19 @@
 'use strict'
 const router = require('express').Router()
+const probabilityOfPlayingCard = require('../../../__alg/ArithmaticHelpers.js')
 const { spawn, config } = require('threads')
+
+// *** without child processes ***
+
+// router.post('/', (req, res, next) => {
+//   console.log('inside route', req.body.draws, req.body.card.name, req.body.deck.length)
+//   const p = probabilityOfPlayingCard(req.body.draws, req.body.card, req.body.deck)
+//   console.log('P', p)
+//   res.status(200)
+//   res.json(p)
+// })
+
+// *** with child processes ***
 
 // Set-up worker thread
 config.set({
@@ -16,7 +29,6 @@ router.post('/', (req, res, next) => {
     .promise()
     .then(prob => {
       thread.kill()
-      console.log('P', prob)
       res.status(200)
       res.json(prob)
     })

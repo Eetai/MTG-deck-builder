@@ -2,6 +2,29 @@ import axios from 'axios'
 
 // action types
 const SET_PROBABILITY = 'SET_PROBABILITY'
+const SET_LOADING = 'SET_LOADING'
+
+// helper
+function cardCost(card) {
+  return card.manaCost
+    .split('{')
+    .slice(1)
+    .map(v => v.slice(0, -1))
+    .reduce((a, b) => {
+      if (Object.keys(a).includes(b)) {
+        a[b]++;
+      } else {
+        if (!['B', 'G', 'W', 'R', 'U'].includes(b[0]))
+          a.C = !isNaN(parseInt(b)) ? parseInt(b) : 0;
+        else a[b] = 1;
+      }
+      return a;
+    }, { C: 0 });
+}
+
+function convertedManaCost(cost) {
+  return Object.keys(cost).reduce((a, b) => a + cost[b], 0)
+}
 
 export const setProbability = (cardId, turn, p, deck) => {
   return {
@@ -13,13 +36,26 @@ export const setProbability = (cardId, turn, p, deck) => {
   }
 }
 
+export const setCurveToLoading = () => {
+  return { type: SET_LOADING }
+}
+
 export const computeCurve = (draws, card, deck) => {
+  const deckNamesAndQuants = JSON.stringify(deck.map(card => ({ name: card.uniqueName, quantity: card.quantity })))
+
   return dispatch => {
     dispatch(setProbability(card.uniqueName, draws - 6, 'loading', deck))
-    axios.post('api/alg', ({ draws, card, deck }))
-      .then(res => {
-      dispatch(setProbability(card.uniqueName, draws - 6, res.data, deck))
-    });
+    // handles 0 probabilities. idk why they were an issue still
+    if (draws - 6 < convertedManaCost(cardCost(card))){
+      dispatch(setProbability(card.uniqueName, draws - 6, 0, deck))
+    }
+    // handles calculating new probabilities
+    else {
+      axios.post('api/alg', ({ draws, card, deck }))
+        .then(res => {
+          dispatch(setProbability(card.uniqueName, draws - 6, res.data, deck))
+        });
+    }
   }
 }
 
@@ -28,25 +64,15 @@ const deckSizeCounter = (deck) => deck.reduce((count, card) =>{
 }, 0)
 
 // sub reducer
-const probabilityReducer = (probabilities = {cache: {}}, action) => {
+const probabilityReducer = (probabilities = {}, action) => {
   switch (action.type) {
+    case SET_LOADING:
+      return Object.keys(probabilities).reduce((newProbs, card) => {
+        newProbs[card] = new Array(9).fill('loading')
+        return newProbs
+      }, {})
     case SET_PROBABILITY:
       let newProbs = Object.assign({}, probabilities)
-      let oldProbs = Object.assign({}, probabilities)
-      delete oldProbs.cache
-
-      // caching
-      if (deckSizeCounter(action.deck) >= 60) {
-        newProbs.cache[action.deck.toString()] = { history: oldProbs, index: Object.keys(newProbs.cache).length-1}
-        if (Object.keys(newProbs.cache).length > 10){
-          newProbs.cache = Object.keys(newProbs.cache).reduce((newCache, entry)=>{
-            if (entry.index > 0) newCache[entry] = {history: entry.history, index: entry.index-1}
-            return newCache
-          }, {})
-        }
-      }
-
-      // updating
       if (newProbs[action.cardId]) newProbs[action.cardId][action.turn] = action.p
       else {
         newProbs[action.cardId] = []
