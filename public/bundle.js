@@ -1021,8 +1021,8 @@ module.exports = {
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(66)('wks');
-var uid = __webpack_require__(54);
+var store = __webpack_require__(67)('wks');
+var uid = __webpack_require__(53);
 var Symbol = __webpack_require__(22).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
@@ -1197,7 +1197,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 var global = __webpack_require__(22);
 var core = __webpack_require__(15);
-var ctx = __webpack_require__(67);
+var ctx = __webpack_require__(68);
 var hide = __webpack_require__(30);
 var PROTOTYPE = 'prototype';
 
@@ -1264,7 +1264,7 @@ module.exports = $export;
 
 var anObject = __webpack_require__(31);
 var IE8_DOM_DEFINE = __webpack_require__(110);
-var toPrimitive = __webpack_require__(68);
+var toPrimitive = __webpack_require__(69);
 var dP = Object.defineProperty;
 
 exports.f = __webpack_require__(27) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
@@ -1417,7 +1417,7 @@ module.exports = function (exec) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = __webpack_require__(117);
-var defined = __webpack_require__(64);
+var defined = __webpack_require__(65);
 module.exports = function (it) {
   return IObject(defined(it));
 };
@@ -2005,7 +2005,7 @@ module.exports = invariant;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
-var defined = __webpack_require__(64);
+var defined = __webpack_require__(65);
 module.exports = function (it) {
   return Object(defined(it));
 };
@@ -2065,7 +2065,7 @@ module.exports = {};
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = __webpack_require__(116);
-var enumBugKeys = __webpack_require__(73);
+var enumBugKeys = __webpack_require__(74);
 
 module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
@@ -3013,25 +3013,6 @@ module.exports = shallowEqual;
 
 /***/ }),
 /* 53 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Provider__ = __webpack_require__(177);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connect_connect__ = __webpack_require__(181);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Provider", function() { return __WEBPACK_IMPORTED_MODULE_0__components_Provider__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createProvider", function() { return __WEBPACK_IMPORTED_MODULE_0__components_Provider__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "connectAdvanced", function() { return __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "connect", function() { return __WEBPACK_IMPORTED_MODULE_2__connect_connect__["a"]; });
-
-
-
-
-
-
-/***/ }),
-/* 54 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -3042,14 +3023,14 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3074,6 +3055,12 @@ exports.default = function (arr) {
     return (0, _from2.default)(arr);
   }
 };
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(283);
 
 /***/ }),
 /* 57 */
@@ -3560,6 +3547,25 @@ module.exports = ReactPropTypesSecret;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Provider__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connect_connect__ = __webpack_require__(181);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Provider", function() { return __WEBPACK_IMPORTED_MODULE_0__components_Provider__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createProvider", function() { return __WEBPACK_IMPORTED_MODULE_0__components_Provider__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "connectAdvanced", function() { return __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "connect", function() { return __WEBPACK_IMPORTED_MODULE_2__connect_connect__["a"]; });
+
+
+
+
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = warning;
 /**
  * Prints a warning in the console if it exists.
@@ -3584,7 +3590,7 @@ function warning(message) {
 }
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3621,7 +3627,7 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3693,7 +3699,7 @@ function isPlainObject(value) {
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 // 7.2.1 RequireObjectCoercible(argument)
@@ -3704,18 +3710,18 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(66)('keys');
-var uid = __webpack_require__(54);
+var shared = __webpack_require__(67)('keys');
+var uid = __webpack_require__(53);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(22);
@@ -3727,7 +3733,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
@@ -3753,7 +3759,7 @@ module.exports = function (fn, that, length) {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
@@ -3771,7 +3777,7 @@ module.exports = function (it, S) {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
@@ -3783,21 +3789,21 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports) {
 
 module.exports = true;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = __webpack_require__(31);
 var dPs = __webpack_require__(212);
-var enumBugKeys = __webpack_require__(73);
-var IE_PROTO = __webpack_require__(65)('IE_PROTO');
+var enumBugKeys = __webpack_require__(74);
+var IE_PROTO = __webpack_require__(66)('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE = 'prototype';
 
@@ -3837,7 +3843,7 @@ module.exports = Object.create || function create(O, Properties) {
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -3848,7 +3854,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -3858,7 +3864,7 @@ module.exports = (
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(24).f;
@@ -3871,20 +3877,20 @@ module.exports = function (it, tag, stat) {
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.f = __webpack_require__(17);
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(22);
 var core = __webpack_require__(15);
-var LIBRARY = __webpack_require__(70);
-var wksExt = __webpack_require__(75);
+var LIBRARY = __webpack_require__(71);
+var wksExt = __webpack_require__(76);
 var defineProperty = __webpack_require__(24).f;
 module.exports = function (name) {
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
@@ -3893,14 +3899,14 @@ module.exports = function (name) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports) {
 
 exports.f = Object.getOwnPropertySymbols;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4196,7 +4202,7 @@ var darkWhite = exports.darkWhite = 'rgba(255, 255, 255, 0.87)';
 var lightWhite = exports.lightWhite = 'rgba(255, 255, 255, 0.54)';
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4212,7 +4218,7 @@ function capitalizeString(str) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4228,12 +4234,6 @@ function isPrefixedValue(value) {
   return typeof value === 'string' && regex.test(value);
 }
 module.exports = exports['default'];
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(283);
 
 /***/ }),
 /* 82 */
@@ -6043,7 +6043,7 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActionTypes; });
 /* harmony export (immutable) */ __webpack_exports__["b"] = createStore;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_symbol_observable__);
 
@@ -6488,8 +6488,8 @@ function wrapMapToPropsFunc(mapToProps, methodName) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = verifyPlainObject;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__warning__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__warning__ = __webpack_require__(62);
 
 
 
@@ -6506,7 +6506,7 @@ function verifyPlainObject(value, displayName, methodName) {
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = __webpack_require__(26);
 var toObject = __webpack_require__(40);
-var IE_PROTO = __webpack_require__(65)('IE_PROTO');
+var IE_PROTO = __webpack_require__(66)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
 module.exports = Object.getPrototypeOf || function (O) {
@@ -6592,14 +6592,14 @@ __webpack_require__(114)(String, 'String', function (iterated) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(70);
+var LIBRARY = __webpack_require__(71);
 var $export = __webpack_require__(23);
 var redefine = __webpack_require__(115);
 var hide = __webpack_require__(30);
 var has = __webpack_require__(26);
 var Iterators = __webpack_require__(43);
 var $iterCreate = __webpack_require__(211);
-var setToStringTag = __webpack_require__(74);
+var setToStringTag = __webpack_require__(75);
 var getPrototypeOf = __webpack_require__(108);
 var ITERATOR = __webpack_require__(17)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -6677,7 +6677,7 @@ module.exports = __webpack_require__(30);
 var has = __webpack_require__(26);
 var toIObject = __webpack_require__(34);
 var arrayIndexOf = __webpack_require__(213)(false);
-var IE_PROTO = __webpack_require__(65)('IE_PROTO');
+var IE_PROTO = __webpack_require__(66)('IE_PROTO');
 
 module.exports = function (object, names) {
   var O = toIObject(object);
@@ -6698,7 +6698,7 @@ module.exports = function (object, names) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(72);
+var cof = __webpack_require__(73);
 // eslint-disable-next-line no-prototype-builtins
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
@@ -6710,7 +6710,7 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
-var toInteger = __webpack_require__(69);
+var toInteger = __webpack_require__(70);
 var min = Math.min;
 module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -6723,7 +6723,7 @@ module.exports = function (it) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys = __webpack_require__(116);
-var hiddenKeys = __webpack_require__(73).concat('length', 'prototype');
+var hiddenKeys = __webpack_require__(74).concat('length', 'prototype');
 
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
@@ -6734,10 +6734,10 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pIE = __webpack_require__(55);
+var pIE = __webpack_require__(54);
 var createDesc = __webpack_require__(41);
 var toIObject = __webpack_require__(34);
-var toPrimitive = __webpack_require__(68);
+var toPrimitive = __webpack_require__(69);
 var has = __webpack_require__(26);
 var IE8_DOM_DEFINE = __webpack_require__(110);
 var gOPD = Object.getOwnPropertyDescriptor;
@@ -6867,7 +6867,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.fetchFilteredCards = exports.getFilteredCards = undefined;
 
-var _axios = __webpack_require__(81);
+var _axios = __webpack_require__(56);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -7194,7 +7194,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getSelectedCard = undefined;
 
-var _axios = __webpack_require__(81);
+var _axios = __webpack_require__(56);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -7251,7 +7251,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.computeCurve = exports.setCurveToLoading = exports.setProbability = undefined;
 
-var _axios = __webpack_require__(81);
+var _axios = __webpack_require__(56);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -8173,7 +8173,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _toConsumableArray2 = __webpack_require__(56);
+var _toConsumableArray2 = __webpack_require__(55);
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
@@ -11031,7 +11031,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(13);
 
-var _reactRedux = __webpack_require__(53);
+var _reactRedux = __webpack_require__(61);
 
 var _MuiThemeProvider = __webpack_require__(202);
 
@@ -28311,7 +28311,7 @@ module.exports = camelize;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_PropTypes__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warning__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warning__ = __webpack_require__(62);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -29261,7 +29261,7 @@ function shallowEqual(objA, objB) {
 /* unused harmony export whenMapDispatchToPropsIsFunction */
 /* unused harmony export whenMapDispatchToPropsIsMissing */
 /* unused harmony export whenMapDispatchToPropsIsObject */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wrapMapToProps__ = __webpack_require__(106);
 
 
@@ -29585,7 +29585,7 @@ function symbolObservablePonyfill(root) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(104);
 
 
@@ -30027,7 +30027,7 @@ function finalPropsSelectorFactory(dispatch, _ref2) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = verifySubselectors;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(62);
 
 
 function verify(selector, methodName, displayName) {
@@ -30188,15 +30188,15 @@ module.exports = { "default": __webpack_require__(209), __esModule: true };
 
 __webpack_require__(113);
 __webpack_require__(216);
-module.exports = __webpack_require__(75).f('iterator');
+module.exports = __webpack_require__(76).f('iterator');
 
 
 /***/ }),
 /* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(69);
-var defined = __webpack_require__(64);
+var toInteger = __webpack_require__(70);
+var defined = __webpack_require__(65);
 // true  -> String#at
 // false -> String#codePointAt
 module.exports = function (TO_STRING) {
@@ -30220,9 +30220,9 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-var create = __webpack_require__(71);
+var create = __webpack_require__(72);
 var descriptor = __webpack_require__(41);
-var setToStringTag = __webpack_require__(74);
+var setToStringTag = __webpack_require__(75);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -30286,7 +30286,7 @@ module.exports = function (IS_INCLUDES) {
 /* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(69);
+var toInteger = __webpack_require__(70);
 var max = Math.max;
 var min = Math.min;
 module.exports = function (index, length) {
@@ -30416,20 +30416,20 @@ var $export = __webpack_require__(23);
 var redefine = __webpack_require__(115);
 var META = __webpack_require__(223).KEY;
 var $fails = __webpack_require__(33);
-var shared = __webpack_require__(66);
-var setToStringTag = __webpack_require__(74);
-var uid = __webpack_require__(54);
+var shared = __webpack_require__(67);
+var setToStringTag = __webpack_require__(75);
+var uid = __webpack_require__(53);
 var wks = __webpack_require__(17);
-var wksExt = __webpack_require__(75);
-var wksDefine = __webpack_require__(76);
+var wksExt = __webpack_require__(76);
+var wksDefine = __webpack_require__(77);
 var enumKeys = __webpack_require__(224);
 var isArray = __webpack_require__(225);
 var anObject = __webpack_require__(31);
 var isObject = __webpack_require__(32);
 var toIObject = __webpack_require__(34);
-var toPrimitive = __webpack_require__(68);
+var toPrimitive = __webpack_require__(69);
 var createDesc = __webpack_require__(41);
-var _create = __webpack_require__(71);
+var _create = __webpack_require__(72);
 var gOPNExt = __webpack_require__(226);
 var $GOPD = __webpack_require__(120);
 var $DP = __webpack_require__(24);
@@ -30557,10 +30557,10 @@ if (!USE_NATIVE) {
   $GOPD.f = $getOwnPropertyDescriptor;
   $DP.f = $defineProperty;
   __webpack_require__(119).f = gOPNExt.f = $getOwnPropertyNames;
-  __webpack_require__(55).f = $propertyIsEnumerable;
-  __webpack_require__(77).f = $getOwnPropertySymbols;
+  __webpack_require__(54).f = $propertyIsEnumerable;
+  __webpack_require__(78).f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !__webpack_require__(70)) {
+  if (DESCRIPTORS && !__webpack_require__(71)) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -30647,7 +30647,7 @@ setToStringTag(global.JSON, 'JSON', true);
 /* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(54)('meta');
+var META = __webpack_require__(53)('meta');
 var isObject = __webpack_require__(32);
 var has = __webpack_require__(26);
 var setDesc = __webpack_require__(24).f;
@@ -30708,8 +30708,8 @@ var meta = module.exports = {
 
 // all enumerable object keys, includes symbols
 var getKeys = __webpack_require__(44);
-var gOPS = __webpack_require__(77);
-var pIE = __webpack_require__(55);
+var gOPS = __webpack_require__(78);
+var pIE = __webpack_require__(54);
 module.exports = function (it) {
   var result = getKeys(it);
   var getSymbols = gOPS.f;
@@ -30728,7 +30728,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.2.2 IsArray(argument)
-var cof = __webpack_require__(72);
+var cof = __webpack_require__(73);
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
@@ -30769,14 +30769,14 @@ module.exports.f = function getOwnPropertyNames(it) {
 /* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(76)('asyncIterator');
+__webpack_require__(77)('asyncIterator');
 
 
 /***/ }),
 /* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(76)('observable');
+__webpack_require__(77)('observable');
 
 
 /***/ }),
@@ -30818,7 +30818,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function (test, buggy, set) {
       try {
-        set = __webpack_require__(67)(Function.call, __webpack_require__(120).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(68)(Function.call, __webpack_require__(120).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch (e) { buggy = true; }
@@ -30856,7 +30856,7 @@ module.exports = function create(P, D) {
 
 var $export = __webpack_require__(23);
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', { create: __webpack_require__(71) });
+$export($export.S, 'Object', { create: __webpack_require__(72) });
 
 
 /***/ }),
@@ -30870,7 +30870,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _toConsumableArray2 = __webpack_require__(56);
+var _toConsumableArray2 = __webpack_require__(55);
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
@@ -30910,7 +30910,7 @@ var _typography = __webpack_require__(280);
 
 var _typography2 = _interopRequireDefault(_typography);
 
-var _colors = __webpack_require__(78);
+var _colors = __webpack_require__(79);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31262,7 +31262,7 @@ module.exports = __webpack_require__(15).Array.from;
 
 "use strict";
 
-var ctx = __webpack_require__(67);
+var ctx = __webpack_require__(68);
 var $export = __webpack_require__(23);
 var toObject = __webpack_require__(40);
 var call = __webpack_require__(240);
@@ -31366,7 +31366,7 @@ module.exports = __webpack_require__(15).getIteratorMethod = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
-var cof = __webpack_require__(72);
+var cof = __webpack_require__(73);
 var TAG = __webpack_require__(17)('toStringTag');
 // ES3 wrong here
 var ARG = cof(function () { return arguments; }()) == 'Arguments';
@@ -33643,7 +33643,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _colors = __webpack_require__(78);
+var _colors = __webpack_require__(79);
 
 var _colorManipulator = __webpack_require__(35);
 
@@ -33904,7 +33904,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = prefixProperty;
 
-var _capitalizeString = __webpack_require__(79);
+var _capitalizeString = __webpack_require__(80);
 
 var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
 
@@ -33943,7 +33943,7 @@ var _getPrefixedKeyframes = __webpack_require__(257);
 
 var _getPrefixedKeyframes2 = _interopRequireDefault(_getPrefixedKeyframes);
 
-var _capitalizeString = __webpack_require__(79);
+var _capitalizeString = __webpack_require__(80);
 
 var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
 
@@ -35358,7 +35358,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = calc;
 
-var _isPrefixedValue = __webpack_require__(80);
+var _isPrefixedValue = __webpack_require__(81);
 
 var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
 
@@ -35489,7 +35489,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = gradient;
 
-var _isPrefixedValue = __webpack_require__(80);
+var _isPrefixedValue = __webpack_require__(81);
 
 var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
 
@@ -35563,11 +35563,11 @@ var _hyphenateProperty = __webpack_require__(125);
 
 var _hyphenateProperty2 = _interopRequireDefault(_hyphenateProperty);
 
-var _isPrefixedValue = __webpack_require__(80);
+var _isPrefixedValue = __webpack_require__(81);
 
 var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
 
-var _capitalizeString = __webpack_require__(79);
+var _capitalizeString = __webpack_require__(80);
 
 var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
 
@@ -35851,7 +35851,7 @@ var _classCallCheck2 = __webpack_require__(3);
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _colors = __webpack_require__(78);
+var _colors = __webpack_require__(79);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35888,7 +35888,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(62);
+var _redux = __webpack_require__(63);
 
 var _reducers = __webpack_require__(282);
 
@@ -35920,7 +35920,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _redux = __webpack_require__(62);
+var _redux = __webpack_require__(63);
 
 var _cards = __webpack_require__(127);
 
@@ -36944,7 +36944,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(53);
+var _reactRedux = __webpack_require__(61);
 
 var _reactRouterDom = __webpack_require__(305);
 
@@ -40740,8 +40740,8 @@ $export($export.S + $export.F, 'Object', { assign: __webpack_require__(334) });
 
 // 19.1.2.1 Object.assign(target, source, ...)
 var getKeys = __webpack_require__(44);
-var gOPS = __webpack_require__(77);
-var pIE = __webpack_require__(55);
+var gOPS = __webpack_require__(78);
+var pIE = __webpack_require__(54);
 var toObject = __webpack_require__(40);
 var IObject = __webpack_require__(117);
 var $assign = Object.assign;
@@ -46525,7 +46525,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(53);
+var _reactRedux = __webpack_require__(61);
 
 var _Deck = __webpack_require__(83);
 
@@ -46593,10 +46593,7 @@ var DeckList = function (_Component) {
 
         _this.state = {
             drawer: false,
-            selectedCard: {},
-            calculating: false,
-            lastDeckList: '',
-            history: {}
+            selectedCard: {}
         };
 
         _this.colors = {
@@ -46607,74 +46604,15 @@ var DeckList = function (_Component) {
             Black: '#A8A39A',
             Grey: '#99968f'
         };
-
-        _this.reCalcProbs = _this.reCalcProbs.bind(_this);
-        _this.getDeckNamesAndQuants = _this.getDeckNamesAndQuants.bind(_this);
         return _this;
     }
 
     _createClass(DeckList, [{
-        key: 'getDeckNamesAndQuants',
-        value: function getDeckNamesAndQuants(deck) {
-            return JSON.stringify(deck.map(function (card) {
-                return { name: card.uniqueName, quantity: card.quantity };
-            }));
-        }
-
-        // Debouncing currently sucks!
-        // state is bascially fucked
-
-    }, {
-        key: 'reCalcProbs',
-        value: function reCalcProbs(dispatchCalcProb, deck) {
-            var _this2 = this;
-
-            var deckNamesAndQuants = this.getDeckNamesAndQuants(deck);
-            this.setState({ calculating: true, lastDeckList: deckNamesAndQuants });
-
-            deck.forEach(function (card) {
-                if (!card.types.includes('Land') && !card.types.includes('Plane')) {
-                    for (var turn = 1; turn < 9; turn++) {
-                        dispatchCalcProb(turn + 6, card, deck);
-                    }
-                }
-            });
-            setTimeout(function () {
-                var deckNamesAndQuants = _this2.getDeckNamesAndQuants(_this2.props.deck);
-                if (deckNamesAndQuants !== _this2.state.lastDeckList) {
-                    _this2.props.setToLoading();
-                    _this2.props.deck.forEach(function (card) {
-                        if (!card.types.includes('Land') && !card.types.includes('Plane')) {
-                            for (var turn = 1; turn < 9; turn++) {
-                                dispatchCalcProb(turn + 6, card, _this2.props.deck);
-                            }
-                        }
-                    });
-                }
-
-                var NOT_LOADING_AND_UNIQUE = !JSON.stringify(_this2.state.lastDeckList).includes('loading') && !_this2.state.history[deckNamesAndQuants];
-
-                var history = Object.assign({}, _this2.state.history);
-                if (NOT_LOADING_AND_UNIQUE) history[_this2.state.lastDeckList] = true;
-
-                _this2.setState({ calculating: false, lastDeckList: deckNamesAndQuants, history: history });
-            }, 2000);
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var deckNamesAndQuants = this.getDeckNamesAndQuants(nextProps.deck);
-            if (!this.state.calculating && !this.state.history[deckNamesAndQuants]) {
-                this.reCalcProbs(this.props.calcProb, nextProps.deck);
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
             if (this.props) {
-                var deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck);
                 return _react2.default.createElement(
                     'div',
                     { className: 'DeckListContainer' },
@@ -46707,7 +46645,7 @@ var DeckList = function (_Component) {
                                     backgroundColor: this.colors.White,
                                     mini: true,
                                     onClick: function onClick(e) {
-                                        return _this3.setState({ calculating: !_this3.state.calculating, drawer: !_this3.state.drawer });
+                                        return _this2.setState({ calculating: !_this2.state.calculating, drawer: !_this2.state.drawer });
                                     } },
                                 _react2.default.createElement(_removeRedEye2.default, null)
                             )
@@ -46814,12 +46752,12 @@ var DeckList = function (_Component) {
                                         _react2.default.createElement(
                                             _FloatingActionButton2.default,
                                             {
-                                                disabled: _this3.state.drawer,
+                                                disabled: _this2.state.drawer,
                                                 label: '',
-                                                backgroundColor: _this3.colors.White,
+                                                backgroundColor: _this2.colors.White,
                                                 mini: true,
                                                 onClick: function onClick(e) {
-                                                    return _this3.setState({ calculating: !_this3.state.calculating, drawer: !_this3.state.drawer, selectedCard: card });
+                                                    return _this2.setState({ calculating: !_this2.state.calculating, drawer: !_this2.state.drawer, selectedCard: card });
                                                 } },
                                             _react2.default.createElement(_removeRedEye2.default, null)
                                         )
@@ -46836,10 +46774,10 @@ var DeckList = function (_Component) {
                                             _FloatingActionButton2.default,
                                             {
                                                 disabled: card.quantity > 3 && !card.type.includes('Basic Land'),
-                                                backgroundColor: _this3.colors.Green,
+                                                backgroundColor: _this2.colors.Green,
                                                 mini: true,
                                                 onClick: function onClick() {
-                                                    return _this3.props.updateCardQuant(card.uniqueName, card.quantity + 1);
+                                                    return _this2.props.updateCardQuant(card.uniqueName, card.quantity + 1);
                                                 } },
                                             _react2.default.createElement(_add2.default, null)
                                         )
@@ -46851,10 +46789,10 @@ var DeckList = function (_Component) {
                                             _FloatingActionButton2.default,
                                             {
                                                 disabled: card.quantity < 1,
-                                                backgroundColor: _this3.colors.Blue,
+                                                backgroundColor: _this2.colors.Blue,
                                                 mini: true,
                                                 onClick: function onClick() {
-                                                    _this3.props.updateCardQuant(card.uniqueName, card.quantity - 1);
+                                                    _this2.props.updateCardQuant(card.uniqueName, card.quantity - 1);
                                                 } },
                                             _react2.default.createElement(_remove2.default, null)
                                         )
@@ -46865,10 +46803,10 @@ var DeckList = function (_Component) {
                                         _react2.default.createElement(
                                             _FloatingActionButton2.default,
                                             {
-                                                backgroundColor: _this3.colors.Red,
+                                                backgroundColor: _this2.colors.Red,
                                                 mini: true,
                                                 onClick: function onClick() {
-                                                    return _this3.props.removeCard(card.uniqueName);
+                                                    return _this2.props.removeCard(card.uniqueName);
                                                 } },
                                             _react2.default.createElement(_clear2.default, null)
                                         )
@@ -46880,8 +46818,7 @@ var DeckList = function (_Component) {
                                             _react2.default.createElement(_ProbabilityCell2.default, {
                                                 draws: 7 + v,
                                                 card: card,
-                                                deckNamesAndQuants: deckNamesAndQuants,
-                                                calculating: _this3.state.calculating
+                                                deck: _this2.props.deck
                                             })
                                         );
                                     })
@@ -46910,12 +46847,6 @@ function mapDispatchToProps(dispatch) {
         },
         removeCard: function removeCard(cardUniqName) {
             dispatch((0, _Deck.removeCardFromDeck)(cardUniqName));
-        },
-        calcProb: function calcProb(draws, card, deck, cachedData) {
-            dispatch((0, _probabilities.computeCurve)(draws, card, deck, cachedData));
-        },
-        setToLoading: function setToLoading() {
-            dispatch((0, _probabilities.setCurveToLoading)());
         }
     };
 }
@@ -47944,7 +47875,7 @@ var _objectWithoutProperties2 = __webpack_require__(9);
 
 var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 
-var _toConsumableArray2 = __webpack_require__(56);
+var _toConsumableArray2 = __webpack_require__(55);
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
@@ -49340,7 +49271,7 @@ var _extends2 = __webpack_require__(10);
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _toConsumableArray2 = __webpack_require__(56);
+var _toConsumableArray2 = __webpack_require__(55);
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
@@ -51335,11 +51266,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(53);
-
 var _CircularProgress = __webpack_require__(394);
 
 var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
+var _axios = __webpack_require__(56);
+
+var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51361,7 +51294,8 @@ var ProbabilityCell = function (_Component) {
       P: '',
       cardColor: '',
       manapic: '',
-      history: {}
+      history: {},
+      calculating: false
     };
     _this.colors = {
       Blue: '#2693C7',
@@ -51372,10 +51306,44 @@ var ProbabilityCell = function (_Component) {
       Grey: '#99968f'
     };
     _this.parseManaPic = _this.parseManaPic.bind(_this);
+    _this.playableTurn = _this.playableTurn.bind(_this);
+    _this.getProbability = _this.getProbability.bind(_this);
+    _this.getDeckNamesAndQuants = _this.getDeckNamesAndQuants.bind(_this);
     return _this;
   }
 
   _createClass(ProbabilityCell, [{
+    key: 'playableTurn',
+    value: function playableTurn(card, draws) {
+      function cardCost(card) {
+        return card.manaCost.split('{').slice(1).map(function (v) {
+          return v.slice(0, -1);
+        }).reduce(function (a, b) {
+          if (Object.keys(a).includes(b)) {
+            a[b]++;
+          } else {
+            if (!['B', 'G', 'W', 'R', 'U'].includes(b[0])) a.C = !isNaN(parseInt(b)) ? parseInt(b) : 0;else a[b] = 1;
+          }
+          return a;
+        }, { C: 0 });
+      }
+
+      function convertedManaCost(cost) {
+        return Object.keys(cost).reduce(function (a, b) {
+          return a + cost[b];
+        }, 0);
+      }
+
+      return convertedManaCost(cardCost(card)) <= draws - 6;
+    }
+  }, {
+    key: 'getDeckNamesAndQuants',
+    value: function getDeckNamesAndQuants(deck) {
+      return JSON.stringify(deck.map(function (card) {
+        return { name: card.uniqueName, quantity: card.quantity };
+      }));
+    }
+  }, {
     key: 'parseManaPic',
     value: function parseManaPic(ProducibleManaColors) {
       var manapic = ProducibleManaColors.includes('C') || ProducibleManaColors.includes('F') ? 'Cmana.png' : ProducibleManaColors.split(',').join('').slice(0, Math.min(ProducibleManaColors.length, 2)) + 'mana.png';
@@ -51384,53 +51352,80 @@ var ProbabilityCell = function (_Component) {
       return manapic;
     }
   }, {
+    key: 'getProbability',
+    value: function getProbability(deck, card, draws, deckNamesAndQuants) {
+      var self = this;
+      self.setState({ calculating: true });
+      _axios2.default.post('api/alg', { draws: draws, card: card, deck: deck }).then(function (res) {
+        var history = Object.assign({}, self.state.history);
+        history[deckNamesAndQuants] = res.data;
+        self.setState({ P: res.data, calculating: false, history: history });
+      });
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
-      // setting mana icon for land cards
       if (this.props.card.type.includes('Land')) {
         var manapic = this.parseManaPic(this.props.card.ProducibleManaColors);
         this.setState({ manapic: manapic });
-      }
-      // getting P if not land, setting card color if need be
-      else if (!this.props.card.types.includes('Plane')) {
-          var cardColor = this.props.card.colors ? this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : this.colors.Grey;
+      } else if (!this.props.card.types.includes('Plane')) {
+        var cardColor = this.props.card.colors ? this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : this.colors.Grey;
+        var deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck);
 
-          var P = this.props.prob;
-
-          this.setState({ P: P, cardColor: cardColor });
+        this.setState({ P: 'loading', cardColor: cardColor });
+        if (this.state.history[deckNamesAndQuants] !== undefined) {
+          this.setState({ P: this.state.history[deckNamesAndQuants] });
         } else {
-          this.setState({ manapic: 'Plane.png' });
+          this.getProbability(this.props.deck, this.props.card, this.props.draws, this.props.deckNamesAndQuants);
         }
+      } else {
+        this.setState({ manapic: 'Plane.png' });
+      }
     }
   }, {
     key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
+    value: function componentWillReceiveProps(_ref) {
       var _this2 = this;
 
-      if (nextProps.card.type.includes('Land')) {
-        var manapic = this.parseManaPic(nextProps.card.ProducibleManaColors);
+      var draws = _ref.draws,
+          card = _ref.card,
+          deck = _ref.deck;
+
+      if (card.type.includes('Land')) {
+        var manapic = this.parseManaPic(card.ProducibleManaColors);
         this.setState({ manapic: manapic });
-      } else if (!nextProps.card.types.includes('Plane')) {
-        var cardColor = nextProps.card.colors ? this.colors[nextProps.card.colors[Math.floor(Math.random() * nextProps.card.colors.length)]] : this.colors.Grey;
-
-        var P = Object.keys(this.state.history).includes(nextProps.deckNamesAndQuants) ? this.state.history[nextProps.deckNamesAndQuants] : nextProps.prob;
-
-        var history = Object.assign({}, this.state.history);
-        if (P !== 'loading' && !nextProps.calculating) history[nextProps.deckNamesAndQuants] = P;
-
-        console.log("HISTORY?!!: ", history);
-
-        this.setState({ P: P, cardColor: cardColor, history: history });
-
-        setTimeout(function () {
-          if (P !== _this2.props.prob) {
-            P = _this2.props.prob;
-            if (P !== 'loading' && !_this2.Props.calculating) history[_this2.Props.deckNamesAndQuants] = P;
-            _this2.setState({ P: P, history: history });
-          }
-        }, 1000);
-      } else {
+      } else if (card.types.includes('Plane')) {
         this.setState({ manapic: 'Plane.png' });
+      } else {
+        var cardColor = card.colors ? this.colors[card.colors[Math.floor(Math.random() * card.colors.length)]] : this.colors.Grey;
+
+        var newDeckNamesAndQuants = this.getDeckNamesAndQuants(deck);
+        var oldDeckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck);
+        var playable = this.playableTurn(card, draws);
+
+        if (!playable) {
+          this.setState({ P: 0 });
+        } else if (newDeckNamesAndQuants !== oldDeckNamesAndQuants) {
+          this.setState({ P: 'loading' });
+          if (this.state.history[newDeckNamesAndQuants] !== undefined) {
+            this.setState({ P: this.state.history[newDeckNamesAndQuants] });
+          } else if (!this.state.calculating) {
+            this.getProbability(deck, card, draws, newDeckNamesAndQuants);
+          }
+        }
+        setTimeout(function () {
+          if (_this2.playableTurn(_this2.props.card, _this2.props.draws)) {
+            var futureDeckNamesAndQuants = _this2.getDeckNamesAndQuants(_this2.props.deck);
+            if (newDeckNamesAndQuants !== futureDeckNamesAndQuants) {
+              _this2.setState({ P: 'loading' });
+              if (_this2.state.history[futureDeckNamesAndQuants] !== undefined) {
+                _this2.setState({ P: _this2.state.history[futureDeckNamesAndQuants] });
+              } else if (!_this2.state.calculating) {
+                _this2.getProbability(_this2.props.deck, _this2.props.card, _this2.props.draws, futureDeckNamesAndQuants);
+              }
+            }
+          }
+        }, 2000);
       }
     }
   }, {
@@ -51455,23 +51450,7 @@ var ProbabilityCell = function (_Component) {
   return ProbabilityCell;
 }(_react.Component);
 
-function mapStateToProps(storeState, ownProps) {
-  return {
-    prob: !ownProps.card.types.includes('Land') && !ownProps.card.types.includes('Plane') ? storeState.probabilityReducer[ownProps.card.uniqueName][ownProps.draws - 6] : 0
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    saveToCache: function saveToCache(deckNamesAndQuants, card, prob) {
-      dispatch(addToCache(deckNamesAndQuants, card, prob));
-    }
-  };
-}
-
-var ProbCell = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ProbabilityCell);
-
-exports.default = ProbCell;
+exports.default = ProbabilityCell;
 
 /***/ }),
 /* 394 */

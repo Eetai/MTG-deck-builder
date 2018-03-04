@@ -19,7 +19,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
-import ProbCell from './ProbabilityCell'
+import ProbabilityCell from './ProbabilityCell'
 import Drawer from 'material-ui/Drawer';
 import { spawn } from 'threads'
 
@@ -29,9 +29,6 @@ class DeckList extends Component {
         this.state = {
             drawer: false,
             selectedCard:{},
-            calculating: false,
-            lastDeckList: '',
-            history: {}
         }
 
         this.colors = {
@@ -42,61 +39,10 @@ class DeckList extends Component {
             Black: '#A8A39A',
             Grey: '#99968f'
         }
-
-        this.reCalcProbs = this.reCalcProbs.bind(this)
-        this.getDeckNamesAndQuants = this.getDeckNamesAndQuants.bind(this)
-    }
-
-    getDeckNamesAndQuants(deck) {
-        return JSON.stringify(deck.map(card => ({ name: card.uniqueName, quantity: card.quantity })))
-    }
-
-    // Debouncing currently sucks!
-    // state is bascially fucked
-
-    reCalcProbs(dispatchCalcProb, deck){
-        let deckNamesAndQuants = this.getDeckNamesAndQuants(deck)
-        this.setState({ calculating: true, lastDeckList: deckNamesAndQuants })
-
-        deck.forEach(card => {
-            if (!card.types.includes('Land') && ! card.types.includes('Plane')) {
-                for (var turn = 1; turn < 9; turn++) {
-                    dispatchCalcProb(turn + 6, card, deck)
-                }
-            }
-        })
-        setTimeout(() => {
-            let deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
-            if (deckNamesAndQuants !== this.state.lastDeckList) {
-                this.props.setToLoading()
-                this.props.deck.forEach(card => {
-                    if (!card.types.includes('Land') && ! card.types.includes('Plane')) {
-                        for (var turn = 1; turn < 9; turn++) {
-                            dispatchCalcProb(turn + 6, card, this.props.deck)
-                        }
-                    }
-                })
-            }
-
-            const NOT_LOADING_AND_UNIQUE = !JSON.stringify(this.state.lastDeckList).includes('loading') && !this.state.history[deckNamesAndQuants]
-
-            const history = Object.assign({}, this.state.history)
-            if (NOT_LOADING_AND_UNIQUE) history[this.state.lastDeckList] = true
-
-            this.setState({ calculating: false, lastDeckList: deckNamesAndQuants, history })
-        }, 2000);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const deckNamesAndQuants = this.getDeckNamesAndQuants(nextProps.deck)
-        if (!this.state.calculating && !this.state.history[deckNamesAndQuants]) {
-            this.reCalcProbs(this.props.calcProb, nextProps.deck)
-        }
     }
 
     render() {
         if (this.props){
-            const deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
             return (
                 <div className="DeckListContainer">
                     <Drawer
@@ -197,11 +143,10 @@ class DeckList extends Component {
                                                 [0,1,2,3,4,5,6,7].map(v=>{
                                                     return (
                                                         <TableRowColumn style={{ width: '5%' }}>
-                                                            <ProbCell
-                                                                draws = {7 + v}
+                                                            <ProbabilityCell
+                                                                draws = { 7 + v }
                                                                 card = { card }
-                                                                deckNamesAndQuants = { deckNamesAndQuants }
-                                                                calculating = { this.state.calculating }
+                                                                deck = { this.props.deck }
                                                             />
                                                         </TableRowColumn>
                                                     )
@@ -232,12 +177,6 @@ function mapDispatchToProps(dispatch) {
         },
         removeCard: (cardUniqName) => {
             dispatch(removeCardFromDeck(cardUniqName));
-        },
-        calcProb: (draws, card, deck, cachedData) => {
-            dispatch(computeCurve(draws, card, deck, cachedData))
-        },
-        setToLoading: () => {
-            dispatch(setCurveToLoading())
         }
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
+import axios from 'axios'
 
 class ProbabilityCell extends Component {
   constructor(props) {
@@ -9,7 +9,8 @@ class ProbabilityCell extends Component {
       P: '',
       cardColor:'',
       manapic: '',
-      history: {}
+      history: {},
+      calculating: false
     }
     this.colors = {
       Blue: '#2693C7',
@@ -20,6 +21,38 @@ class ProbabilityCell extends Component {
       Grey: '#99968f'
     }
     this.parseManaPic = this.parseManaPic.bind(this)
+    this.playableTurn = this.playableTurn.bind(this)
+    this.getProbability = this.getProbability.bind(this)
+    this.getDeckNamesAndQuants = this.getDeckNamesAndQuants.bind(this)
+  }
+
+  playableTurn(card, draws) {
+    function cardCost(card) {
+      return card.manaCost
+        .split('{')
+        .slice(1)
+        .map(v => v.slice(0, -1))
+        .reduce((a, b) => {
+          if (Object.keys(a).includes(b)) {
+            a[b]++;
+          } else {
+            if (!['B', 'G', 'W', 'R', 'U'].includes(b[0]))
+              a.C = !isNaN(parseInt(b)) ? parseInt(b) : 0;
+            else a[b] = 1;
+          }
+          return a;
+        }, { C: 0 });
+    }
+
+    function convertedManaCost(cost) {
+      return Object.keys(cost).reduce((a, b) => a + cost[b], 0)
+    }
+
+    return convertedManaCost(cardCost(card)) <= draws - 6
+  }
+
+  getDeckNamesAndQuants(deck) {
+    return JSON.stringify(deck.map(card => ({ name: card.uniqueName, quantity: card.quantity })))
   }
 
   parseManaPic(ProducibleManaColors) {
@@ -29,52 +62,80 @@ class ProbabilityCell extends Component {
     return manapic
   }
 
+  getProbability(deck, card, draws, deckNamesAndQuants) {
+    const self = this
+    self.setState({ calculating: true })
+    axios.post('api/alg', ({ draws, card, deck }))
+      .then(res => {
+        const history = Object.assign({}, self.state.history)
+        history[deckNamesAndQuants] = res.data
+        self.setState({ P: res.data, calculating: false, history })
+      });
+  }
+
   componentWillMount() {
-    // setting mana icon for land cards
     if (this.props.card.type.includes('Land')) {
       const manapic = this.parseManaPic(this.props.card.ProducibleManaColors)
       this.setState({ manapic })
     }
-    // getting P if not land, setting card color if need be
     else if (!this.props.card.types.includes('Plane')) {
       const cardColor = (this.props.card.colors) ? this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : this.colors.Grey
+      const deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
 
-      const P = this.props.prob
-
-      this.setState({ P, cardColor })
+      this.setState({ P: 'loading', cardColor })
+      if (this.state.history[deckNamesAndQuants] !== undefined) {
+        this.setState({ P: this.state.history[deckNamesAndQuants] })
+      }
+      else {
+        this.getProbability(this.props.deck, this.props.card, this.props.draws, this.props.deckNamesAndQuants)
+      }
     }
     else {
       this.setState({ manapic: 'Plane.png' })
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.card.type.includes('Land')) {
-      const manapic = this.parseManaPic(nextProps.card.ProducibleManaColors)
+  componentWillReceiveProps({ draws, card, deck }){
+    if (card.type.includes('Land')) {
+      const manapic = this.parseManaPic(card.ProducibleManaColors)
       this.setState({ manapic })
     }
-    else if (!nextProps.card.types.includes('Plane')) {
-      const cardColor = (nextProps.card.colors) ? this.colors[nextProps.card.colors[Math.floor(Math.random() * nextProps.card.colors.length)]] : this.colors.Grey
-
-      let P = (Object.keys(this.state.history).includes(nextProps.deckNamesAndQuants)) ? this.state.history[nextProps.deckNamesAndQuants] : nextProps.prob
-
-      const history = Object.assign({}, this.state.history)
-      if (P !== 'loading' && !nextProps.calculating) history[nextProps.deckNamesAndQuants] = P
-
-      console.log("HISTORY?!!: ",history)
-
-      this.setState({ P, cardColor, history })
-
-      setTimeout(() => {
-        if (P !== this.props.prob) {
-          P = this.props.prob
-          if (P !== 'loading' && !this.Props.calculating) history[this.Props.deckNamesAndQuants] = P
-          this.setState({ P, history })
-        }
-      }, 1000);
+    else if (card.types.includes('Plane')) {
+      this.setState({ manapic: 'Plane.png' })
     }
     else {
-      this.setState({ manapic: 'Plane.png' })
+      const cardColor = (card.colors) ? this.colors[card.colors[Math.floor(Math.random() * card.colors.length)]] : this.colors.Grey
+
+      const newDeckNamesAndQuants = this.getDeckNamesAndQuants(deck)
+      const oldDeckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
+      const playable = this.playableTurn(card, draws)
+
+      if (!playable) {
+        this.setState({ P: 0 })
+      }
+      else if (newDeckNamesAndQuants !== oldDeckNamesAndQuants) {
+        this.setState({ P: 'loading' })
+        if (this.state.history[newDeckNamesAndQuants] !== undefined) {
+          this.setState({ P: this.state.history[newDeckNamesAndQuants] })
+        }
+        else if (!this.state.calculating) {
+          this.getProbability(deck, card, draws, newDeckNamesAndQuants)
+        }
+      }
+      setTimeout(() => {
+        if (this.playableTurn(this.props.card, this.props.draws)) {
+          const futureDeckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
+          if (newDeckNamesAndQuants !== futureDeckNamesAndQuants) {
+            this.setState({ P: 'loading' })
+            if (this.state.history[futureDeckNamesAndQuants] !== undefined) {
+              this.setState({ P: this.state.history[futureDeckNamesAndQuants] })
+            }
+            else if (!this.state.calculating){
+              this.getProbability(this.props.deck, this.props.card, this.props.draws, futureDeckNamesAndQuants)
+            }
+          }
+        }
+      }, 2000);
     }
   }
 
@@ -97,22 +158,4 @@ class ProbabilityCell extends Component {
   }
 }
 
-function mapStateToProps(storeState, ownProps) {
-  return {
-    prob: (!ownProps.card.types.includes('Land') && !ownProps.card.types.includes('Plane'))
-      ? storeState.probabilityReducer[ ownProps.card.uniqueName ][ ownProps.draws - 6 ]
-      : 0
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    saveToCache: (deckNamesAndQuants, card, prob) => {
-      dispatch(addToCache(deckNamesAndQuants, card, prob))
-    }
-  }
-}
-
-const ProbCell = connect(mapStateToProps, mapDispatchToProps)(ProbabilityCell)
-
-export default ProbCell
+export default ProbabilityCell
