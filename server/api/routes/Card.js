@@ -1,7 +1,7 @@
 'use strict'
 const router = require('express').Router()
 const { Card } = require('../../db/models')
-const {Sequelize} = require('../../db/models')
+const { Sequelize } = require('../../db/models')
 
 
 router.get('/allcards', (req, res, next) => {
