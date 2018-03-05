@@ -22,7 +22,7 @@ config.set({
   }
 })
 
-router.post('/', (req, res, next) => {
+router.put('/', (req, res, next) => {
   // console.log('inside route', req.body.draws, req.body.card.name, req.body.deck.length)
   const thread = spawn('../../../__alg/ArithmaticHelpers.js')
   thread.send({ cardsDrawn: req.body.draws, card: req.body.card, deck: req.body.deck })

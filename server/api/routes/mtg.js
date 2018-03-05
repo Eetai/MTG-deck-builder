@@ -7,8 +7,6 @@ const decks_cards = models.decks_cards
 const bodyParser = require('body-parser');
 
 
-
-
 router.get('/addDeck', (req, res, next) => {
     res.render('addDeck');
 })

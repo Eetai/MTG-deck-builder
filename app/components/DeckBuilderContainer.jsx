@@ -46,7 +46,7 @@ class DeckBuilderContainer extends Component {
     render() {
         return (
             <div>
-                <h1>MTG Deck Builder</h1>
+                <h1>MTG Deck Analyzer</h1>
                 <div>
                     <form method='POST' onSubmit={(e)=>{
                         e.preventDefault()

@@ -65,7 +65,7 @@ class ProbabilityCell extends Component {
   getProbability(deck, card, draws, deckNamesAndQuants) {
     const self = this
     self.setState({ calculating: true })
-    axios.post('api/alg', ({ draws, card, deck }))
+    axios.put('api/alg', ({ draws, card, deck }))
       .then(res => {
         const history = Object.assign({}, self.state.history)
         history[deckNamesAndQuants] = res.data

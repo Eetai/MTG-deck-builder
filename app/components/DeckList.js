@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Component } from 'react'
-import { removeCardFromDeck, updateCardInDeck } from '../reducers/Deck.js'
-import { computeCurve, setCurveToLoading } from '../reducers/probabilities.js'
+import { removeCardFromDeck, updateCardInDeck } from '../reducers/deck.js'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
@@ -28,7 +27,7 @@ class DeckList extends Component {
         super(props)
         this.state = {
             drawer: false,
-            selectedCard:{},
+            selectedCard: {},
         }
 
         this.colors = {

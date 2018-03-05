@@ -1,6 +1,6 @@
 const { db, Sequelize } = require('./db.js')
 
-const Cards = db.define('Cards', {
+const Cards = db.define('cards', {
   name: {
     type: Sequelize.STRING,
     allowNull: true

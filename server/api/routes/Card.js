@@ -1,11 +1,11 @@
 'use strict'
 const router = require('express').Router()
-const { Card } = require('../../db/models')
+const { Cards } = require('../../db/models')
 const { Sequelize } = require('../../db/models')
 
 
 router.get('/allcards', (req, res, next) => {
-    Card.findAll({
+    Cards.findAll({
             attributes: ['name', "multiverseid"]
         })
         .then(cards => {
@@ -19,7 +19,7 @@ router.get('/filteredcards/:value', (req, res, next) => {
     let queryName = req.params.value.toLowerCase()
     console.log('querying: ',queryName)
 
-    Card.findAll({
+    Cards.findAll({
             attributes: ['name', 'multiverseid', 'set', 'text', 'manaCost', 'uniqueName','fetchOptions','ProducibleManaColors','type','types', 'colors'],
             limit: 10,
 

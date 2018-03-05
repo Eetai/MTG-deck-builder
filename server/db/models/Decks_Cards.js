@@ -1,6 +1,6 @@
 const { db, Sequelize } = require('./db.js')
 
-const Decks_Cards = db.define('Decks_Cards', {
+const Decks_Cards = db.define('decks_cards', {
 
 })
 
