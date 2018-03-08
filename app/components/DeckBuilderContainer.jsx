@@ -4,9 +4,16 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import { fetchCards, fetchFilteredCards } from '../reducers/cards'
-import { addCardToDeck } from '../reducers/Deck'
+import { addCardToDeck, logout } from '../reducers'
 import AutoComplete from 'material-ui/AutoComplete';
 import DeckListView from './DeckList';
+import Login from './Login'
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import MediaQuery from 'react-responsive'
+import Dialog from 'material-ui/Dialog';
 
 class DeckBuilderContainer extends Component {
     constructor(props) {
@@ -14,14 +21,16 @@ class DeckBuilderContainer extends Component {
         this.state={
             searchBarId: '',
             searchText: '',
-            savedSearch: ''
+            savedSearch: '',
+            openLoginDialog: false,
+            openDeckSelectionDialog: false
         }
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleReq = this.handleReq.bind(this);
         // this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleUpdateInput = (value) => {
+    handleUpdateInput(value){
         this.setState({ searchText: value })
         if (value.length){
             this.props.loadFilteredCards(value)
@@ -31,7 +40,7 @@ class DeckBuilderContainer extends Component {
         }
     };
 
-    handleReq = (value) => {
+    handleReq(value) {
         if (Object.keys(this.props.selectedCard).length && this.state.searchText.length) {
 
             // set timeout is hacky. purpose is to make sure when you hit enter while selecting an element in the drop down that you actually add that card. the timer means the following happens: the selected card is set to the selected card, THEN add the card to the deck, as opposed to trying to add the selected card and update the selected card simaltaneously -> causing race contition -> adding wrong card
@@ -43,12 +52,15 @@ class DeckBuilderContainer extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+        this.setState({ openDeckSelectionDialog: false, openLoginDialog: false })
+    }
+
     render() {
         return (
             <div>
-                <h1>MTG Deck Analyzer</h1>
-                <div>
-                    <form method='POST' onSubmit={(e)=>{
+                <div style={{display: 'flex'}}>
+                    <form method='POST' style={{flex:19}} onSubmit={(e)=>{
                         e.preventDefault()
                         this.handleReq()
                         }} >
@@ -64,16 +76,45 @@ class DeckBuilderContainer extends Component {
                                 this.handleReq(v)
                                 this.setState({searchText: ''})
                             }}
-                            style={{width: 500}}
+                            style={{maxWidth: 500}}
                             fullWidth={true}
                             filter={AutoComplete.caseInsensitiveFilter}
                         />
-                        <FlatButton label="Submit" primary={true} type='submit' />
+                        <MediaQuery minWidth={652}>
+                            { (matches) => (matches) ? <FlatButton label="Submit" primary={true} type='submit' /> : null }
+                        </MediaQuery>
                     </form>
+                    {
+                        (this.props.user.id) ?
+                            <IconMenu
+                                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                                anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+                                targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                                style={{flex: 1}}
+                                onItemClick={(event, child) => {
+                                    const value = child.props.primaryText
+                                    if(value === 'Logout') this.props.handleLogout()
+                                    if(value === 'Save Deck') this.props.handleSaveDeck(this.props.deckList, this.props.user)
+                                }}>
+                                <MenuItem primaryText="Save Deck" />
+                                <MenuItem primaryText="Load Deck" />
+                                <MenuItem primaryText="Logout" />
+                            </IconMenu>
+                            :
+                            <div style={{height:48, display:'flex', flexDirection:'column'}}>
+                                <FlatButton label="Login" primary={true} style={{flex:1}} onClick={() => this.setState({ openLoginDialog: true })}/>
+                            </div>
+                    }
                 </div>
                 <div id='cardViewContainer'>
                     <DeckListView deckList={this.props.deckList} />
                 </div>
+                <Dialog
+                    open={this.state.openLoginDialog}
+                    onRequestClose={() => this.setState({ openLoginDialog: false })}
+                    >
+                    <Login/>
+                </Dialog>
             </div>
         )
     }
@@ -83,7 +124,9 @@ function mapStateToProps(storeState) {
     return {
         filteredCards: storeState.filteredCards,
         deckList: storeState.deckReducer,
-        selectedCard: storeState.selectedCardReducer
+        selectedCard: storeState.selectedCardReducer,
+        user: storeState.defaultUser,
+        loginError: storeState.defaultUser.error
     }
 }
 
@@ -97,6 +140,12 @@ function mapDispatchToProps(dispatch) {
         },
         UnselectCard: () => {
             dispatch(unselectCard());
+        },
+        handleLogout: () => {
+            dispatch(logout())
+        },
+        handleSaveDeck: (deck, user) => {
+            dispatch(saveDeck(deck, user))
         }
     }
 }

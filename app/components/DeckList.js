@@ -16,11 +16,11 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import ProbabilityCell from './ProbabilityCell'
 import Drawer from 'material-ui/Drawer';
 import { spawn } from 'threads'
+import { MediaQuery, Responsive } from 'react-responsive'
 
 class DeckList extends Component {
     constructor(props){
@@ -165,7 +165,8 @@ class DeckList extends Component {
 
 function mapStateToProps(storeState) {
     return {
-        deck: storeState.deckReducer
+        deck: storeState.deckReducer,
+        user: storeState.defaultUser
     }
 }
 

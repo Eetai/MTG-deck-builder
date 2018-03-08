@@ -2,7 +2,6 @@ const ADD_CARD_TO_DECK = 'ADD_CARD_TO_DECK'
 const UPDATE_CARD_IN_DECK = 'UPDATE_CARD_IN_DECK'
 const REMOVE_CARD_FROM_DECK = 'REMOVE_CARD_FROM_DECK'
 
-
 export const addCardToDeck = (newCard) => {
     return {
         type: ADD_CARD_TO_DECK,

@@ -1,6 +1,6 @@
 const { db } = require('../models/db.js');
 const mtgJson = require('./AllSets.json')
-const { Cards } = require('../models')
+const { Cards, Decks, Users, Decks_Cards } = require('../models')
 
 const mtgSets = Object.keys(mtgJson);
 let setNames = mtgSets.map((name) => {
@@ -94,6 +94,21 @@ Cards.sync({
         Cards.bulkCreate(cardsWithMultiverseId);
     })
     .then(() => {
-        console.log('success');
+        console.log('cards success');
     })
     .catch();
+
+Decks.sync({ force: true })
+    .then(() => {
+        console.log('decks success');
+    })
+
+Decks_Cards.sync({ force: true })
+    .then(() => {
+        console.log('decks_cards success');
+    })
+
+Users.sync({ force: true })
+    .then(() => {
+        console.log('users success');
+    })

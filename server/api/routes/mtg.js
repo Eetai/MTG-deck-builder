@@ -38,19 +38,19 @@ router.post('/addDeck', (req, res, next) => {
         .then((createdDeck) => {
             cardNames.forEach((cardName) => {
                 Card.findOne({
-                        where: {
-                            name: cardName
-                        }
+                    where: {
+                        name: cardName
+                    }
+                })
+                .then((foundCard) => {
+                    return decks_cards.create({
+                        cardId: foundCard.id,
+                        quantity: deckList[foundCard.name]
                     })
-                    .then((foundCard) => {
-                        return decks_cards.create({
-                            cardId: foundCard.id,
-                            quantity: deckList[foundCard.name]
-                        })
-                    })
-                    .then((decks_cards) => {
-                        decks_cards.setDeck(createdDeck)
-                    })
+                })
+                .then((decks_cards) => {
+                    decks_cards.setDeck(createdDeck)
+                })
             })
         })
     res.redirect('/')
