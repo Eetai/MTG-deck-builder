@@ -4,35 +4,51 @@ const { Cards, Decks_Cards, Decks, Users } = require('../../db/models')
 const { Sequelize } = require('../../db/models')
 
 
-router.get('/decks', (req, res, next) => {
-  Cards.findAll({
-    attributes: ['name', "multiverseid"]
+router.get('/:id/decks', (req, res, next) => {
+  Decks.findAll({
+    where: {
+      userId: req.params.id
+    },
+    include: [{ all: true }]
   })
-    .then(cards => {
-      res.send(cards);
+    .then(decks => {
+      res.send(decks);
     })
     .catch(next);
 })
 
-router.get('/filteredcards/:value', (req, res, next) => {
+router.post('/:id/decks/', (req, res, next) => {
 
-  let queryName = req.params.value.toLowerCase()
-  console.log('querying: ', queryName)
+  let cards = []
+  let deck = {}
 
-  Cards.findAll({
-    attributes: ['name', 'multiverseid', 'set', 'text', 'manaCost', 'uniqueName', 'fetchOptions', 'ProducibleManaColors', 'type', 'types', 'colors'],
-    limit: 10,
-
-    where: {
-      uniqueName: {
-        $iLike: queryName + '%'
+  Decks.create({ name: req.body.name, userId: req.params.id })
+  .then(createdDeck => {
+    deck = createdDeck
+    return Cards.findAll({
+      attributes: ['id'],
+      where: {
+        uniqueName: req.body.cards.map(card => card.uniqueName)
       }
+    })
+  })
+  .then(queriedCards => {
+    console.log(queriedCards)
+    cards = queriedCards.map(card => {
+      return Object.assign({}, card, {quantity: req.body.cards.filter(c => c.multiverseid === card.multiverseid)[0].quantity})
+    })
+    return Decks_Cards.bulkCreate(cards.map(card => ({ cardId: card.id, quantity: card.quantity ,deckId: deck.id }) ))
+  })
+  .then(createdDeckCards => {
+    const queryCompletedCorrectly = ( createdDeckCards.length === req.body.cards.length && req.body.cards.length === cards.length )
+    if(queryCompletedCorrectly){
+      res.json(deck)
+    }
+    else {
+      throw new Error('query failed')
     }
   })
-    .then(cards => {
-      res.send(cards)
-    })
-    .catch(next);
+  .catch(next);
 })
 
 module.exports = router;

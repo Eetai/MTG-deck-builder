@@ -4,10 +4,12 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import { fetchCards, fetchFilteredCards } from '../reducers/cards'
-import { addCardToDeck, logout } from '../reducers'
+import { addCardToDeck} from '../reducers/Deck'
+import { logout } from '../reducers/user'
 import AutoComplete from 'material-ui/AutoComplete';
 import DeckListView from './DeckList';
 import Login from './Login'
+import SaveDeck from './SaveDeck'
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -23,6 +25,7 @@ class DeckBuilderContainer extends Component {
             searchText: '',
             savedSearch: '',
             openLoginDialog: false,
+            openSaveDeckDialog: false,
             openDeckSelectionDialog: false
         }
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
@@ -93,8 +96,8 @@ class DeckBuilderContainer extends Component {
                                 style={{flex: 1}}
                                 onItemClick={(event, child) => {
                                     const value = child.props.primaryText
-                                    if(value === 'Logout') this.props.handleLogout()
-                                    if(value === 'Save Deck') this.props.handleSaveDeck(this.props.deckList, this.props.user)
+                                    if (value === 'Logout') this.props.handleLogout()
+                                    if (value === 'Save Deck') this.setState({ openSaveDeckDialog: true })
                                 }}>
                                 <MenuItem primaryText="Save Deck" />
                                 <MenuItem primaryText="Load Deck" />
@@ -110,11 +113,18 @@ class DeckBuilderContainer extends Component {
                     <DeckListView deckList={this.props.deckList} />
                 </div>
                 <Dialog
-                    open={this.state.openLoginDialog}
-                    onRequestClose={() => this.setState({ openLoginDialog: false })}
+                    open = {this.state.openLoginDialog}
+                    onRequestClose = {() => this.setState({ openLoginDialog: false })}
                     >
                     <Login/>
                 </Dialog>
+                <Dialog
+                    open = {this.state.openSaveDeckDialog}
+                    onRequestClose = {() => this.setState({ openSaveDeckDialog: false })}
+                    >
+                    <SaveDeck/>
+                </Dialog>
+
             </div>
         )
     }
@@ -143,9 +153,6 @@ function mapDispatchToProps(dispatch) {
         },
         handleLogout: () => {
             dispatch(logout())
-        },
-        handleSaveDeck: (deck, user) => {
-            dispatch(saveDeck(deck, user))
         }
     }
 }

@@ -6,8 +6,8 @@ const Users = require('./Users')
 const Decks_Cards = require('./Decks_Cards')
 
 Decks_Cards.belongsTo(Decks);
-Decks_Cards.belongsTo(Users);
-Decks.hasMany(Cards)
+Decks_Cards.belongsTo(Cards);
+Decks.belongsTo(Users)
 
 module.exports = {
     Decks_Cards,
