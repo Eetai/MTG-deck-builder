@@ -18,7 +18,8 @@ router.get('/:id/decks', (req, res, next) => {
 })
 
 router.post('/:id/decks/', (req, res, next) => {
-
+  if(req.session.passport.user.toString() !== req.params.id) throw new Error("Invalid Credentials")
+  const uniqueNames = req.body.cards.map(card => card.uniqueName)
   let cards = []
   let deck = {}
 
@@ -26,18 +27,17 @@ router.post('/:id/decks/', (req, res, next) => {
   .then(createdDeck => {
     deck = createdDeck
     return Cards.findAll({
-      attributes: ['id'],
+      attributes: ['id','multiverseid'],
       where: {
-        uniqueName: req.body.cards.map(card => card.uniqueName)
+        uniqueName: uniqueNames
       }
     })
   })
   .then(queriedCards => {
-    console.log(queriedCards)
-    cards = queriedCards.map(card => {
+    cards = queriedCards.map(c => ({ id: c.id, multiverseid: c.multiverseid })).map(card => {
       return Object.assign({}, card, {quantity: req.body.cards.filter(c => c.multiverseid === card.multiverseid)[0].quantity})
     })
-    return Decks_Cards.bulkCreate(cards.map(card => ({ cardId: card.id, quantity: card.quantity ,deckId: deck.id }) ))
+    return Decks_Cards.bulkCreate(cards.map(card => ({ cardId: card.id, quantity: card.quantity, deckId: deck.id }) ))
   })
   .then(createdDeckCards => {
     const queryCompletedCorrectly = ( createdDeckCards.length === req.body.cards.length && req.body.cards.length === cards.length )
