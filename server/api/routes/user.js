@@ -25,16 +25,10 @@ router.get('/:userId/decks/:deckId', (req, res, next) => {
     include: [{ all: true }]
   })
     .then(deck => {
-      console.log("deckId: ", req.params.deckId, deck.length)
       let savedDeck = deck.map(deck_card => Object.assign({}, deck_card.card.dataValues, { quantity: deck_card.quantity }))
       res.send(savedDeck);
     })
     .catch(next);
-})
-
-// edit deck
-router.put('/:userId/decks/:deckId', (req, res, next) => {
-
 })
 
 router.post('/:userId/decks/', (req, res, next) => {
@@ -44,32 +38,38 @@ router.post('/:userId/decks/', (req, res, next) => {
   let cards = []
   let deck = {}
 
-  Decks.create({ name: req.body.name, userId: req.params.userId })
-  .then(createdDeck => {
-    deck = createdDeck
-    return Cards.findAll({
-      attributes: ['id','multiverseid'],
-      where: {
-        uniqueName: uniqueNames
-      }
-    })
-  })
-  .then(queriedCards => {
-    cards = queriedCards.map(c => ({ id: c.id, multiverseid: c.multiverseid })).map(card => {
-      return Object.assign({}, card, {quantity: req.body.cards.filter(c => c.multiverseid === card.multiverseid)[0].quantity})
-    })
-    return Decks_Cards.bulkCreate(cards.map(card => ({ cardId: card.id, quantity: card.quantity, deckId: deck.id }) ))
-  })
-  .then(createdDeckCards => {
-    const queryCompletedCorrectly = ( createdDeckCards.length === req.body.cards.length && req.body.cards.length === cards.length )
-    if(queryCompletedCorrectly){
-      res.json(deck)
+  Decks.destroy({
+    where: {
+      name: req.body.name
     }
-    else {
-      throw new Error('query failed')
-    }
+  }).then(confirm => {
+    Decks.create({ name: req.body.name, userId: req.params.userId })
+      .then(createdDeck => {
+        deck = createdDeck
+        return Cards.findAll({
+          attributes: ['id', 'multiverseid'],
+          where: {
+            uniqueName: uniqueNames
+          }
+        })
+      })
+      .then(queriedCards => {
+        cards = queriedCards.map(c => ({ id: c.id, multiverseid: c.multiverseid })).map(card => {
+          return Object.assign({}, card, { quantity: req.body.cards.filter(c => c.multiverseid === card.multiverseid)[0].quantity })
+        })
+        return Decks_Cards.bulkCreate(cards.map(card => ({ cardId: card.id, quantity: card.quantity, deckId: deck.id })))
+      })
+      .then(createdDeckCards => {
+        const queryCompletedCorrectly = (createdDeckCards.length === req.body.cards.length && req.body.cards.length === cards.length)
+        if (queryCompletedCorrectly) {
+          res.json(deck)
+        }
+        else {
+          throw new Error('query failed')
+        }
+      })
+      .catch(next);
   })
-  .catch(next);
 })
 
 module.exports = router;

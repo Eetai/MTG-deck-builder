@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { loadDeck } from '../reducers/Deck'
+import { selectDeck } from '../reducers/selectedDeck'
 import FlatButton from 'material-ui/FlatButton';
 import { List, ListItem } from 'material-ui/List';
 
@@ -13,7 +14,6 @@ class LoadDeckForm extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div>
         <List>
@@ -23,7 +23,7 @@ class LoadDeckForm extends Component {
                 <ListItem
                   key = {index}
                   primaryText = {deck.name}
-                  onClick = {() => this.props.chooseDeck(this.props.user.id, deck.id)}
+                  onClick = {() => this.props.chooseDeck(this.props.user.id, deck.id, deck.name)}
                 />
               )
             })
@@ -43,8 +43,9 @@ const mapState = (storeState) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    chooseDeck: (userId, deckId) => {
+    chooseDeck: (userId, deckId, name) => {
       dispatch(loadDeck(userId, deckId))
+      dispatch(selectDeck(name))
     }
   }
 }
