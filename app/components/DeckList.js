@@ -143,6 +143,7 @@ class DeckList extends Component {
                                                     return (
                                                         <TableRowColumn style={{ width: '5%' }}>
                                                             <ProbabilityCell
+                                                                key = { card.multiverseid + '_' + v }
                                                                 draws = { 7 + v }
                                                                 card = { card }
                                                                 deck = { this.props.deck }

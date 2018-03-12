@@ -74,24 +74,26 @@ class ProbabilityCell extends Component {
   }
 
   componentWillMount() {
-    if (this.props.card.type.includes('Land')) {
-      const manapic = this.parseManaPic(this.props.card.ProducibleManaColors)
-      this.setState({ manapic })
-    }
-    else if (!this.props.card.types.includes('Plane')) {
-      const cardColor = (this.props.card.colors) ? this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : this.colors.Grey
-      const deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
+    if (this.props.card) {
+      if (this.props.card.type.includes('Land')) {
+        const manapic = this.parseManaPic(this.props.card.ProducibleManaColors)
+        this.setState({ manapic })
+      }
+      else if (!this.props.card.types.includes('Plane')) {
+        const cardColor = (this.props.card.colors) ? this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : this.colors.Grey
+        const deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
 
-      this.setState({ P: 'loading', cardColor })
-      if (this.state.history[deckNamesAndQuants] !== undefined) {
-        this.setState({ P: this.state.history[deckNamesAndQuants] })
+        this.setState({ P: 'loading', cardColor })
+        if (this.state.history[deckNamesAndQuants] !== undefined) {
+          this.setState({ P: this.state.history[deckNamesAndQuants] })
+        }
+        else {
+          this.getProbability(this.props.deck, this.props.card, this.props.draws, this.props.deckNamesAndQuants)
+        }
       }
       else {
-        this.getProbability(this.props.deck, this.props.card, this.props.draws, this.props.deckNamesAndQuants)
+        this.setState({ manapic: 'Plane.png' })
       }
-    }
-    else {
-      this.setState({ manapic: 'Plane.png' })
     }
   }
 

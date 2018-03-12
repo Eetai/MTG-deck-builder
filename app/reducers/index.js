@@ -9,7 +9,8 @@ const rootReducer = combineReducers({
     filteredCards,
     deckReducer,
     selectedCardReducer,
-    defaultUser
+    defaultUser,
+    userDeckReducer
 })
 
 export default rootReducer
