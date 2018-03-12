@@ -47,17 +47,6 @@ export const SaveUserDecks = (name, user, cards) => {
   }
 }
 
-export const UpdateUserDeck = (name, user, cards, deckId) => {
-  return function thunk(dispatch) {
-    axios.put(`api/user/${user.id}/decks/${deckId}`, ({ name, cards }))
-      .then(res => {
-        let deck = res.data
-        dispatch(addDeck(deck))
-      })
-      .catch(console.error)
-  }
-}
-
 // sub reducer
 const userDeckReducer = (state = [], action) => {
   switch (action.type) {
@@ -66,7 +55,8 @@ const userDeckReducer = (state = [], action) => {
     case GET_USER_DECKS:
       return action.decks
     case ADD_DECK:
-      return state.concat([{id:action.deck.id, name:action.deck.name}])
+      const newState = state.filter(deck => deck.name !== action.deck.name)
+      return newState.concat({ name: action.deck.name, id: action.deck.id })
     default:
       return state
   }

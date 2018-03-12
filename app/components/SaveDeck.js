@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { SaveUserDecks, UpdateUserDeck } from '../reducers/userDecks'
+import { selectDeck } from '../reducers/selectedDeck'
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { one } from 'nouns'
@@ -21,6 +22,12 @@ class SaveDeckForm extends Component {
     this.setState({ name: nouns })
   }
 
+  componentDidMount(){
+    if (this.props.selectedDeck.length) {
+      this.setState({ name: this.props.selectedDeck })
+    }
+  }
+
   render() {
     return (
       <div>
@@ -31,8 +38,9 @@ class SaveDeckForm extends Component {
         />
         <FlatButton
           label="Submit"
+          disabled={!this.state.name.length}
           primary={true}
-          onClick={(e) => this.props.handleSaveDeck(this.state.name, this.props.user, this.props.deck, e)}
+          onClick={() => this.props.handleSaveDeck(this.state.name, this.props.user, this.props.deck)}
         />
       </div>
     )
@@ -42,17 +50,17 @@ class SaveDeckForm extends Component {
 const mapState = (storeState) => {
   return {
     user: storeState.defaultUser,
-    deck: storeState.deckReducer
+    deck: storeState.deckReducer,
+    selectedDeck: storeState.selectedDeckReducer
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    handleSaveDeck: (name, user, deck, evt) => {
-      evt.preventDefault()
+    handleSaveDeck: (name, user, deck) => {
       dispatch(SaveUserDecks(name, user, deck))
+      dispatch(selectDeck(name))
     },
-
   }
 }
 
