@@ -49,7 +49,12 @@ export const loadDeck = (userId, deckId) => {
 const deckReducer = (state = [], action) => {
     switch (action.type) {
         case SET_DECK:
-            return action.cards
+            const sorted = action.cards.sort((a,b) => {
+                if (a.types.includes('Land') && !b.types.includes('Lands')) return 1
+                else if (b.types.includes('Land') && !a.types.includes('Lands')) return -1
+                else return (a.name > b.name) ? 1 : -1
+            })
+            return sorted
         case REMOVE_CARD_FROM_DECK:
             return state.filter(v => action.uniqueName !== v.uniqueName)
         case UPDATE_CARD_IN_DECK:

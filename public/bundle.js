@@ -8994,7 +8994,10 @@ var deckReducer = function deckReducer() {
 
     switch (action.type) {
         case SET_DECK:
-            return action.cards;
+            var sorted = action.cards.sort(function (a, b) {
+                if (a.types.includes('Land') && !b.types.includes('Lands')) return 1;else if (b.types.includes('Land') && !a.types.includes('Lands')) return -1;else return a.name > b.name ? 1 : -1;
+            });
+            return sorted;
         case REMOVE_CARD_FROM_DECK:
             return state.filter(function (v) {
                 return action.uniqueName !== v.uniqueName;
@@ -10181,7 +10184,10 @@ var deckReducer = function deckReducer() {
 
     switch (action.type) {
         case SET_DECK:
-            return action.cards;
+            var sorted = action.cards.sort(function (a, b) {
+                if (a.types.includes('Land') && !b.types.includes('Lands')) return 1;else if (b.types.includes('Land') && !a.types.includes('Lands')) return -1;else return a.name > b.name ? 1 : -1;
+            });
+            return sorted;
         case REMOVE_CARD_FROM_DECK:
             return state.filter(function (v) {
                 return action.uniqueName !== v.uniqueName;
