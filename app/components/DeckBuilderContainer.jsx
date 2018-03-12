@@ -4,12 +4,14 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import { fetchCards, fetchFilteredCards } from '../reducers/cards'
-import { addCardToDeck} from '../reducers/Deck'
+import { addCardToDeck } from '../reducers/Deck'
 import { logout } from '../reducers/user'
+import { fetchUserDecks, clearUserDecks } from '../reducers/userDecks'
 import AutoComplete from 'material-ui/AutoComplete';
 import DeckListView from './DeckList';
 import Login from './Login'
 import SaveDeck from './SaveDeck'
+import LoadDeck from './LoadDeck'
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -57,6 +59,14 @@ class DeckBuilderContainer extends Component {
 
     componentWillReceiveProps(nextProps){
         this.setState({ openDeckSelectionDialog: false, openLoginDialog: false })
+        if (nextProps.user.id) {
+            if(nextProps.user.id !== this.props.user.id) {
+                this.props.getDecks(nextProps.user.id)
+            }
+        }
+        else {
+            this.props.clearDecks()
+        }
     }
 
     render() {
@@ -98,6 +108,7 @@ class DeckBuilderContainer extends Component {
                                     const value = child.props.primaryText
                                     if (value === 'Logout') this.props.handleLogout()
                                     if (value === 'Save Deck') this.setState({ openSaveDeckDialog: true })
+                                    if (value === 'Load Deck') this.setState({ openDeckSelectionDialog: true })
                                 }}>
                                 <MenuItem primaryText="Save Deck" />
                                 <MenuItem primaryText="Load Deck" />
@@ -123,6 +134,12 @@ class DeckBuilderContainer extends Component {
                     onRequestClose = {() => this.setState({ openSaveDeckDialog: false })}
                     >
                     <SaveDeck/>
+                </Dialog>
+                <Dialog
+                    open={this.state.openDeckSelectionDialog}
+                    onRequestClose={() => this.setState({ openDeckSelectionDialog: false })}
+                >
+                    <LoadDeck />
                 </Dialog>
 
             </div>
@@ -153,6 +170,12 @@ function mapDispatchToProps(dispatch) {
         },
         handleLogout: () => {
             dispatch(logout())
+        },
+        getDecks: (userId) => {
+            dispatch(fetchUserDecks(userId))
+        },
+        clearDecks: () => {
+            dispatch(clearUserDecks())
         }
     }
 }

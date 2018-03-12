@@ -4,26 +4,47 @@ const { Cards, Decks_Cards, Decks, Users } = require('../../db/models')
 const { Sequelize } = require('../../db/models')
 
 
-router.get('/:id/decks', (req, res, next) => {
+router.get('/:userId/decks', (req, res, next) => {
   Decks.findAll({
     where: {
-      userId: req.params.id
+      userId: req.params.userId
+    },
+    attributes: ['id', 'name']
+  })
+  .then(decks => {
+    res.send(decks);
+  })
+  .catch(next);
+})
+
+router.get('/:userId/decks/:deckId', (req, res, next) => {
+  Decks_Cards.findAll({
+    where: {
+      deckId: req.params.deckId
     },
     include: [{ all: true }]
   })
-    .then(decks => {
-      res.send(decks);
+    .then(deck => {
+      console.log("deckId: ", req.params.deckId, deck.length)
+      let savedDeck = deck.map(deck_card => Object.assign({}, deck_card.card.dataValues, { quantity: deck_card.quantity }))
+      res.send(savedDeck);
     })
     .catch(next);
 })
 
-router.post('/:id/decks/', (req, res, next) => {
-  if(req.session.passport.user.toString() !== req.params.id) throw new Error("Invalid Credentials")
+// edit deck
+router.put('/:userId/decks/:deckId', (req, res, next) => {
+
+})
+
+router.post('/:userId/decks/', (req, res, next) => {
+  if(req.session.passport.user.toString() !== req.params.userId) throw new Error("Invalid Credentials")
+
   const uniqueNames = req.body.cards.map(card => card.uniqueName)
   let cards = []
   let deck = {}
 
-  Decks.create({ name: req.body.name, userId: req.params.id })
+  Decks.create({ name: req.body.name, userId: req.params.userId })
   .then(createdDeck => {
     deck = createdDeck
     return Cards.findAll({

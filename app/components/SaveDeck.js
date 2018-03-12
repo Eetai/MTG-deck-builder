@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchUserDecks, SaveUserDecks } from '../reducers/userDecks'
+import { SaveUserDecks, UpdateUserDeck } from '../reducers/userDecks'
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { one } from 'nouns'
@@ -51,7 +51,8 @@ const mapDispatch = (dispatch) => {
     handleSaveDeck: (name, user, deck, evt) => {
       evt.preventDefault()
       dispatch(SaveUserDecks(name, user, deck))
-    }
+    },
+
   }
 }
 
