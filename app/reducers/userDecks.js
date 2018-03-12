@@ -2,35 +2,51 @@ import axios from 'axios'
 
 // action types
 const GET_USER_DECKS = 'GET_USER_DECKS'
+const ADD_DECK = 'ADD_DECK'
 
-export const getUserDecksCards = (userId) => {
+export const getUserDecks = (decks) => {
   return {
     type: GET_USER_DECKS,
-    filteredCards
+    decks
   }
 }
 
-export const fetchUserDecks = (deck, user) => {
+export const addDeck = (deck) => {
+  return {
+    type: ADD_DECK,
+    deck
+  }
+}
+
+export const fetchUserDecks = (user) => {
   return function thunk(dispatch) {
-    axios.get('api/user/decks/' + )
+    axios.get(`api/user/${user.id}/decks/`)
       .then(res => {
-        let cards = res.data
-        dispatch(getFilteredCards(cards))
-        return cards
-      })
-      .then(cards => {
-        return dispatch(getSelectedCard(value, cards))
+        let decks = res.data
+        dispatch(getUserDecks(decks))
       })
       .catch(console.error)
   }
 }
 
+export const SaveUserDecks = (name, user, cards) => {
+  return function thunk(dispatch) {
+    axios.post(`api/user/${user.id}/decks/`, ({ name, cards }))
+      .then(res => {
+        let deck = res.data
+        dispatch(addDeck(deck))
+      })
+      .catch(console.error)
+  }
+}
 
 // sub reducer
 const userDecksReducer = (state = [], action) => {
   switch (action.type) {
     case GET_USER_DECKS:
-      return action.filteredCards
+      return action.decks
+    case ADD_DECK:
+      return state.concat([action.deck])
     default:
       return state
   }
