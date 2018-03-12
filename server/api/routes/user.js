@@ -40,7 +40,8 @@ router.post('/:userId/decks/', (req, res, next) => {
 
   Decks.destroy({
     where: {
-      name: req.body.name
+      name: req.body.name,
+      userId: req.params.userId
     }
   }).then(confirm => {
     Decks.create({ name: req.body.name, userId: req.params.userId })
