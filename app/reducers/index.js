@@ -5,6 +5,7 @@ import selectedCardReducer from './selectedCard'
 import selectedDeckReducer from './selectedDeck'
 import defaultUser from './user'
 import userDeckReducer from './userDecks'
+import numberCalculatingReducer from './numberCalculating'
 
 const rootReducer = combineReducers({
     filteredCards,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     selectedCardReducer,
     selectedDeckReducer,
     defaultUser,
-    userDeckReducer
+    userDeckReducer,
+    numberCalculatingReducer
 })
 
 export default rootReducer
