@@ -7,6 +7,7 @@ import { fetchCards, fetchFilteredCards } from '../reducers/cards'
 import { addCardToDeck } from '../reducers/Deck'
 import { logout } from '../reducers/user'
 import { fetchUserDecks, clearUserDecks } from '../reducers/userDecks'
+import { setNumberCalculated } from '../reducers/numberCalculating'
 import AutoComplete from 'material-ui/AutoComplete';
 import DeckListView from './DeckList';
 import Login from './Login'
@@ -18,6 +19,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MediaQuery from 'react-responsive'
 import Dialog from 'material-ui/Dialog';
+import LinearProgress from 'material-ui/LinearProgress';
 
 class DeckBuilderContainer extends Component {
     constructor(props) {
@@ -26,13 +28,13 @@ class DeckBuilderContainer extends Component {
             searchBarId: '',
             searchText: '',
             savedSearch: '',
+            displayProgress: 'none',
             openLoginDialog: false,
             openSaveDeckDialog: false,
             openDeckSelectionDialog: false
         }
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleReq = this.handleReq.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleUpdateInput(value){
@@ -57,7 +59,7 @@ class DeckBuilderContainer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.setState({ openDeckSelectionDialog: false, openLoginDialog: false })
         if (nextProps.user.id) {
             if(nextProps.user.id !== this.props.user.id) {
@@ -66,6 +68,16 @@ class DeckBuilderContainer extends Component {
         }
         else {
             this.props.clearDecks()
+        }
+
+        if (nextProps.calculated === nextProps.deckList.filter(card => !card.types.includes('Land')).length * 8) {
+            this.props.setCalculatedNumber(0)
+            setTimeout(() => {
+                this.setState({ displayProgress: 'none' })
+            }, 350);
+        }
+        else {
+            this.setState({ displayProgress: 'flex' })
         }
     }
 
@@ -121,6 +133,13 @@ class DeckBuilderContainer extends Component {
                     }
                 </div>
                 <div id='cardViewContainer'>
+                    <LinearProgress
+                        mode="determinate"
+                        min={0}
+                        max={this.props.deckList.filter(card => !card.types.includes('Land')).length * 8}
+                        value={this.props.calculated}
+                        style={{ display: this.state.displayProgress }}
+                    />
                     <DeckListView deckList={this.props.deckList} />
                 </div>
                 <Dialog
@@ -153,6 +172,7 @@ function mapStateToProps(storeState) {
         deckList: storeState.deckReducer,
         selectedCard: storeState.selectedCardReducer,
         user: storeState.defaultUser,
+        calculated: storeState.numberCalculatingReducer,
         loginError: storeState.defaultUser.error
     }
 }
@@ -176,11 +196,14 @@ function mapDispatchToProps(dispatch) {
         },
         clearDecks: () => {
             dispatch(clearUserDecks())
+        },
+        setCalculatedNumber: (num) => {
+            dispatch(setNumberCalculated(num))
         }
     }
 }
 
-const DeckBuilderContainerContainer = connect(mapStateToProps, mapDispatchToProps)(DeckBuilderContainer)
+const DeckBuilder = connect(mapStateToProps, mapDispatchToProps)(DeckBuilderContainer)
 
 
-export default DeckBuilderContainerContainer
+export default DeckBuilder

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import CircularProgress from 'material-ui/CircularProgress';
+import { updateNumberCalculated } from '../reducers/numberCalculating'
 import axios from 'axios'
 
-class ProbabilityCell extends Component {
+class ProbCell extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -70,6 +72,7 @@ class ProbabilityCell extends Component {
         const history = Object.assign({}, self.state.history)
         history[deckNamesAndQuants] = res.data
         self.setState({ P: res.data, calculating: false, history })
+        self.props.updateCalculatedNumber(1)
       });
   }
 
@@ -86,6 +89,7 @@ class ProbabilityCell extends Component {
         this.setState({ P: 'loading', cardColor })
         if (this.state.history[deckNamesAndQuants] !== undefined) {
           this.setState({ P: this.state.history[deckNamesAndQuants] })
+          this.props.updateCalculatedNumber(1)
         }
         else {
           this.getProbability(this.props.deck, this.props.card, this.props.draws, this.props.deckNamesAndQuants)
@@ -159,5 +163,15 @@ class ProbabilityCell extends Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateCalculatedNumber: (num) => {
+      dispatch(updateNumberCalculated(num))
+    }
+  }
+}
+
+const ProbabilityCell = connect(null, mapDispatchToProps)(ProbCell)
 
 export default ProbabilityCell
