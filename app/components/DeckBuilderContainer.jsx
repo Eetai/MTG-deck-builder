@@ -20,6 +20,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MediaQuery from 'react-responsive'
 import Dialog from 'material-ui/Dialog';
 import LinearProgress from 'material-ui/LinearProgress';
+import Snackbar from 'material-ui/Snackbar';
 
 class DeckBuilderContainer extends Component {
     constructor(props) {
@@ -28,13 +29,19 @@ class DeckBuilderContainer extends Component {
             searchBarId: '',
             searchText: '',
             savedSearch: '',
+            snackBarMessage: '',
             displayProgress: 'none',
+            snackBarOpen: false,
             openLoginDialog: false,
             openSaveDeckDialog: false,
             openDeckSelectionDialog: false
         }
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleReq = this.handleReq.bind(this);
+    }
+
+    getNonLandDeckSize(deck){
+        return deck.reduce((a, b) => (b.types.includes('Land')) ? a : a + b.quantity, 0)
     }
 
     handleUpdateInput(value){
@@ -55,6 +62,7 @@ class DeckBuilderContainer extends Component {
             setTimeout(() => {
                 this.props.addNewCard(this.props.selectedCard);
                 document.getElementById(this.state.searchBarId).value = ''
+                document.getElementById(this.state.searchBarId).focus()
             }, 100);
         }
     }
@@ -70,10 +78,26 @@ class DeckBuilderContainer extends Component {
             this.props.clearDecks()
         }
 
-        if (nextProps.calculated === nextProps.deckList.filter(card => !card.types.includes('Land')).length * 8) {
+        if (this.getNonLandDeckSize(this.props.deckList) !== this.getNonLandDeckSize(nextProps.deckList)) {
             this.props.setCalculatedNumber(0)
+        }
+
+        if (nextProps.loginError) {
+            this.setState({ snackBarOpen: true, snackBarMessage: `Error: ${nextProps.loginError.response.data}` })
+        }
+        else if (nextProps.user.id !== this.props.user.id) {
+            if(!nextProps.user.id) {
+                this.setState({ snackBarOpen: true, snackBarMessage: "You'll be back" })
+            }
+            else if (!this.props.user.id) {
+                this.setState({ snackBarOpen: true, snackBarMessage: "Welcome!" })
+            }
+        }
+
+        if (nextProps.calculated === this.getNonLandDeckSize(nextProps.deckList) * 8) {
             setTimeout(() => {
                 this.setState({ displayProgress: 'none' })
+                this.props.setCalculatedNumber(0)
             }, 350);
         }
         else {
@@ -85,6 +109,8 @@ class DeckBuilderContainer extends Component {
         return (
             <div>
                 <div style={{display: 'flex'}}>
+
+                    {/* searchbar and submit button */}
                     <form method='POST' style={{flex:19}} onSubmit={(e)=>{
                         e.preventDefault()
                         this.handleReq()
@@ -109,6 +135,11 @@ class DeckBuilderContainer extends Component {
                             { (matches) => (matches) ? <FlatButton label="Submit" primary={true} type='submit' /> : null }
                         </MediaQuery>
                     </form>
+
+                    {/* deck name banner */}
+                    <p> {this.props.selectedDeck} </p>
+
+                    {/* drop down menu or login button */}
                     {
                         (this.props.user.id) ?
                             <IconMenu
@@ -133,6 +164,7 @@ class DeckBuilderContainer extends Component {
                     }
                 </div>
                 <div id='cardViewContainer'>
+                    {/* progress bar */}
                     <LinearProgress
                         mode="determinate"
                         min={0}
@@ -140,8 +172,11 @@ class DeckBuilderContainer extends Component {
                         value={this.props.calculated}
                         style={{ display: this.state.displayProgress }}
                     />
+                    {/* the table of probabilities */}
                     <DeckListView deckList={this.props.deckList} />
                 </div>
+
+                {/* various dialog boxes */}
                 <Dialog
                     open = {this.state.openLoginDialog}
                     onRequestClose = {() => this.setState({ openLoginDialog: false })}
@@ -157,10 +192,20 @@ class DeckBuilderContainer extends Component {
                 <Dialog
                     open={this.state.openDeckSelectionDialog}
                     onRequestClose={() => this.setState({ openDeckSelectionDialog: false })}
+                    autoScrollBodyContent={true}
                 >
                     <LoadDeck />
                 </Dialog>
 
+                {/* snackbar for show errors and greetings */}
+                <Snackbar
+                    open={this.state.snackBarOpen}
+                    message={this.state.snackBarMessage}
+                    action={(this.state.snackBarMessage.indexOf("Error")) ? "" : "Try Again"}
+                    autoHideDuration={3000}
+                    onRequestClose={() => this.setState({ snackBarOpen: false })}
+                    onActionClick={() => this.setState({ snackBarOpen: false, openLoginDialog: !this.state.snackBarMessage.indexOf("Error") })}
+                />
             </div>
         )
     }
@@ -171,6 +216,7 @@ function mapStateToProps(storeState) {
         filteredCards: storeState.filteredCards,
         deckList: storeState.deckReducer,
         selectedCard: storeState.selectedCardReducer,
+        selectedDeck: storeState.selectedDeckReducer,
         user: storeState.defaultUser,
         calculated: storeState.numberCalculatingReducer,
         loginError: storeState.defaultUser.error

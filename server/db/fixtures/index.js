@@ -95,15 +95,16 @@ Cards.sync({
     })
     .then(() => {
         console.log('cards success');
-        Decks.sync({ force: true })
+        Users.sync({ force: true })
             .then(() => {
-                console.log('decks success');
-                Decks_Cards.sync({ force: true })
+                console.log('users success');
+                Decks.sync({ force: true })
                     .then(() => {
-                        console.log('decks_cards success');
-                        Users.sync({ force: true })
+                        console.log('decks success');
+                        Decks_Cards.sync({ force: true })
                             .then(() => {
-                                console.log('users success');
+                                console.log('decks_cards success');
+                                console.log('all done!');
                             })
                     })
             })
