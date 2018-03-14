@@ -44,6 +44,7 @@ class DeckList extends Component {
         if (this.props){
             return (
                 <div className="DeckListContainer">
+                    {/* drawer for showing single card previews */}
                     <Drawer
                         containerStyle={{ backgroundColor:'#212121'}}
                         open={this.state.drawer}
@@ -69,6 +70,8 @@ class DeckList extends Component {
                             </FloatingActionButton>
                         </div>
                     </Drawer>
+
+                    {/* probability table */}
                     <Table>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
@@ -98,6 +101,7 @@ class DeckList extends Component {
                                                 >
                                                 {card.name}
                                             </TableRowColumn>
+                                            {/* open preview button */}
                                             <TableRowColumn style={{ width: '8%' }}>
                                                 <FloatingActionButton
                                                     disabled={this.state.drawer}
@@ -110,6 +114,7 @@ class DeckList extends Component {
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '5%' }}>{card.quantity}</TableRowColumn>
                                             <TableRowColumn style={{ width: '8%' }}>
+                                                {/* increment button */}
                                                 <FloatingActionButton
                                                     disabled={card.quantity > 3 && !card.type.includes('Basic Land')}
                                                     backgroundColor={this.colors.Green}
@@ -119,6 +124,7 @@ class DeckList extends Component {
                                                 </FloatingActionButton>
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '8%' }}>
+                                                {/* decrement button */}
                                                 <FloatingActionButton
                                                     disabled={card.quantity < 1}
                                                     backgroundColor={this.colors.Blue}
@@ -131,6 +137,7 @@ class DeckList extends Component {
                                                 </FloatingActionButton>
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '8%' }}>
+                                                {/* remove-from-deck button */}
                                                 <FloatingActionButton
                                                     backgroundColor={this.colors.Red}
                                                     mini={true}
@@ -138,6 +145,7 @@ class DeckList extends Component {
                                                     <ContentClear />
                                                 </FloatingActionButton>
                                             </TableRowColumn>
+                                            {/* probabilitiy cells */}
                                             {
                                                 [0,1,2,3,4,5,6,7].map(v=>{
                                                     return (

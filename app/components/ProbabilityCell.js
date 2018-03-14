@@ -72,7 +72,6 @@ class ProbCell extends Component {
         const history = Object.assign({}, self.state.history)
         history[deckNamesAndQuants] = res.data
         self.setState({ P: res.data, calculating: false, history })
-        self.props.updateCalculatedNumber(1)
       });
   }
 
@@ -89,7 +88,6 @@ class ProbCell extends Component {
         this.setState({ P: 'loading', cardColor })
         if (this.state.history[deckNamesAndQuants] !== undefined) {
           this.setState({ P: this.state.history[deckNamesAndQuants] })
-          this.props.updateCalculatedNumber(1)
         }
         else {
           this.getProbability(this.props.deck, this.props.card, this.props.draws, this.props.deckNamesAndQuants)
@@ -146,21 +144,28 @@ class ProbCell extends Component {
   }
 
   render() {
-    if (this.state.P !== 'loading' && !this.props.card.types.includes('Land') && !this.props.card.types.includes('Plane')) return (
+    if (this.state.P !== 'loading' && !this.props.card.types.includes('Land') && !this.props.card.types.includes('Plane')){
+
+      // this line says that if a cell is not loading and the card associated with it is not a land of a plane, then the store shoudl be updated to recognize that a cell has completed a calculation
+      this.props.updateCalculatedNumber(1)
+
+      return (
       <div>
         {`${(this.state.P * 100).toFixed(1)}%`}
       </div>
-    )
-    else if (this.props.card.type.includes('Land') || this.props.card.types.includes('Plane')) return (
+    )}
+    else if (this.props.card.type.includes('Land') || this.props.card.types.includes('Plane')) {
+      return (
       <div>
         <img src={`./Manapix/${this.state.manapic}`} style={{ height:'25px' }}/>
       </div>
-    )
-    else return (
+    )}
+    else {
+      return (
       <div>
         <CircularProgress size={25} color={this.state.cardColor}/>
       </div>
-    )
+    )}
   }
 }
 

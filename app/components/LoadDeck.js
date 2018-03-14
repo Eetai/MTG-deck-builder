@@ -24,6 +24,7 @@ class LoadDeckForm extends Component {
                   key = {index}
                   primaryText = {deck.name}
                   onClick = {() => this.props.chooseDeck(this.props.user.id, deck.id, deck.name)}
+                  rightIcon={<img src={`./forward_grey_24x24.png`} style={{ height: '25px' }}/>}
                 />
               )
             })
