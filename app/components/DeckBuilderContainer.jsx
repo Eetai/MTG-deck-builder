@@ -10,6 +10,7 @@ import { fetchUserDecks, clearUserDecks } from '../reducers/userDecks'
 import { setNumberCalculated } from '../reducers/numberCalculating'
 import AutoComplete from 'material-ui/AutoComplete';
 import DeckListView from './DeckList';
+import Title from './Title';
 import Login from './Login'
 import SaveDeck from './SaveDeck'
 import LoadDeck from './LoadDeck'
@@ -26,6 +27,7 @@ class DeckBuilderContainer extends Component {
     constructor(props) {
         super(props)
         this.state={
+            turns:[1,2,3,4,5,6,7,8],
             searchBarId: '',
             searchText: '',
             savedSearch: '',
@@ -137,7 +139,7 @@ class DeckBuilderContainer extends Component {
                     </form>
 
                     {/* deck name banner */}
-                    <p> {this.props.selectedDeck} </p>
+                    <Title title={this.props.selectedDeck}/>
 
                     {/* drop down menu or login button */}
                     {
@@ -173,7 +175,7 @@ class DeckBuilderContainer extends Component {
                         style={{ display: this.state.displayProgress }}
                     />
                     {/* the table of probabilities */}
-                    <DeckListView deckList={this.props.deckList} />
+                    <DeckListView deckList={this.props.deckList} turns={this.state.turns}/>
                 </div>
 
                 {/* various dialog boxes */}

@@ -4,6 +4,13 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { updateNumberCalculated } from '../reducers/numberCalculating'
 import axios from 'axios'
 
+const probCellStyle = {
+  containerDiv:{
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}
+
 class ProbCell extends Component {
   constructor(props) {
     super(props)
@@ -28,6 +35,7 @@ class ProbCell extends Component {
     this.getDeckNamesAndQuants = this.getDeckNamesAndQuants.bind(this)
   }
 
+  // simple heuristic determining if an axios call needs to be made
   playableTurn(card, draws) {
     function cardCost(card) {
       return card.manaCost
@@ -53,10 +61,12 @@ class ProbCell extends Component {
     return convertedManaCost(cardCost(card)) <= draws - 6
   }
 
+  // simplifies decklist to card names and quantities
   getDeckNamesAndQuants(deck) {
     return JSON.stringify(deck.map(card => ({ name: card.uniqueName, quantity: card.quantity })))
   }
 
+  // decides which mana picture should render based on producible mana colors
   parseManaPic(ProducibleManaColors) {
     let manapic = (ProducibleManaColors.includes('C') || ProducibleManaColors.includes('F')) ? 'Cmana.png' : (ProducibleManaColors.split(',').join('').slice(0, Math.min(ProducibleManaColors.length, 2)) + 'mana.png')
     if (ProducibleManaColors.split(',').join('') === 'BGRUW') manapic = 'BGRUWmana.png'
@@ -64,6 +74,7 @@ class ProbCell extends Component {
     return manapic
   }
 
+  // requests server to compute probability
   getProbability(deck, card, draws, deckNamesAndQuants) {
     const self = this
     self.setState({ calculating: true })
@@ -75,6 +86,7 @@ class ProbCell extends Component {
       });
   }
 
+  // updates state in accordance with initial props
   componentWillMount() {
     if (this.props.card) {
       if (this.props.card.type.includes('Land')) {
@@ -99,6 +111,7 @@ class ProbCell extends Component {
     }
   }
 
+  // updates state in accordance with incoming props
   componentWillReceiveProps({ draws, card, deck }){
     if (card.type.includes('Land')) {
       const manapic = this.parseManaPic(card.ProducibleManaColors)
@@ -150,25 +163,26 @@ class ProbCell extends Component {
       this.props.updateCalculatedNumber(1)
 
       return (
-      <div>
+      <div style={probCellStyle.containerDiv}>
         {`${(this.state.P * 100).toFixed(1)}%`}
       </div>
     )}
     else if (this.props.card.type.includes('Land') || this.props.card.types.includes('Plane')) {
       return (
-      <div>
+      <div style={probCellStyle.containerDiv}>
         <img src={`./Manapix/${this.state.manapic}`} style={{ height:'25px' }}/>
       </div>
     )}
     else {
       return (
-      <div>
+      <div style={probCellStyle.containerDiv}>
         <CircularProgress size={25} color={this.state.cardColor}/>
       </div>
     )}
   }
 }
 
+// connects to store ONLY to increment the counter of how many cells have completed a calculation
 function mapDispatchToProps(dispatch) {
   return {
     updateCalculatedNumber: (num) => {

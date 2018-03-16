@@ -24,7 +24,7 @@ class Auth extends Component {
           <TextField
             hintText="Username"
             value={this.state.username}
-            onChange={() => this.setState({ username: event.target.value.toLowerCase() })}
+            onChange={(event) => this.setState({ username: event.target.value.toLowerCase() })}
           />
           <TextField
             hintText="Password"
@@ -53,7 +53,7 @@ class Auth extends Component {
           <TextField
             hintText="Username"
             value={this.state.username}
-            onChange={() => this.setState({ username: event.target.value.toLowerCase() })}
+            onChange={(event) => this.setState({ username: event.target.value.toLowerCase() })}
           />
           <TextField
             hintText="Password"
