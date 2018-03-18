@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Divider from 'material-ui/Divider';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
 import { fetchCards, fetchFilteredCards } from '../reducers/cards'
@@ -17,14 +17,24 @@ import Title from './Title';
 import Login from './Login'
 import SaveDeck from './SaveDeck'
 import LoadDeck from './LoadDeck'
+import About from './About'
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MediaQuery from 'react-responsive'
 import Dialog from 'material-ui/Dialog';
 import LinearProgress from 'material-ui/LinearProgress';
 import Snackbar from 'material-ui/Snackbar';
+
+const styles = {
+    top_left_login_and_dropdown:{
+        alignItems: 'flex-start'
+    },
+    menu_container: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    }
+}
 
 class DeckBuilderContainer extends Component {
     constructor(props) {
@@ -37,12 +47,23 @@ class DeckBuilderContainer extends Component {
             snackBarMessage: '',
             displayProgress: 'none',
             snackBarOpen: false,
+            openAboutDialog: false,
             openLoginDialog: false,
             openSaveDeckDialog: false,
             openDeckSelectionDialog: false
         }
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleReq = this.handleReq.bind(this);
+        this.childClosesOwnDialog = this.childClosesOwnDialog.bind(this);
+    }
+
+    childClosesOwnDialog(){
+        this.setState({
+            openAboutDialog: false,
+            openLoginDialog: false,
+            openSaveDeckDialog: false,
+            openDeckSelectionDialog: false
+        })
     }
 
     getNonLandDeckSize(deck){
@@ -113,74 +134,94 @@ class DeckBuilderContainer extends Component {
     render() {
         return (
             <div>
-                <div style={{display: 'flex'}}>
-                    {/* searchbar and submit button */}
-                    <form method='POST' style={{flex:19}} onSubmit={(e)=>{
-                        e.preventDefault()
-                        this.handleReq()
-                        }} >
-                        <AutoComplete
-                            hintText="Seach for any MtG card by name"
-                            searchText={this.state.searchText}
-                            dataSource={this.props.filteredCards.map(v => v.uniqueName)}
-                            onUpdateInput={this.handleUpdateInput}
-                            onSelect={()=>{
-                                if(!this.state.searchBarId) this.setState({searchBarId: document.activeElement.id})
-                            }}
-                            onNewRequest={(v)=>{
-                                this.handleReq(v)
-                                this.setState({searchText: ''})
-                            }}
-                            style={{maxWidth: 500}}
-                            fullWidth={true}
-                            filter={AutoComplete.caseInsensitiveFilter}
-                        />
-                        <MediaQuery minWidth={652}>
-                            { (matches) => (matches) ? <FlatButton label="Submit" primary={true} type='submit' /> : null }
-                        </MediaQuery>
-                    </form>
-                    <div>
-                        <FloatingActionButton
-                            mini={true}
-                            onClick={() => this.setState({ turns: this.state.turns.concat(this.state.turns.length+1)})}>
-                            <ContentAdd />
-                        </FloatingActionButton>
-                        <FloatingActionButton
-                            mini={true}
-                            onClick={() => this.setState({ turns: this.state.turns.slice(0,this.state.turns.length-1) })}>
-                            <ContentRemove />
-                        </FloatingActionButton>
+                <div style={styles.menu_container}>
+                    <div style={{flex: 15, display:'flex'}}>
+                        {/* searchbar and submit button */}
+                        <form method='POST' style={{display: 'flex', flex:10}} onSubmit={(e)=>{
+                            e.preventDefault()
+                            this.handleReq()
+                            }} >
+                            <AutoComplete
+                                hintText="Seach for any MtG card by name"
+                                searchText={this.state.searchText}
+                                dataSource={this.props.filteredCards.map(v => v.uniqueName)}
+                                onUpdateInput={this.handleUpdateInput}
+                                onSelect={()=>{
+                                    if(!this.state.searchBarId) this.setState({searchBarId: document.activeElement.id})
+                                }}
+                                onNewRequest={(v)=>{
+                                    this.handleReq(v)
+                                    this.setState({searchText: ''})
+                                }}
+                                style={{maxWidth: 500}}
+                                fullWidth={true}
+                                filter={AutoComplete.caseInsensitiveFilter}
+                            />
+                            <MediaQuery minWidth={(this.props.user.id) ? 1185 : 956}>
+                                { (matches) => (matches) ?
+                                <div>
+                                <FlatButton label="Submit" primary={true} type='submit' />
+                                <FlatButton
+                                    label="+ Turn"
+                                    primary={true}
+                                    onClick={() => this.setState({ turns: this.state.turns.concat(this.state.turns.length + 1) })}>
+                                </FlatButton>
+                                <FlatButton
+                                    label="- Turn"
+                                    primary={true}
+                                    onClick={() => this.setState({ turns: this.state.turns.slice(0, this.state.turns.length - 1) })}>
+                                </FlatButton>
+                                <FlatButton
+                                    label="About"
+                                    primary={true}
+                                    onClick={() => this.setState({ openAboutDialog: true })}>
+                                </FlatButton>
+                                </div>
+                                : null }
+                            </MediaQuery>
+                        </form>
+                        {/* deck name banner TRASH*/}
+                        {/* <Title title={this.props.selectedDeck} /> */}
                     </div>
-
-                    {/* deck name banner */}
-                    <Title title={this.props.selectedDeck}/>
-
-                    {/* drop down menu or login button */}
-                    {
-                        (this.props.user.id) ?
-                            <IconMenu
-                                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
-                                targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                                style={{flex: 1}}
-                                onItemClick={(event, child) => {
-                                    const value = child.props.primaryText
-                                    if (value === 'Logout') this.props.handleLogout()
-                                    if (value === 'Save Deck') this.setState({ openSaveDeckDialog: true })
-                                    if (value === 'Load Deck') this.setState({ openDeckSelectionDialog: true })
-                                }}>
-                                <MenuItem primaryText="Save Deck" />
-                                <MenuItem primaryText="Load Deck" />
-                                <MenuItem primaryText="Logout" />
-                            </IconMenu>
-                            :
-                            <div style={{height:48, display:'flex', flexDirection:'column'}}>
-                                <FlatButton label="Login" primary={true} style={{flex:1}} onClick={() => this.setState({ openLoginDialog: true })}/>
-                            </div>
-                    }
+                    <MediaQuery
+                        minWidth={600}
+                        style={styles.top_left_login_and_dropdown}>
+                        {/* additional menu buttons */}
+                        <div >
+                            {(this.props.user.id) ?
+                                <div style={{ height: '48px', width: '264'}}>
+                                    <FlatButton
+                                        label="Save Deck"
+                                        primary={true}
+                                        onClick={() => this.setState({ openSaveDeckDialog: true })}
+                                    />
+                                    <FlatButton
+                                        label="Load Deck"
+                                        primary={true}
+                                        onClick={() => this.setState({ openDeckSelectionDialog: true })}
+                                    />
+                                    <FlatButton
+                                        label="Logout"
+                                        primary={true}
+                                        onClick={() => this.props.handleLogout()}
+                                    />
+                                </div>
+                                :
+                                <div style={{ height:48, display:'flex' }}>
+                                    <FlatButton
+                                    label="Login"
+                                    primary={true}
+                                    style={{flex:1}}
+                                    onClick={() => this.setState({ openLoginDialog: true })}/>
+                                </div>
+                            }
+                        </div>
+                    </MediaQuery>
                 </div>
+                <Divider style={{ marginTop: '-9px'}} />
                 <div id='cardViewContainer'>
-                    {/* progress bar */}
+
+                    {/* progress bar CURRENTLY BROKEN*/}
                     {/* <LinearProgress
                         mode="determinate"
                         min={0}
@@ -188,29 +229,40 @@ class DeckBuilderContainer extends Component {
                         value={this.props.calculated}
                         style={{ display: this.state.displayProgress }}
                     /> */}
+
                     {/* the table of probabilities */}
                     <DeckListView deckList={this.props.deckList} turns={this.state.turns}/>
                 </div>
 
                 {/* various dialog boxes */}
                 <Dialog
+                    contentStyle={{ maxWidth: '600px' }}
                     open = {this.state.openLoginDialog}
                     onRequestClose = {() => this.setState({ openLoginDialog: false })}
                     >
-                    <Login/>
+                    <Login closeDialog={this.childClosesOwnDialog}/>
                 </Dialog>
                 <Dialog
+                    contentStyle={{ maxWidth: '600px' }}
                     open = {this.state.openSaveDeckDialog}
                     onRequestClose = {() => this.setState({ openSaveDeckDialog: false })}
                     >
-                    <SaveDeck/>
+                    <SaveDeck closeDialog={this.childClosesOwnDialog}/>
                 </Dialog>
                 <Dialog
+                    contentStyle={{ maxWidth: '600px' }}
                     open={this.state.openDeckSelectionDialog}
                     onRequestClose={() => this.setState({ openDeckSelectionDialog: false })}
                     autoScrollBodyContent={true}
-                >
+                    >
                     <LoadDeck />
+                </Dialog>
+                <Dialog
+                    open={this.state.openAboutDialog}
+                    onRequestClose={() => this.setState({ openLoginDialog: false })}
+                    autoScrollBodyContent={true}
+                    >
+                    <About closeDialog={this.childClosesOwnDialog}/>
                 </Dialog>
 
                 {/* snackbar for show errors and greetings */}

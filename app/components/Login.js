@@ -40,9 +40,14 @@ class Auth extends Component {
             onClick={(e) => this.props.handleSubmit(event, 'login', this.state.username, this.state.password)}
           />
           <FlatButton
-            label="New User?"
+            label="Signup"
             primary={true}
             onClick={() => this.setState({ SigningUp: true })}
+          />
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onClick={() => this.props.closeDialog()}
           />
         </div>
       </div>
