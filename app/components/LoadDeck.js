@@ -21,28 +21,30 @@ class LoadDeckForm extends Component {
 
   render() {
     return (this.state.editingName) ? (
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
         <TextField
           id="namechangeinput"
           onChange={(event) => this.setState({ newName: event.target.value })}
         />
-        <FlatButton
-          label="Set New Name"
-          primary={true}
-          onClick={(event) => {
-            event.preventDefault()
-            this.props.changeName(this.props.user.id, this.state.editingDeckId, this.state.newName)
-            this.setState({ editingName: false })
-          }}
-        />
-        <FlatButton
-          label="Cancel"
-          primary={true}
-          onClick={(event) => {
-            event.preventDefault()
-            this.setState({ editingName: false })
-          }}
-        />
+        <div style={{ display: 'flex' }}>
+          <FlatButton
+            label="Set New Name"
+            primary={true}
+            onClick={(event) => {
+              event.preventDefault()
+              this.props.changeName(this.props.user.id, this.state.editingDeckId, this.state.newName)
+              this.setState({ editingName: false })
+            }}
+          />
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onClick={(event) => {
+              event.preventDefault()
+              this.setState({ editingName: false })
+            }}
+          />
+        </div>
       </div>
     ) : (
       <div>

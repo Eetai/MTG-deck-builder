@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
+import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 import { fetchCards, fetchFilteredCards } from '../reducers/cards'
 import { addCardToDeck } from '../reducers/Deck'
 import { logout } from '../reducers/user'
@@ -136,7 +137,7 @@ class DeckBuilderContainer extends Component {
             <div>
                 <div style={styles.menu_container}>
                     <div style={{flex: 15, display:'flex'}}>
-                        {/* searchbar and submit button */}
+                        {/* searchbar */}
                         <form method='POST' style={{display: 'flex', flex:10}} onSubmit={(e)=>{
                             e.preventDefault()
                             this.handleReq()
@@ -153,11 +154,13 @@ class DeckBuilderContainer extends Component {
                                     this.handleReq(v)
                                     this.setState({searchText: ''})
                                 }}
-                                style={{maxWidth: 500}}
+                                style={{maxWidth: 400}}
                                 fullWidth={true}
                                 filter={AutoComplete.caseInsensitiveFilter}
                             />
-                            <MediaQuery minWidth={(this.props.user.id) ? 1185 : 956}>
+
+                            {/* Submit, +turn, -turn, about buttons */}
+                            <MediaQuery minWidth={(this.props.user.id) ? 1085 : 856}>
                                 { (matches) => (matches) ?
                                 <div>
                                 <FlatButton label="Submit" primary={true} type='submit' />
@@ -179,14 +182,18 @@ class DeckBuilderContainer extends Component {
                                 </div>
                                 : null }
                             </MediaQuery>
+                            <MediaQuery maxWidth={(this.props.user.id) ? 1084 : 855} style={{ flex:1, display: 'flex', flexDirection: 'row-reverse', paddingTop: '8px' }}>
+                                <div style={{ display: 'flex', alignItems: 'flex-end',}}>
+                                    <MoreHoriz/>
+                                </div>
+                            </MediaQuery>
                         </form>
                         {/* deck name banner TRASH*/}
                         {/* <Title title={this.props.selectedDeck} /> */}
                     </div>
-                    <MediaQuery
-                        minWidth={600}
-                        style={styles.top_left_login_and_dropdown}>
-                        {/* additional menu buttons */}
+
+                    {/* additional menu buttons */}
+                    <MediaQuery minWidth={500} style={styles.top_left_login_and_dropdown}>
                         <div >
                             {(this.props.user.id) ?
                                 <div style={{ height: '48px', width: '264'}}>
@@ -209,26 +216,28 @@ class DeckBuilderContainer extends Component {
                                 :
                                 <div style={{ height:48, display:'flex' }}>
                                     <FlatButton
-                                    label="Login"
-                                    primary={true}
-                                    style={{flex:1}}
-                                    onClick={() => this.setState({ openLoginDialog: true })}/>
+                                        label="Login"
+                                        primary={true}
+                                        style={{flex:1}}
+                                        onClick={() => this.setState({ openLoginDialog: true })}
+                                    />
                                 </div>
                             }
                         </div>
                     </MediaQuery>
                 </div>
                 <Divider style={{ marginTop: '-9px'}} />
+
                 <div id='cardViewContainer'>
 
                     {/* progress bar CURRENTLY BROKEN*/}
-                    {/* <LinearProgress
+                    <LinearProgress
                         mode="determinate"
                         min={0}
                         max={this.props.deckList.filter(card => !card.types.includes('Land')).length * 8}
                         value={this.props.calculated}
-                        style={{ display: this.state.displayProgress }}
-                    /> */}
+                        style={{ display: this.state.displayProgress, position: 'absolute', top: '0px', right: '1px', width: '101%' }}
+                    />
 
                     {/* the table of probabilities */}
                     <DeckListView deckList={this.props.deckList} turns={this.state.turns}/>
