@@ -24,7 +24,7 @@ class Auth extends Component {
           <TextField
             hintText="Username"
             value={this.state.username}
-            onChange={() => this.setState({ username: event.target.value.toLowerCase() })}
+            onChange={(event) => this.setState({ username: event.target.value.toLowerCase() })}
           />
           <TextField
             hintText="Password"
@@ -40,9 +40,14 @@ class Auth extends Component {
             onClick={(e) => this.props.handleSubmit(event, 'login', this.state.username, this.state.password)}
           />
           <FlatButton
-            label="New User?"
+            label="Signup"
             primary={true}
             onClick={() => this.setState({ SigningUp: true })}
+          />
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onClick={() => this.props.closeDialog()}
           />
         </div>
       </div>
@@ -53,7 +58,7 @@ class Auth extends Component {
           <TextField
             hintText="Username"
             value={this.state.username}
-            onChange={() => this.setState({ username: event.target.value.toLowerCase() })}
+            onChange={(event) => this.setState({ username: event.target.value.toLowerCase() })}
           />
           <TextField
             hintText="Password"

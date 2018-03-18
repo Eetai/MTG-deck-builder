@@ -31,6 +31,18 @@ router.get('/:userId/decks/:deckId', (req, res, next) => {
     .catch(next);
 })
 
+router.put('/:userId/decks/:deckId', (req, res, next) => {
+  Decks.update(
+    { name: req.body.newName },
+    { where: { id: req.params.deckId } }
+  )
+    .then(deck => {
+      res.send(deck);
+    })
+    .catch(next);
+})
+
+
 router.post('/:userId/decks/', (req, res, next) => {
 
   if(req.session.passport.user.toString() !== req.params.userId) throw new Error("Invalid Credentials")

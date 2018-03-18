@@ -6,7 +6,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
 import ContentClear from 'material-ui/svg-icons/content/clear';
-import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
+import ZoomIn from 'material-ui/svg-icons/action/zoom-in';
+import ZoomOut from 'material-ui/svg-icons/action/zoom-out';
 import {
     Table,
     TableBody,
@@ -22,12 +23,23 @@ import Drawer from 'material-ui/Drawer';
 import { spawn } from 'threads'
 import { MediaQuery, Responsive } from 'react-responsive'
 
+const tableStyles = {
+    smallButton: {
+        height: 25,
+        lineHeight: '24px',
+        verticalAlign: 'middle',
+        width: 25
+    }
+}
+
+
 class DeckList extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             drawer: false,
             selectedCard: {},
+            turns: [1,2,3,4,5,6,7,8]
         }
 
         this.colors = {
@@ -41,12 +53,12 @@ class DeckList extends Component {
     }
 
     render() {
-        if (this.props){
+        if (this.props) {
             return (
                 <div className="DeckListContainer">
                     {/* drawer for showing single card previews */}
                     <Drawer
-                        containerStyle={{ backgroundColor:'#212121'}}
+                        containerStyle={{ backgroundColor: '#212121' }}
                         open={this.state.drawer}
                         openSecondary={false}
                         docked={false}
@@ -55,18 +67,18 @@ class DeckList extends Component {
                         <div>
                             <div>
                                 <img
-                                    style={{ transform: 'translate(100px, 10px)', width: 300, height: 'auto'}}
+                                    style={{ transform: 'translate(100px, 10px)', width: 300, height: 'auto' }}
                                     src={`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${this.state.selectedCard.multiverseid}&type=card`}
                                 />
                             </div>
                             <FloatingActionButton
-                                style={{ transform: 'translate(230px, 10px)'}}
+                                style={{ transform: 'translate(230px, 10px)' }}
                                 disabled={!this.state.drawer}
                                 label={''}
                                 backgroundColor={this.colors.White}
                                 mini={true}
-                                onClick={(e) => this.setState({calculating:!this.state.calculating ,drawer: !this.state.drawer })}>
-                                <RemoveRedEye />
+                                onClick={(e) => this.setState({ calculating: !this.state.calculating, drawer: !this.state.drawer })}>
+                                <ZoomOut />
                             </FloatingActionButton>
                         </div>
                     </Drawer>
@@ -75,86 +87,88 @@ class DeckList extends Component {
                     <Table>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                <TableHeaderColumn style={{ width: '20%' }}>Name</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '8%' }}>View</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>Quantity</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '8%' }}>Inc</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '8%' }}>Dec</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '8%' }}>Remove</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>1</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>2</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>3</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>4</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>5</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>6</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>7</TableHeaderColumn>
-                                <TableHeaderColumn style={{ width: '5%' }}>8</TableHeaderColumn>
+                                <TableHeaderColumn style={{ width: '12%' }}>Name</TableHeaderColumn>
+                                <TableHeaderColumn style={{ width: '9%', textAlign: 'center' }}>Edit</TableHeaderColumn>
+                                <TableHeaderColumn style={{ width: '5%', textAlign: 'center' }}>Quantity</TableHeaderColumn>
+                                {
+                                    this.props.turns.map(turn => {
+                                        return (
+                                            <TableHeaderColumn key={`turn_column_header_${turn}`} style={{ textAlign: 'center', width: '5%' }}>{turn}</TableHeaderColumn>
+                                        )
+                                    })
+                                }
                             </TableRow>
                         </TableHeader>
-                        <TableBody displayRowCheckbox={false}>
+                        <TableBody displayRowCheckbox={false} showRowHover={true}>
                             {
-                                this.props.deckList.map(card=>{
-                                    return(
-                                        <TableRow>
+                                this.props.deckList.map(card => {
+                                    return (
+                                        <TableRow key={`${card.uniqueName}_row`}>
                                             <TableRowColumn
-                                                style={{ width: '20%'}}
-                                                >
-                                                {card.name}
-                                            </TableRowColumn>
-                                            {/* open preview button */}
-                                            <TableRowColumn style={{ width: '8%' }}>
+                                                style={{ width: '12%' }}
+                                            >
+                                                {/* open preview button */}
                                                 <FloatingActionButton
+                                                    style={{ paddingRight: '5px' }}
+                                                    iconStyle={tableStyles.smallButton}
+                                                    zDepth={0}
                                                     disabled={this.state.drawer}
                                                     label={''}
                                                     backgroundColor={this.colors.White}
-                                                    mini={true}
-                                                    onClick={(e) => this.setState({ calculating:!this.state.calculating ,drawer: !this.state.drawer, selectedCard: card })}>
-                                                    <RemoveRedEye />
+                                                    onClick={(e) => this.setState({ calculating: !this.state.calculating, drawer: !this.state.drawer, selectedCard: card })}>
+                                                    <ZoomIn />
                                                 </FloatingActionButton>
+                                                {card.name}
                                             </TableRowColumn>
-                                            <TableRowColumn style={{ width: '5%' }}>{card.quantity}</TableRowColumn>
-                                            <TableRowColumn style={{ width: '8%' }}>
-                                                {/* increment button */}
-                                                <FloatingActionButton
-                                                    disabled={card.quantity > 3 && !card.type.includes('Basic Land')}
-                                                    backgroundColor={this.colors.Green}
-                                                    mini={true}
-                                                    onClick={() => this.props.updateCardQuant(card.uniqueName, card.quantity + 1)}>
-                                                    <ContentAdd/>
-                                                </FloatingActionButton>
+                                            <TableRowColumn style={{ width: '9%' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                    {/* increment button */}
+                                                    <FloatingActionButton
+                                                        style={{ padding: '1px' }}
+                                                        iconStyle={tableStyles.smallButton}
+                                                        zDepth={0}
+                                                        disabled={card.quantity > 3 && !card.type.includes('Basic Land')}
+                                                        backgroundColor={this.colors.Green}
+                                                        mini={true}
+                                                        onClick={() => this.props.updateCardQuant(card.uniqueName, card.quantity + 1)}>
+                                                        <ContentAdd />
+                                                    </FloatingActionButton>
+                                                    {/* decrement button */}
+                                                    <FloatingActionButton
+                                                        style={{ padding: '1px' }}
+                                                        iconStyle={tableStyles.smallButton}
+                                                        zDepth={0}
+                                                        disabled={card.quantity < 1}
+                                                        backgroundColor={this.colors.Blue}
+                                                        mini={true}
+                                                        onClick={() => {
+                                                            this.props.updateCardQuant(card.uniqueName, card.quantity - 1)
+                                                        }}>
+                                                        <ContentRemove />
+                                                    </FloatingActionButton>
+                                                    {/* remove-from-deck button */}
+                                                    <FloatingActionButton
+                                                        style={{ padding: '1px' }}
+                                                        iconStyle={tableStyles.smallButton}
+                                                        zDepth={0}
+                                                        backgroundColor={this.colors.Red}
+                                                        mini={true}
+                                                        onClick={() => this.props.removeCard(card.uniqueName)}>
+                                                        <ContentClear />
+                                                    </FloatingActionButton>
+                                                </div>
                                             </TableRowColumn>
-                                            <TableRowColumn style={{ width: '8%' }}>
-                                                {/* decrement button */}
-                                                <FloatingActionButton
-                                                    disabled={card.quantity < 1}
-                                                    backgroundColor={this.colors.Blue}
-                                                    mini={true}
-                                                    onClick={() => {
-                                                        this.props.updateCardQuant(card.uniqueName, card.quantity - 1)
-                                                        }
-                                                    }>
-                                                    <ContentRemove />
-                                                </FloatingActionButton>
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '8%' }}>
-                                                {/* remove-from-deck button */}
-                                                <FloatingActionButton
-                                                    backgroundColor={this.colors.Red}
-                                                    mini={true}
-                                                    onClick={() => this.props.removeCard(card.uniqueName)}>
-                                                    <ContentClear />
-                                                </FloatingActionButton>
-                                            </TableRowColumn>
+                                            <TableRowColumn style={{ width: '5%', textAlign: 'center' }}>{card.quantity}</TableRowColumn>
                                             {/* probabilitiy cells */}
                                             {
-                                                [0,1,2,3,4,5,6,7].map(v=>{
+                                                this.props.turns.map(turn => {
                                                     return (
-                                                        <TableRowColumn style={{ width: '5%' }}>
+                                                        <TableRowColumn key={`probability_table_cell_${card.multiverseid}_${turn}`} style={{ width: '5%' }}>
                                                             <ProbabilityCell
-                                                                key = { card.multiverseid + '_' + v }
-                                                                draws = { 7 + v }
-                                                                card = { card }
-                                                                deck = { this.props.deck }
+                                                                key={`${card.multiverseid}_${turn}`}
+                                                                draws={6 + turn}
+                                                                card={card}
+                                                                deck={this.props.deck}
                                                             />
                                                         </TableRowColumn>
                                                     )
@@ -181,8 +195,8 @@ function mapStateToProps(storeState) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateCardQuant: (uniqueName,value) => {
-            dispatch(updateCardInDeck(uniqueName,{quantity: value}))
+        updateCardQuant: (uniqueName, value) => {
+            dispatch(updateCardInDeck(uniqueName, { quantity: value }))
         },
         removeCard: (cardUniqName) => {
             dispatch(removeCardFromDeck(cardUniqName));

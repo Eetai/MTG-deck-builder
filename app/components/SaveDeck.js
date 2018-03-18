@@ -30,18 +30,29 @@ class SaveDeckForm extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
         <TextField
+          style={{ width: '300px' }}
           hintText="Give your deck a title"
           value={this.state.name}
           onChange={(event) => this.setState({ name: event.target.value })}
         />
-        <FlatButton
-          label="Submit"
-          disabled={!this.state.name.length}
-          primary={true}
-          onClick={() => this.props.handleSaveDeck(this.state.name, this.props.user, this.props.deck)}
-        />
+        <div style={{ display: 'flex' }}>
+          <FlatButton
+            label="Submit"
+            disabled={!this.state.name.length}
+            primary={true}
+            onClick={() => {
+              this.props.handleSaveDeck(this.state.name, this.props.user, this.props.deck)
+              this.props.closeDialog()
+              }}
+          />
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onClick={() => this.props.closeDialog()}
+          />
+        </div>
       </div>
     )
   }

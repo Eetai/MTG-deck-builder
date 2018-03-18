@@ -9,7 +9,6 @@ export const selectDeck = (name) => {
   }
 }
 
-
 //sub reducer
 const selectedDeckReducer = (state = '', action) => {
   switch (action.type) {

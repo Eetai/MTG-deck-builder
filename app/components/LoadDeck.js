@@ -2,19 +2,51 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { loadDeck } from '../reducers/Deck'
 import { selectDeck } from '../reducers/selectedDeck'
+import { renameDeck } from '../reducers/userDecks'
 import FlatButton from 'material-ui/FlatButton';
 import { List, ListItem } from 'material-ui/List';
+import TextField from 'material-ui/TextField';
+import ContentCreate from 'material-ui/svg-icons/content/create';
 
 class LoadDeckForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: ''
+      name: '',
+      editingName: false,
+      newName: '',
+      editingDeckId: ''
     }
   }
 
   render() {
-    return (
+    return (this.state.editingName) ? (
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
+        <TextField
+          id="namechangeinput"
+          onChange={(event) => this.setState({ newName: event.target.value })}
+        />
+        <div style={{ display: 'flex' }}>
+          <FlatButton
+            label="Set New Name"
+            primary={true}
+            onClick={(event) => {
+              event.preventDefault()
+              this.props.changeName(this.props.user.id, this.state.editingDeckId, this.state.newName)
+              this.setState({ editingName: false })
+            }}
+          />
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onClick={(event) => {
+              event.preventDefault()
+              this.setState({ editingName: false })
+            }}
+          />
+        </div>
+      </div>
+    ) : (
       <div>
         <List>
           {
@@ -24,7 +56,13 @@ class LoadDeckForm extends Component {
                   key = {index}
                   primaryText = {deck.name}
                   onClick = {() => this.props.chooseDeck(this.props.user.id, deck.id, deck.name)}
-                  rightIcon={<img src={`./forward_grey_24x24.png`} style={{ height: '25px' }}/>}
+                  rightIconButton={
+                    <ContentCreate
+                      hoverColor={'red'}
+                      style={{ height: '48px', justifyContent: 'center', alignContent: 'center', paddingRight: '12px' }}
+                      onClick={() => this.setState({ editingName: true, editingDeckId: deck.id })}
+                      />
+                  }
                 />
               )
             })
@@ -47,6 +85,9 @@ const mapDispatch = (dispatch) => {
     chooseDeck: (userId, deckId, name) => {
       dispatch(loadDeck(userId, deckId))
       dispatch(selectDeck(name))
+    },
+    changeName: (userId, deckId, newName) => {
+      dispatch(renameDeck(userId, deckId, newName))
     }
   }
 }

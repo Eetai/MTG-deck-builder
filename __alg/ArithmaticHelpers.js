@@ -35,6 +35,10 @@ const probabilityOfPlayingCard = function ({
   deck,
   startingHandSize = 7 },done) {
 
+  if (!card.manaCost) {
+    done(1)
+  }
+
   deck = convertToList(deck)
 
   // deck sterilized initially for splitmana cards

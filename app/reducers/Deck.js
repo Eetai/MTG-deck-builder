@@ -45,7 +45,6 @@ export const loadDeck = (userId, deckId) => {
     }
 }
 
-
 const deckReducer = (state = [], action) => {
     switch (action.type) {
         case SET_DECK:
