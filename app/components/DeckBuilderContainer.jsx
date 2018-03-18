@@ -22,11 +22,11 @@ import About from './About'
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MediaQuery from 'react-responsive'
 import Dialog from 'material-ui/Dialog';
 import LinearProgress from 'material-ui/LinearProgress';
 import Snackbar from 'material-ui/Snackbar';
+import { colors } from '../../public/stylesheets/Colors'
 
 const styles = {
     top_left_login_and_dropdown:{
@@ -54,6 +54,7 @@ class DeckBuilderContainer extends Component {
             openSaveDeckDialog: false,
             openDeckSelectionDialog: false
         }
+
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleReq = this.handleReq.bind(this);
         this.childClosesOwnDialog = this.childClosesOwnDialog.bind(this);
@@ -193,22 +194,22 @@ class DeckBuilderContainer extends Component {
                             <MediaQuery minWidth={(this.props.user.id) ? 1085 : 856}>
                                 { (matches) => (matches) ?
                                 <div>
-                                <FlatButton label="Submit" primary={true} type='submit' />
+                                <FlatButton
+                                    label="Submit"
+                                    primary={true}
+                                    type='submit'/>
                                 <FlatButton
                                     label="+ Turn"
                                     primary={true}
-                                    onClick={() => this.setState({ turns: this.state.turns.concat(this.state.turns.length + 1) })}>
-                                </FlatButton>
+                                    onClick={() => this.setState({ turns: this.state.turns.concat(this.state.turns.length + 1) })}/>
                                 <FlatButton
                                     label="- Turn"
                                     primary={true}
-                                    onClick={() => this.setState({ turns: this.state.turns.slice(0, this.state.turns.length - 1) })}>
-                                </FlatButton>
+                                    onClick={() => this.setState({ turns: this.state.turns.slice(0, this.state.turns.length - 1) })}/>
                                 <FlatButton
                                     label="About"
                                     primary={true}
-                                    onClick={() => this.setState({ openAboutDialog: true })}>
-                                </FlatButton>
+                                    onClick={() => this.setState({ openAboutDialog: true })}/>
                                 </div>
                                 : null }
                             </MediaQuery>
@@ -295,18 +296,15 @@ class DeckBuilderContainer extends Component {
                                     <FlatButton
                                         label="Save Deck"
                                         primary={true}
-                                        onClick={() => this.setState({ openSaveDeckDialog: true })}
-                                    />
+                                        onClick={() => this.setState({ openSaveDeckDialog: true })}/>
                                     <FlatButton
                                         label="Load Deck"
                                         primary={true}
-                                        onClick={() => this.setState({ openDeckSelectionDialog: true })}
-                                    />
+                                        onClick={() => this.setState({ openDeckSelectionDialog: true })}/>
                                     <FlatButton
                                         label="Logout"
                                         primary={true}
-                                        onClick={() => this.props.handleLogout()}
-                                    />
+                                        onClick={() => this.props.handleLogout()}/>
                                 </div>
                                 :
                                 <div style={{ height:48, display:'flex' }}>
@@ -314,8 +312,7 @@ class DeckBuilderContainer extends Component {
                                         label="Login"
                                         primary={true}
                                         style={{flex:1}}
-                                        onClick={() => this.setState({ openLoginDialog: true })}
-                                    />
+                                        onClick={() => this.setState({ openLoginDialog: true })}/>
                                 </div>
                             }
                         </div>
@@ -363,7 +360,7 @@ class DeckBuilderContainer extends Component {
                 </Dialog>
                 <Dialog
                     open={this.state.openAboutDialog}
-                    onRequestClose={() => this.setState({ openLoginDialog: false })}
+                    onRequestClose={() => this.setState({ openAboutDialog: false })}
                     autoScrollBodyContent={true}
                     >
                     <About closeDialog={this.childClosesOwnDialog}/>

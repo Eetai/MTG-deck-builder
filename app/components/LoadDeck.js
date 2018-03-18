@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { List, ListItem } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import ContentCreate from 'material-ui/svg-icons/content/create';
+import { colors } from '../../public/stylesheets/Colors'
 
 class LoadDeckForm extends Component {
   constructor(props) {
@@ -24,16 +25,19 @@ class LoadDeckForm extends Component {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
         <TextField
           id="namechangeinput"
+          defaultValue={this.state.newName}
+          hintText="give your deck a name"
           onChange={(event) => this.setState({ newName: event.target.value })}
         />
         <div style={{ display: 'flex' }}>
           <FlatButton
             label="Set New Name"
             primary={true}
+            disabled={!this.state.newName.length}
             onClick={(event) => {
               event.preventDefault()
               this.props.changeName(this.props.user.id, this.state.editingDeckId, this.state.newName)
-              this.setState({ editingName: false })
+              this.setState({ editingName: false, editingDeckId: '', newName: '' })
             }}
           />
           <FlatButton
@@ -60,7 +64,7 @@ class LoadDeckForm extends Component {
                     <ContentCreate
                       hoverColor={'red'}
                       style={{ height: '48px', justifyContent: 'center', alignContent: 'center', paddingRight: '12px' }}
-                      onClick={() => this.setState({ editingName: true, editingDeckId: deck.id })}
+                      onClick={() => this.setState({ editingName: true, editingDeckId: deck.id, newName: deck.name })}
                       />
                   }
                 />

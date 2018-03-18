@@ -30727,10 +30727,6 @@ var _MenuItem = __webpack_require__(280);
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
-var _moreVert = __webpack_require__(432);
-
-var _moreVert2 = _interopRequireDefault(_moreVert);
-
 var _reactResponsive = __webpack_require__(315);
 
 var _reactResponsive2 = _interopRequireDefault(_reactResponsive);
@@ -30746,6 +30742,8 @@ var _LinearProgress2 = _interopRequireDefault(_LinearProgress);
 var _Snackbar = __webpack_require__(435);
 
 var _Snackbar2 = _interopRequireDefault(_Snackbar);
+
+var _Colors = __webpack_require__(439);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30786,6 +30784,7 @@ var DeckBuilderContainer = function (_Component) {
             openSaveDeckDialog: false,
             openDeckSelectionDialog: false
         };
+
         _this.handleUpdateInput = _this.handleUpdateInput.bind(_this);
         _this.handleReq = _this.handleReq.bind(_this);
         _this.childClosesOwnDialog = _this.childClosesOwnDialog.bind(_this);
@@ -30948,7 +30947,10 @@ var DeckBuilderContainer = function (_Component) {
                                     return matches ? _react2.default.createElement(
                                         'div',
                                         null,
-                                        _react2.default.createElement(_FlatButton2.default, { label: 'Submit', primary: true, type: 'submit' }),
+                                        _react2.default.createElement(_FlatButton2.default, {
+                                            label: 'Submit',
+                                            primary: true,
+                                            type: 'submit' }),
                                         _react2.default.createElement(_FlatButton2.default, {
                                             label: '+ Turn',
                                             primary: true,
@@ -31103,22 +31105,19 @@ var DeckBuilderContainer = function (_Component) {
                                     primary: true,
                                     onClick: function onClick() {
                                         return _this4.setState({ openSaveDeckDialog: true });
-                                    }
-                                }),
+                                    } }),
                                 _react2.default.createElement(_FlatButton2.default, {
                                     label: 'Load Deck',
                                     primary: true,
                                     onClick: function onClick() {
                                         return _this4.setState({ openDeckSelectionDialog: true });
-                                    }
-                                }),
+                                    } }),
                                 _react2.default.createElement(_FlatButton2.default, {
                                     label: 'Logout',
                                     primary: true,
                                     onClick: function onClick() {
                                         return _this4.props.handleLogout();
-                                    }
-                                })
+                                    } })
                             ) : _react2.default.createElement(
                                 'div',
                                 { style: { height: 48, display: 'flex' } },
@@ -31128,8 +31127,7 @@ var DeckBuilderContainer = function (_Component) {
                                     style: { flex: 1 },
                                     onClick: function onClick() {
                                         return _this4.setState({ openLoginDialog: true });
-                                    }
-                                })
+                                    } })
                             )
                         )
                     )
@@ -31188,7 +31186,7 @@ var DeckBuilderContainer = function (_Component) {
                     {
                         open: this.state.openAboutDialog,
                         onRequestClose: function onRequestClose() {
-                            return _this4.setState({ openLoginDialog: false });
+                            return _this4.setState({ openAboutDialog: false });
                         },
                         autoScrollBodyContent: true
                     },
@@ -47955,6 +47953,8 @@ var _threads = __webpack_require__(313);
 
 var _reactResponsive = __webpack_require__(315);
 
+var _Colors = __webpack_require__(439);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47984,15 +47984,6 @@ var DeckList = function (_Component) {
             drawer: false,
             selectedCard: {},
             turns: [1, 2, 3, 4, 5, 6, 7, 8]
-        };
-
-        _this.colors = {
-            Blue: '#2693C7',
-            Red: '#FC6621',
-            Green: '#2BC749',
-            White: '#FDEA6D',
-            Black: '#A8A39A',
-            Grey: '#99968f'
         };
         return _this;
     }
@@ -48032,7 +48023,7 @@ var DeckList = function (_Component) {
                                     style: { transform: 'translate(230px, 10px)' },
                                     disabled: !this.state.drawer,
                                     label: '',
-                                    backgroundColor: this.colors.White,
+                                    backgroundColor: _Colors.colors.White,
                                     mini: true,
                                     onClick: function onClick(e) {
                                         return _this2.setState({ calculating: !_this2.state.calculating, drawer: !_this2.state.drawer });
@@ -48094,7 +48085,7 @@ var DeckList = function (_Component) {
                                                 zDepth: 0,
                                                 disabled: _this2.state.drawer,
                                                 label: '',
-                                                backgroundColor: _this2.colors.White,
+                                                backgroundColor: _Colors.colors.White,
                                                 onClick: function onClick(e) {
                                                     return _this2.setState({ calculating: !_this2.state.calculating, drawer: !_this2.state.drawer, selectedCard: card });
                                                 } },
@@ -48115,7 +48106,7 @@ var DeckList = function (_Component) {
                                                     iconStyle: tableStyles.smallButton,
                                                     zDepth: 0,
                                                     disabled: card.quantity > 3 && !card.type.includes('Basic Land'),
-                                                    backgroundColor: _this2.colors.Green,
+                                                    backgroundColor: _Colors.colors.Green,
                                                     mini: true,
                                                     onClick: function onClick() {
                                                         return _this2.props.updateCardQuant(card.uniqueName, card.quantity + 1);
@@ -48129,7 +48120,7 @@ var DeckList = function (_Component) {
                                                     iconStyle: tableStyles.smallButton,
                                                     zDepth: 0,
                                                     disabled: card.quantity < 1,
-                                                    backgroundColor: _this2.colors.Blue,
+                                                    backgroundColor: _Colors.colors.Blue,
                                                     mini: true,
                                                     onClick: function onClick() {
                                                         _this2.props.updateCardQuant(card.uniqueName, card.quantity - 1);
@@ -48142,7 +48133,7 @@ var DeckList = function (_Component) {
                                                     style: { padding: '1px' },
                                                     iconStyle: tableStyles.smallButton,
                                                     zDepth: 0,
-                                                    backgroundColor: _this2.colors.Red,
+                                                    backgroundColor: _Colors.colors.Red,
                                                     mini: true,
                                                     onClick: function onClick() {
                                                         return _this2.props.removeCard(card.uniqueName);
@@ -52567,6 +52558,8 @@ var _axios = __webpack_require__(21);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _Colors = __webpack_require__(439);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52597,14 +52590,7 @@ var ProbCell = function (_Component) {
       history: {},
       calculating: false
     };
-    _this.colors = {
-      Blue: '#2693C7',
-      Red: '#FC6621',
-      Green: '#2BC749',
-      White: '#FDEA6D',
-      Black: '#A8A39A',
-      Grey: '#99968f'
-    };
+
     _this.parseManaPic = _this.parseManaPic.bind(_this);
     _this.playableTurn = _this.playableTurn.bind(_this);
     _this.getProbability = _this.getProbability.bind(_this);
@@ -52685,7 +52671,7 @@ var ProbCell = function (_Component) {
           var manapic = this.parseManaPic(this.props.card.ProducibleManaColors);
           this.setState({ manapic: manapic });
         } else if (!this.props.card.types.includes('Plane')) {
-          var cardColor = this.props.card.colors ? this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : this.colors.Grey;
+          var cardColor = this.props.card.colors ? _Colors.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : _Colors.colors.Grey;
           var deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck);
 
           this.setState({ P: 'loading', cardColor: cardColor });
@@ -52717,7 +52703,7 @@ var ProbCell = function (_Component) {
       } else if (card.types.includes('Plane')) {
         this.setState({ manapic: 'Plane.png' });
       } else {
-        var cardColor = card.colors ? this.colors[card.colors[Math.floor(Math.random() * card.colors.length)]] : this.colors.Grey;
+        var cardColor = card.colors ? _Colors.colors[card.colors[Math.floor(Math.random() * card.colors.length)]] : _Colors.colors.Grey;
 
         var newDeckNamesAndQuants = this.getDeckNamesAndQuants(deck);
         var oldDeckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck);
@@ -55138,6 +55124,8 @@ var _Paper = __webpack_require__(257);
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
+var _Colors = __webpack_require__(439);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -55255,10 +55243,17 @@ var Auth = function (_Component) {
             }
           }),
           _react2.default.createElement(_FlatButton2.default, {
-            label: 'Existing User?',
+            label: 'Login',
             primary: true,
             onClick: function onClick() {
               return _this2.setState({ SigningUp: false });
+            }
+          }),
+          _react2.default.createElement(_FlatButton2.default, {
+            label: 'Cancel',
+            primary: true,
+            onClick: function onClick() {
+              return _this2.props.closeDialog();
             }
           })
         )
@@ -55324,6 +55319,8 @@ var _TextField = __webpack_require__(259);
 var _TextField2 = _interopRequireDefault(_TextField);
 
 var _nouns = __webpack_require__(422);
+
+var _Colors = __webpack_require__(439);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60032,6 +60029,8 @@ var _create = __webpack_require__(426);
 
 var _create2 = _interopRequireDefault(_create);
 
+var _Colors = __webpack_require__(439);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -60067,6 +60066,8 @@ var LoadDeckForm = function (_Component) {
         { style: { display: 'flex', justifyContent: 'space-between', alignContent: 'center' } },
         _react2.default.createElement(_TextField2.default, {
           id: 'namechangeinput',
+          defaultValue: this.state.newName,
+          hintText: 'give your deck a name',
           onChange: function onChange(event) {
             return _this2.setState({ newName: event.target.value });
           }
@@ -60077,10 +60078,11 @@ var LoadDeckForm = function (_Component) {
           _react2.default.createElement(_FlatButton2.default, {
             label: 'Set New Name',
             primary: true,
+            disabled: !this.state.newName.length,
             onClick: function onClick(event) {
               event.preventDefault();
               _this2.props.changeName(_this2.props.user.id, _this2.state.editingDeckId, _this2.state.newName);
-              _this2.setState({ editingName: false });
+              _this2.setState({ editingName: false, editingDeckId: '', newName: '' });
             }
           }),
           _react2.default.createElement(_FlatButton2.default, {
@@ -60109,7 +60111,7 @@ var LoadDeckForm = function (_Component) {
                 hoverColor: 'red',
                 style: { height: '48px', justifyContent: 'center', alignContent: 'center', paddingRight: '12px' },
                 onClick: function onClick() {
-                  return _this2.setState({ editingName: true, editingDeckId: deck.id });
+                  return _this2.setState({ editingName: true, editingDeckId: deck.id, newName: deck.name });
                 }
               })
             });
@@ -60415,6 +60417,8 @@ var _people2 = _interopRequireDefault(_people);
 var _person = __webpack_require__(429);
 
 var _person2 = _interopRequireDefault(_person);
+
+var _Colors = __webpack_require__(439);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60957,44 +60961,7 @@ exports.default = IconMenu;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 432 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(10);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _pure = __webpack_require__(254);
-
-var _pure2 = _interopRequireDefault(_pure);
-
-var _SvgIcon = __webpack_require__(255);
-
-var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var NavigationMoreVert = function NavigationMoreVert(props) {
-  return _react2.default.createElement(
-    _SvgIcon2.default,
-    props,
-    _react2.default.createElement('path', { d: 'M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z' })
-  );
-};
-NavigationMoreVert = (0, _pure2.default)(NavigationMoreVert);
-NavigationMoreVert.displayName = 'NavigationMoreVert';
-NavigationMoreVert.muiName = 'SvgIcon';
-
-exports.default = NavigationMoreVert;
-
-/***/ }),
+/* 432 */,
 /* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -61920,6 +61887,24 @@ function withWidth() {
     }(_react.Component);
   };
 }
+
+/***/ }),
+/* 439 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+const colors = {
+  Blue: '#2693C7',
+  Red: '#FC6621',
+  Green: '#2BC749',
+  White: '#FDEA6D',
+  Black: '#A8A39A',
+  Grey: '#99968f'
+}
+/* harmony export (immutable) */ __webpack_exports__["colors"] = colors;
+
+
 
 /***/ })
 /******/ ]);

@@ -22,6 +22,7 @@ import ProbabilityCell from './ProbabilityCell'
 import Drawer from 'material-ui/Drawer';
 import { spawn } from 'threads'
 import { MediaQuery, Responsive } from 'react-responsive'
+import { colors } from '../../public/stylesheets/Colors'
 
 const tableStyles = {
     smallButton: {
@@ -40,15 +41,6 @@ class DeckList extends Component {
             drawer: false,
             selectedCard: {},
             turns: [1,2,3,4,5,6,7,8]
-        }
-
-        this.colors = {
-            Blue: '#2693C7',
-            Red: '#FC6621',
-            Green: '#2BC749',
-            White: '#FDEA6D',
-            Black: '#A8A39A',
-            Grey: '#99968f'
         }
     }
 
@@ -75,7 +67,7 @@ class DeckList extends Component {
                                 style={{ transform: 'translate(230px, 10px)' }}
                                 disabled={!this.state.drawer}
                                 label={''}
-                                backgroundColor={this.colors.White}
+                                backgroundColor={colors.White}
                                 mini={true}
                                 onClick={(e) => this.setState({ calculating: !this.state.calculating, drawer: !this.state.drawer })}>
                                 <ZoomOut />
@@ -114,7 +106,7 @@ class DeckList extends Component {
                                                     zDepth={0}
                                                     disabled={this.state.drawer}
                                                     label={''}
-                                                    backgroundColor={this.colors.White}
+                                                    backgroundColor={colors.White}
                                                     onClick={(e) => this.setState({ calculating: !this.state.calculating, drawer: !this.state.drawer, selectedCard: card })}>
                                                     <ZoomIn />
                                                 </FloatingActionButton>
@@ -128,7 +120,7 @@ class DeckList extends Component {
                                                         iconStyle={tableStyles.smallButton}
                                                         zDepth={0}
                                                         disabled={card.quantity > 3 && !card.type.includes('Basic Land')}
-                                                        backgroundColor={this.colors.Green}
+                                                        backgroundColor={colors.Green}
                                                         mini={true}
                                                         onClick={() => this.props.updateCardQuant(card.uniqueName, card.quantity + 1)}>
                                                         <ContentAdd />
@@ -139,7 +131,7 @@ class DeckList extends Component {
                                                         iconStyle={tableStyles.smallButton}
                                                         zDepth={0}
                                                         disabled={card.quantity < 1}
-                                                        backgroundColor={this.colors.Blue}
+                                                        backgroundColor={colors.Blue}
                                                         mini={true}
                                                         onClick={() => {
                                                             this.props.updateCardQuant(card.uniqueName, card.quantity - 1)
@@ -151,7 +143,7 @@ class DeckList extends Component {
                                                         style={{ padding: '1px' }}
                                                         iconStyle={tableStyles.smallButton}
                                                         zDepth={0}
-                                                        backgroundColor={this.colors.Red}
+                                                        backgroundColor={colors.Red}
                                                         mini={true}
                                                         onClick={() => this.props.removeCard(card.uniqueName)}>
                                                         <ContentClear />
