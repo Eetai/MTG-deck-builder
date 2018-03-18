@@ -20,6 +20,7 @@ import SaveDeck from './SaveDeck'
 import LoadDeck from './LoadDeck'
 import About from './About'
 import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MediaQuery from 'react-responsive'
@@ -56,6 +57,35 @@ class DeckBuilderContainer extends Component {
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleReq = this.handleReq.bind(this);
         this.childClosesOwnDialog = this.childClosesOwnDialog.bind(this);
+        this.onDropDownMenuItemChosen = this.onDropDownMenuItemChosen.bind(this);
+    }
+
+    onDropDownMenuItemChosen(event, child){
+        switch (child.props.primaryText) {
+            case "+ Turn":
+                this.setState({ turns: this.state.turns.concat(this.state.turns.length + 1) })
+                break;
+            case "- Turn":
+                this.setState({ turns: this.state.turns.slice(0, this.state.turns.length - 1) })
+                break;
+            case "About":
+                this.setState({ openAboutDialog: true })
+                break;
+            case "Login":
+                this.setState({ openLoginDialog: true })
+                break;
+            case "Save Deck":
+                this.setState({ openSaveDeckDialog: true })
+                break;
+            case "Load Deck":
+                this.setState({ openDeckSelectionDialog: true })
+                break;
+            case "Logout":
+                this.props.handleLogout()
+                break;
+            default:
+                break;
+        }
     }
 
     childClosesOwnDialog(){
@@ -182,18 +212,83 @@ class DeckBuilderContainer extends Component {
                                 </div>
                                 : null }
                             </MediaQuery>
-                            <MediaQuery maxWidth={(this.props.user.id) ? 1084 : 855} style={{ flex:1, display: 'flex', flexDirection: 'row-reverse', paddingTop: '8px' }}>
-                                <div style={{ display: 'flex', alignItems: 'flex-end',}}>
-                                    <MoreHoriz/>
+
+                            {/* ellipses for reactive menu */}
+                            <div style={{ flex: 1, display: 'flex', flexDirection: 'row-reverse' }}>
+                                { (this.props.user.id) ?
+                                <div>
+                                    <MediaQuery minWidth={625} maxWidth={1084}>
+                                        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                            <IconMenu
+                                                iconButtonElement={<IconButton style={{ bottom: 4 }}><MoreHoriz /></IconButton>}
+                                                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                onItemClick={(event, child) => this.onDropDownMenuItemChosen(event, child)}
+                                            >
+                                                <MenuItem primaryText="+ Turn" />
+                                                <MenuItem primaryText="- Turn" />
+                                                <MenuItem primaryText="About" />
+                                            </IconMenu>
+                                        </div>
+                                    </MediaQuery>
+                                    <MediaQuery maxWidth={624}>
+                                        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                            <IconMenu
+                                                iconButtonElement={<IconButton style={{ bottom: 4 }}><MoreHoriz /></IconButton>}
+                                                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                onItemClick={(event, child) => this.onDropDownMenuItemChosen(event, child)}
+                                            >
+                                                <MenuItem primaryText="+ Turn" />
+                                                <MenuItem primaryText="- Turn" />
+                                                <MenuItem primaryText="About" />
+                                                <MenuItem primaryText="Save Deck" />
+                                                <MenuItem primaryText="Load Deck" />
+                                                <MenuItem primaryText="Logout" />
+                                            </IconMenu>
+                                        </div>
+                                    </MediaQuery>
                                 </div>
-                            </MediaQuery>
+                                :
+                                <div>
+                                    <MediaQuery maxWidth={855} minWidth={500}>
+                                        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                            <IconMenu
+                                                iconButtonElement={<IconButton style={{ bottom: 4 }}><MoreHoriz /></IconButton>}
+                                                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                onItemClick={(event, child) => this.onDropDownMenuItemChosen(event, child)}>
+                                                <MenuItem primaryText="+ Turn" />
+                                                <MenuItem primaryText="- Turn" />
+                                                <MenuItem primaryText="About" />
+                                            </IconMenu>
+                                        </div>
+                                    </MediaQuery>
+                                    <MediaQuery maxWidth={499}>
+                                        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                            <IconMenu
+                                                iconButtonElement={<IconButton style={{ bottom: 4 }}><MoreHoriz /></IconButton>}
+                                                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                onItemClick={(event, child) => this.onDropDownMenuItemChosen(event, child)}>
+                                                <MenuItem primaryText="+ Turn" />
+                                                <MenuItem primaryText="- Turn" />
+                                                <MenuItem primaryText="About" />
+                                                <MenuItem primaryText="Login" />
+                                            </IconMenu>
+                                        </div>
+                                    </MediaQuery>
+                                </div>
+                                }
+                            </div>
                         </form>
-                        {/* deck name banner TRASH*/}
+
+                        {/* deck name banner TRASH */}
                         {/* <Title title={this.props.selectedDeck} /> */}
                     </div>
 
                     {/* additional menu buttons */}
-                    <MediaQuery minWidth={500} style={styles.top_left_login_and_dropdown}>
+                    <MediaQuery minWidth={(this.props.user.id) ? 625 : 500} style={styles.top_left_login_and_dropdown}>
                         <div >
                             {(this.props.user.id) ?
                                 <div style={{ height: '48px', width: '264'}}>
