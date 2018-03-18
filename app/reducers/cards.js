@@ -17,7 +17,7 @@ export const fetchFilteredCards = (value) => {
     return function thunk(dispatch) {
         axios.get('api/cards/filteredcards/' + value)
             .then(res => {
-                let cards = res.data
+                let cards = (res.data.includes("<!doctype html>")) ? [] : res.data
                 dispatch(getFilteredCards(cards))
                 return cards
             })

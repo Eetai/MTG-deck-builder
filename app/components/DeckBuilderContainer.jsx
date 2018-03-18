@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentRemove from 'material-ui/svg-icons/content/remove';
 import { fetchCards, fetchFilteredCards } from '../reducers/cards'
 import { addCardToDeck } from '../reducers/Deck'
 import { logout } from '../reducers/user'
@@ -27,7 +30,7 @@ class DeckBuilderContainer extends Component {
     constructor(props) {
         super(props)
         this.state={
-            turns:[1,2,3,4,5,6,7,8],
+            turns: [1,2,3,4,5,6,7,8],
             searchBarId: '',
             searchText: '',
             savedSearch: '',
@@ -59,7 +62,7 @@ class DeckBuilderContainer extends Component {
     handleReq(value) {
         if (Object.keys(this.props.selectedCard).length && this.state.searchText.length) {
 
-            // set timeout is hacky. purpose is to make sure when you hit enter while selecting an element in the drop down that you actually add that card. the timer means the following happens: the selected card is set to the selected card, THEN add the card to the deck, as opposed to trying to add the selected card and update the selected card simaltaneously -> causing race contition -> adding wrong card
+            // set timeout is hacky. purpose is to make sure when you hit enter while selecting an element in the drop down that you actually add that card. the timer means the following happens: the selected card is set to the selected card in local state, THEN add the card to the deck, as opposed to trying to add the selected card and update the selected card in local state simaltaneously -> causing race contition -> adding wrong card
 
             setTimeout(() => {
                 this.props.addNewCard(this.props.selectedCard);
@@ -111,7 +114,6 @@ class DeckBuilderContainer extends Component {
         return (
             <div>
                 <div style={{display: 'flex'}}>
-
                     {/* searchbar and submit button */}
                     <form method='POST' style={{flex:19}} onSubmit={(e)=>{
                         e.preventDefault()
@@ -137,6 +139,18 @@ class DeckBuilderContainer extends Component {
                             { (matches) => (matches) ? <FlatButton label="Submit" primary={true} type='submit' /> : null }
                         </MediaQuery>
                     </form>
+                    <div>
+                        <FloatingActionButton
+                            mini={true}
+                            onClick={() => this.setState({ turns: this.state.turns.concat(this.state.turns.length+1)})}>
+                            <ContentAdd />
+                        </FloatingActionButton>
+                        <FloatingActionButton
+                            mini={true}
+                            onClick={() => this.setState({ turns: this.state.turns.slice(0,this.state.turns.length-1) })}>
+                            <ContentRemove />
+                        </FloatingActionButton>
+                    </div>
 
                     {/* deck name banner */}
                     <Title title={this.props.selectedDeck}/>
@@ -167,13 +181,13 @@ class DeckBuilderContainer extends Component {
                 </div>
                 <div id='cardViewContainer'>
                     {/* progress bar */}
-                    <LinearProgress
+                    {/* <LinearProgress
                         mode="determinate"
                         min={0}
                         max={this.props.deckList.filter(card => !card.types.includes('Land')).length * 8}
                         value={this.props.calculated}
                         style={{ display: this.state.displayProgress }}
-                    />
+                    /> */}
                     {/* the table of probabilities */}
                     <DeckListView deckList={this.props.deckList} turns={this.state.turns}/>
                 </div>
