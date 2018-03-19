@@ -1,5 +1,17 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://localhost:5432/mtg', { logging: false });
+
+if (process.env.DATABASE_URL) {
+    // the application is executed on Heroku ... use the postgres database
+    const db = new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        logging: true //false
+    });
+} else {
+    // the application is executed on the local machine
+    const db = new Sequelize('postgres://localhost:5432/mtg', { logging: false });
+}
+
 const Cards = require('./Cards')
 const Decks = require('./Decks')
 const Users = require('./Users')
