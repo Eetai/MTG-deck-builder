@@ -105,6 +105,7 @@ Cards.sync({
                             .then(() => {
                                 console.log('decks_cards success');
                                 console.log('all done!');
+                                process.exit(0);
                             })
                     })
             })
