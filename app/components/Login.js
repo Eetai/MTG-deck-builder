@@ -4,7 +4,7 @@ import { auth, logout } from '../reducers'
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-
+import { colors } from '../../public/stylesheets/Colors'
 
 class Auth extends Component {
   constructor(props) {
@@ -79,9 +79,14 @@ class Auth extends Component {
             onClick={(e) => this.props.handleSubmit(event, 'signup', this.state.username, this.state.password)}
           />
           <FlatButton
-            label="Existing User?"
+            label="Login"
             primary={true}
             onClick={() => this.setState({ SigningUp: false })}
+          />
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onClick={() => this.props.closeDialog()}
           />
         </div>
       </div>

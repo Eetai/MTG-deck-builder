@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import CircularProgress from 'material-ui/CircularProgress';
 import { updateNumberCalculated } from '../reducers/numberCalculating'
 import axios from 'axios'
+import { colors } from '../../public/stylesheets/Colors'
 
 const probCellStyle = {
   containerDiv:{
@@ -21,14 +22,7 @@ class ProbCell extends Component {
       history: {},
       calculating: false
     }
-    this.colors = {
-      Blue: '#2693C7',
-      Red: '#FC6621',
-      Green: '#2BC749',
-      White: '#FDEA6D',
-      Black: '#A8A39A',
-      Grey: '#99968f'
-    }
+
     this.parseManaPic = this.parseManaPic.bind(this)
     this.playableTurn = this.playableTurn.bind(this)
     this.getProbability = this.getProbability.bind(this)
@@ -94,7 +88,7 @@ class ProbCell extends Component {
         this.setState({ manapic })
       }
       else if (!this.props.card.types.includes('Plane')) {
-        const cardColor = (this.props.card.colors) ? this.colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : this.colors.Grey
+        const cardColor = (this.props.card.colors) ? colors[this.props.card.colors[Math.floor(Math.random() * this.props.card.colors.length)]] : colors.Grey
         const deckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
 
         this.setState({ P: 'loading', cardColor })
@@ -121,7 +115,7 @@ class ProbCell extends Component {
       this.setState({ manapic: 'Plane.png' })
     }
     else {
-      const cardColor = (card.colors) ? this.colors[card.colors[Math.floor(Math.random() * card.colors.length)]] : this.colors.Grey
+      const cardColor = (card.colors) ? colors[card.colors[Math.floor(Math.random() * card.colors.length)]] : colors.Grey
 
       const newDeckNamesAndQuants = this.getDeckNamesAndQuants(deck)
       const oldDeckNamesAndQuants = this.getDeckNamesAndQuants(this.props.deck)
