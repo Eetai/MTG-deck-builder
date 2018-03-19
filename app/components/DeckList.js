@@ -54,24 +54,25 @@ class DeckList extends Component {
                         open={this.state.drawer}
                         openSecondary={false}
                         docked={false}
-                        width={"47%"}
-                    >
-                        <div>
-                            <div>
+                        width={"40%"}>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, alignItems: 'center', paddingTop: '25px' }}>
                                 <img
-                                    style={{ transform: 'translate(100px, 10px)', width: 300, height: 'auto' }}
+                                    style={{ width: '300px', maxWidth: '90%', height: 'auto' }}
                                     src={`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${this.state.selectedCard.multiverseid}&type=card`}
                                 />
                             </div>
-                            <FloatingActionButton
-                                style={{ transform: 'translate(230px, 10px)' }}
-                                disabled={!this.state.drawer}
-                                label={''}
-                                backgroundColor={colors.White}
-                                mini={true}
-                                onClick={(e) => this.setState({ calculating: !this.state.calculating, drawer: !this.state.drawer })}>
-                                <ZoomOut />
-                            </FloatingActionButton>
+                            <div style={{ display: 'flex', flex: 1, alignItems: 'center', flexDirection: 'column', paddingTop: '10px' }}>
+                                <FloatingActionButton
+                                    style={{  }}
+                                    disabled={!this.state.drawer}
+                                    label={''}
+                                    backgroundColor={colors.White}
+                                    mini={true}
+                                    onClick={(e) => this.setState({ calculating: !this.state.calculating, drawer: !this.state.drawer })}>
+                                    <ZoomOut />
+                                </FloatingActionButton>
+                            </div>
                         </div>
                     </Drawer>
 
