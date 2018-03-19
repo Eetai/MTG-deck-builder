@@ -1,4 +1,5 @@
 'use strict';
+
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
@@ -11,7 +12,18 @@ const { db, Users } = require('./db/models/index')
 const passport = require('passport')
 const session = require('express-session')
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
-const sessionStore = new SequelizeStore({ db })
+
+if (process.env.DATABASE_URL) {
+    // the application is executed on Heroku ... use the postgres database
+    const sessionStore = new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        logging: true //false
+    });
+} else {
+    // the application is executed on the local machine
+    const sessionStore = new Sequelize({ db });
+}
 
 // passport registration
 passport.serializeUser((user, done) => done(null, user.id))
