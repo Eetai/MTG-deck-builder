@@ -13,6 +13,15 @@ if (process.env.DATABASE_URL) {
     db = new Sequelize('postgres://localhost:5432/mtg', { logging: false });
 }
 
+const { Client } = require('pg');
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+});
+
+client.connect();
+
 const mtgJson = require('./AllSets.json')
 const { Cards, Decks, Users, Decks_Cards } = require('../models')
 
