@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('./db')
+const db = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost:5432/mtg', { logging: false });
 const Cards = require('./Cards')
 const Decks = require('./Decks')
 const Users = require('./Users')
