@@ -323,13 +323,13 @@ class DeckBuilderContainer extends Component {
                 <div id='cardViewContainer'>
 
                     {/* progress bar CURRENTLY BROKEN*/}
-                    <LinearProgress
+                    {/* <LinearProgress
                         mode="determinate"
                         min={0}
                         max={this.props.deckList.filter(card => !card.types.includes('Land')).length * 8}
                         value={this.props.calculated}
                         style={{ display: this.state.displayProgress, position: 'absolute', top: '0px', right: '1px', width: '101%' }}
-                    />
+                    /> */}
 
                     {/* the table of probabilities */}
                     <DeckListView deckList={this.props.deckList} turns={this.state.turns}/>
