@@ -14,17 +14,6 @@ const session = require('express-session')
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const sessionStore = new SequelizeStore({ db })
 
-const { Client } = require('pg');
-
-if (process.env.DATABASE_URL) {
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: true,
-    });
-
-    client.connect();
-}
-
 // passport registration
 passport.serializeUser((user, done) => done(null, user.id))
 passport.deserializeUser((id, done) =>
