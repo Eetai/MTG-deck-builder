@@ -15,14 +15,14 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 if (process.env.DATABASE_URL) {
     // the application is executed on Heroku ... use the postgres database
-    const sessionStore = new Sequelize(process.env.DATABASE_URL, {
+    const sessionStore = new SequelizeStore(process.env.DATABASE_URL, {
         dialect: 'postgres',
         protocol: 'postgres',
         logging: true //false
     });
 } else {
     // the application is executed on the local machine
-    const sessionStore = new Sequelize({ db });
+    const sessionStore = new SequelizeStore({ db });
 }
 
 // passport registration
