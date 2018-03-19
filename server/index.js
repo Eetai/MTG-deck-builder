@@ -52,7 +52,7 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).send(err.message || 'Internal server error');
 });
 
-const PORT = 4000;
+const PORT = 5432;
 
 db.sync()
     .then(() => {
