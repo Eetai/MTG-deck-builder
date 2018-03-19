@@ -359,6 +359,7 @@ class DeckBuilderContainer extends Component {
                     <LoadDeck />
                 </Dialog>
                 <Dialog
+                    contentStyle={{ minWidth: '400px' }}
                     open={this.state.openAboutDialog}
                     onRequestClose={() => this.setState({ openAboutDialog: false })}
                     autoScrollBodyContent={true}
