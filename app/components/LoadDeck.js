@@ -62,7 +62,7 @@ class LoadDeckForm extends Component {
                   key = {index}
                   primaryText = {deck.name}
                   onClick = {() => {
-                    this.props.callSnackbar(`Loading ${deck.name}...`)
+                    this.props.callSnackbar(`Loading ${deck.name} ...`)
                     this.props.chooseDeck(this.props.user.id, deck.id, deck.name)
                   }}
                   rightIconButton={
