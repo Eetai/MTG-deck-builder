@@ -36,7 +36,6 @@ export const me = () =>
       .catch(err => console.log(err))
 
 export const auth = (email, password, method) => {
-  console.log(method)
   return dispatch =>
     axios.post(`api/auth/${method}`, { email, password })
       .then(res => {

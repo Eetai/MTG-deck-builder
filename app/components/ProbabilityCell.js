@@ -153,8 +153,9 @@ class ProbCell extends Component {
   render() {
     if (this.state.P !== 'loading' && !this.props.card.types.includes('Land') && !this.props.card.types.includes('Plane')){
 
-      // this line says that if a cell is not loading and the card associated with it is not a land of a plane, then the store shoudl be updated to recognize that a cell has completed a calculation
-      this.props.updateCalculatedNumber(1)
+      // // // progres bar is still broken
+      // // this line says that if a cell is not loading and the card associated with it is not a land of a plane, then the store shoudl be updated to recognize that a cell has completed a calculation
+      // this.props.updateCalculatedNumber(1)
 
       return (
       <div style={probCellStyle.containerDiv}>

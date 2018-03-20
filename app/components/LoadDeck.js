@@ -37,6 +37,7 @@ class LoadDeckForm extends Component {
             onClick={(event) => {
               event.preventDefault()
               this.props.changeName(this.props.user.id, this.state.editingDeckId, this.state.newName)
+              this.props.callSnackbar(`Name Saved as ${this.state.newName}`)
               this.setState({ editingName: false, editingDeckId: '', newName: '' })
             }}
           />
@@ -46,6 +47,7 @@ class LoadDeckForm extends Component {
             onClick={(event) => {
               event.preventDefault()
               this.setState({ editingName: false })
+              this.props.callSnackbar('Name Not Updated')
             }}
           />
         </div>
@@ -59,7 +61,10 @@ class LoadDeckForm extends Component {
                 <ListItem
                   key = {index}
                   primaryText = {deck.name}
-                  onClick = {() => this.props.chooseDeck(this.props.user.id, deck.id, deck.name)}
+                  onClick = {() => {
+                    this.props.callSnackbar(`Loading ${deck.name}...`)
+                    this.props.chooseDeck(this.props.user.id, deck.id, deck.name)
+                  }}
                   rightIconButton={
                     <ContentCreate
                       hoverColor={'red'}

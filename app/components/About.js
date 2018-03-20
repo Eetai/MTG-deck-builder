@@ -19,37 +19,6 @@ export default function About(props) {
       tabItemContainerStyle={{ backgroundColor: colors.Black }}
       inkBarStyle={{ backgroundColor: colors.White }}
       >
-      <Tab label="Team">
-        <Card style={{ display: 'flex', flexDirection: 'column' }} >
-          <CardTitle title="The Team" subtitle="Roles and contributions" />
-          <CardHeader
-            title="Abel"
-            subtitle="Lead Engineer"
-            avatar={<SocialPerson />}
-          />
-          <CardText style={styles.cardText} >
-            Abel joined the team after Bryan and Eetai had already embarked on creating an MTG deck analyzing app. He ended up pushing the app to take a different direction, as a probability calculator rather than a statistical metagame cruncher. Abel's mathematics background enabled him to approach the problem of computing the probability of playing specific cards in a robust way. Abel also architected much of the app and designed the interface of how to interact with his algorithm.
-          </CardText>
-
-          <CardHeader
-            title="Bryan"
-            subtitle="Engineer, Contributor"
-            avatar={<SocialPerson />}
-          />
-          <CardText style={styles.cardText}>
-            Bryan was a casual MTG player growing up, a great team player, and a talented programmer that can dive into any project and get results quickly. He is was a natural choice contributor to the project. Bryan built much of the foundation for the app, from the schemas, to security, Bryan contributed at many steps along the way.
-          </CardText>
-
-          <CardHeader
-            title="Eetai"
-            subtitle="Professional MTG player, Contributor"
-            avatar={<SocialPerson />}
-          />
-          <CardText style={styles.cardText}>
-            Eetai was the catalyst behind MTG Curve. His experience on the Pro Tour, and as an ongoing contributor to the highest levels of MTG's metagame, Eetai was a key consultant on every facet of this project. His expertise as a MTG player are the reason for many of the design choices, and inclusion of many features of the app.
-          </CardText>
-        </Card>
-      </Tab>
       <Tab label="App">
         <Card style={{ display: 'flex', flexDirection: 'column' }} >
           <CardTitle title="The App" subtitle="General information" />
@@ -131,6 +100,37 @@ export default function About(props) {
           <CardText style={styles.cardText}>
             Keeping in mind that this entire process is being done many times in parallel because of how we're implementing Vandermonde's Convolution, the resultant sum from any set of hands will be the probability of having drawn some number of fetchlands, a given card -with a modified manacost based on the number of fetchlands which were drawn-, and some combination of other lands which allow the card to be legally played on the given turn. Finally the algorithm outputs the combined sum of terms from Vandermonde’s Convolution, which are the combined sums of hypergeometric probabilities of each hand from our multichoose process. Or, the most accurate probability ever computed that you’ll hit play any given card in your deck on curve.
          </CardText>
+        </Card>
+      </Tab>
+      <Tab label="Team">
+        <Card style={{ display: 'flex', flexDirection: 'column' }} >
+          <CardTitle title="The Team" subtitle="Roles and contributions" />
+          <CardHeader
+            title="Abel"
+            subtitle="Lead Engineer"
+            avatar={<SocialPerson />}
+          />
+          <CardText style={styles.cardText} >
+            Abel joined the team after Bryan and Eetai had already embarked on creating an MTG deck analyzing app. He ended up pushing the app to take a different direction, as a probability calculator rather than a statistical metagame cruncher. Abel's mathematics background enabled him to approach the problem of computing the probability of playing specific cards in a robust way. Abel also architected much of the app and designed the interface of how to interact with his algorithm.
+          </CardText>
+
+          <CardHeader
+            title="Bryan"
+            subtitle="Engineer, Contributor"
+            avatar={<SocialPerson />}
+          />
+          <CardText style={styles.cardText}>
+            Bryan was a casual MTG player growing up, a great team player, and a talented programmer that can dive into any project and get results quickly. He is was a natural choice contributor to the project. Bryan built much of the foundation for the app, from the schemas, to security, Bryan contributed at many steps along the way.
+          </CardText>
+
+          <CardHeader
+            title="Eetai"
+            subtitle="Professional MTG player, Contributor"
+            avatar={<SocialPerson />}
+          />
+          <CardText style={styles.cardText}>
+            Eetai was the catalyst behind MTG Curve. His experience on the Pro Tour, and as an ongoing contributor to the highest levels of MTG's metagame, Eetai was a key consultant on every facet of this project. His expertise as a MTG player are the reason for many of the design choices, and inclusion of many features of the app.
+          </CardText>
         </Card>
       </Tab>
     </Tabs>

@@ -45,13 +45,17 @@ class SaveDeckForm extends Component {
             primary={true}
             onClick={() => {
               this.props.handleSaveDeck(this.state.name, this.props.user, this.props.deck)
+              this.props.callSnackbar(`Saved as ${this.state.name}`)
               this.props.closeDialog()
               }}
           />
           <FlatButton
             label="Cancel"
             primary={true}
-            onClick={() => this.props.closeDialog()}
+            onClick={() => {
+              this.props.callSnackbar('Not Saved')
+              this.props.closeDialog()
+            }}
           />
         </div>
       </div>

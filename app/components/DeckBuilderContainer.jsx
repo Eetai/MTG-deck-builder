@@ -47,7 +47,7 @@ class DeckBuilderContainer extends Component {
             searchText: '',
             savedSearch: '',
             snackBarMessage: '',
-            displayProgress: 'none',
+            // displayProgress: 'none',
             snackBarOpen: false,
             openAboutDialog: false,
             openLoginDialog: false,
@@ -55,6 +55,7 @@ class DeckBuilderContainer extends Component {
             openDeckSelectionDialog: false
         }
 
+        this.callSnackbar = this.callSnackbar.bind(this)
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleReq = this.handleReq.bind(this);
         this.childClosesOwnDialog = this.childClosesOwnDialog.bind(this);
@@ -95,6 +96,13 @@ class DeckBuilderContainer extends Component {
             openLoginDialog: false,
             openSaveDeckDialog: false,
             openDeckSelectionDialog: false
+        })
+    }
+
+    callSnackbar(message) {
+        this.setState({
+            snackBarOpen: true,
+            snackBarMessage: message
         })
     }
 
@@ -141,26 +149,26 @@ class DeckBuilderContainer extends Component {
         }
 
         if (nextProps.loginError) {
-            this.setState({ snackBarOpen: true, snackBarMessage: `Error: ${nextProps.loginError.response.data}` })
+            this.callSnackbar(`Error: ${nextProps.loginError.response.data}`)
         }
         else if (nextProps.user.id !== this.props.user.id) {
             if(!nextProps.user.id) {
-                this.setState({ snackBarOpen: true, snackBarMessage: "You'll be back" })
+                this.callSnackbar("You'll be back")
             }
             else if (!this.props.user.id) {
-                this.setState({ snackBarOpen: true, snackBarMessage: "Welcome!" })
+                this.callSnackbar("Welcome!")
             }
         }
 
-        if (nextProps.calculated === this.getNonLandDeckSize(nextProps.deckList) * 8) {
-            setTimeout(() => {
-                this.setState({ displayProgress: 'none' })
-                this.props.setCalculatedNumber(0)
-            }, 350);
-        }
-        else {
-            this.setState({ displayProgress: 'flex' })
-        }
+        // if (nextProps.calculated === this.getNonLandDeckSize(nextProps.deckList) * 8) {
+        //     setTimeout(() => {
+        //         this.setState({ displayProgress: 'none' })
+        //         this.props.setCalculatedNumber(0)
+        //     }, 350);
+        // }
+        // else {
+        //     this.setState({ displayProgress: 'flex' })
+        // }
     }
 
     render() {
@@ -350,7 +358,7 @@ class DeckBuilderContainer extends Component {
                     open = {this.state.openSaveDeckDialog}
                     onRequestClose = {() => this.setState({ openSaveDeckDialog: false })}
                     >
-                    <SaveDeck closeDialog={this.childClosesOwnDialog}/>
+                    <SaveDeck closeDialog={this.childClosesOwnDialog} callSnackbar={this.callSnackbar}/>
                 </Dialog>
                 <Dialog
                     contentStyle={{ maxWidth: '600px' }}
@@ -358,7 +366,7 @@ class DeckBuilderContainer extends Component {
                     onRequestClose={() => this.setState({ openDeckSelectionDialog: false })}
                     autoScrollBodyContent={true}
                     >
-                    <LoadDeck />
+                    <LoadDeck closeDialog={this.childClosesOwnDialog} callSnackbar={this.callSnackbar}/>
                 </Dialog>
                 <Dialog
                     contentStyle={{ minWidth: '400px' }}
@@ -366,7 +374,7 @@ class DeckBuilderContainer extends Component {
                     onRequestClose={() => this.setState({ openAboutDialog: false })}
                     autoScrollBodyContent={true}
                     >
-                    <About closeDialog={this.childClosesOwnDialog}/>
+                    <About />
                 </Dialog>
 
                 {/* snackbar for show errors and greetings */}
