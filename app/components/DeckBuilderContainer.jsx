@@ -200,10 +200,12 @@ class DeckBuilderContainer extends Component {
                                     type='submit'/>
                                 <FlatButton
                                     label="+ Turn"
+                                    disabled={this.state.turns.length > 24}
                                     primary={true}
                                     onClick={() => this.setState({ turns: this.state.turns.concat(this.state.turns.length + 1) })}/>
                                 <FlatButton
                                     label="- Turn"
+                                    disabled={this.state.turns.length < 1}
                                     primary={true}
                                     onClick={() => this.setState({ turns: this.state.turns.slice(0, this.state.turns.length - 1) })}/>
                                 <FlatButton
