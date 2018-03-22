@@ -58,7 +58,11 @@ const cardsWithMultiverseId = allCards.reduce((cards, card, i) => {
             }
 
             if(P === '') P = false
-            else P = P.split('').sort().reduce((a, b) => (a.includes(b) || b=== ' ' || b===',') ? a : a.concat(b),[]).join(',')
+            else{
+                P = P.split('').sort().reduce((a, b) => (a.includes(b) || b=== ' ' || b===',') ? a : a.concat(b),[])
+                if (P.length > 1 && P.includes('C')) P = P.filter(c => c != 'C')
+                P = P.join(',')
+            }
 
             F = (P === 'F') ? card.text.split('\n').reduce((a, b) => {
                 if (b.indexOf(`Sacrifice ${card.name}: Search`) > -1) {
