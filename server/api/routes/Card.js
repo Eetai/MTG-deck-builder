@@ -17,7 +17,6 @@ router.get('/allcards', (req, res, next) => {
 router.get('/filteredcards/:value', (req, res, next) => {
 
     let queryName = req.params.value.toLowerCase()
-    console.log('querying: ',queryName)
 
     Cards.findAll({
             attributes: ['name', 'multiverseid', 'set', 'text', 'manaCost', 'uniqueName','fetchOptions','ProducibleManaColors','type','types', 'colors'],

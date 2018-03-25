@@ -4,7 +4,6 @@ const { Users } = require('../../db/models')
 module.exports = router
 
 router.post('/login', (req, res, next) => {
-  console.log('login: ', req.body.email, req.body.password)
   Users.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (!user) {
@@ -21,7 +20,6 @@ router.post('/login', (req, res, next) => {
 router.post('/signup', (req, res, next) => {
   Users.create(req.body)
     .then((user) => {
-      console.log(user)
       req.login(user, err => (err ? next(err) : res.json(user)))
     })
     .catch((err) => {
@@ -34,7 +32,6 @@ router.post('/signup', (req, res, next) => {
 })
 
 router.post('/logout', (req, res) => {
-  console.log('passport session: ' + req.session.passport)
   req.logout()
   req.session.destroy()
   res.send(req.session)
